@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
+import frc.robot.commands.Arm.ArmPosition;
 import frc.robot.commands.Arm.ShoulderPercentOutput;
 import frc.robot.commands.Arm.WristPercentOutput;
 import frc.robot.commands.Intake.IntakePercentOutput;
@@ -72,6 +73,8 @@ public class RobotContainer {
         .whileTrue(new IntakePercentOutput(0.1, m_intake));
     new Trigger(() -> m_controller.getButton(frc.twilight.Controller.Button.DOWN))
         .whileTrue(new IntakePercentOutput(-0.1, m_intake));
+    new Trigger(() -> m_controller.getButton(frc.twilight.Controller.Button.RIGHT))
+        .whileTrue(new ArmPosition(45, 45, m_arm));
 
     // Arm Buttons
     // Wrist
