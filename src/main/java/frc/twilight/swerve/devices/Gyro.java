@@ -3,7 +3,6 @@ package frc.twilight.swerve.devices;
 import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.wpilibj.SPI;
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import frc.twilight.swerve.config.GeneralConfig;
 
 public class Gyro {
@@ -12,12 +11,14 @@ public class Gyro {
     public Gyro() {
         ahrs = new AHRS(SPI.Port.kMXP);
         setPosition(GeneralConfig.DT_START_GYRO);
-
-        Shuffleboard.getTab("Swerve").addNumber("Gyro", () -> getAngle()).withPosition(3, 0);
     }
 
     public double getAngle() {
         return ahrs.getAngle() % 360;
+    }
+
+    public double getAngleSpeed() {
+        return ahrs.getRate();
     }
 
     public void setPosition(double offset) {

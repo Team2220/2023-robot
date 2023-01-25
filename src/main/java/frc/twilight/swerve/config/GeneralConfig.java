@@ -16,6 +16,12 @@ public final class GeneralConfig {
 
 
 
+    public static final boolean SWERVE_SHUFFLEBOARD_ENABLED = true;
+    
+
+
+
+
     // Velocity restrictions m/s
     public static final boolean DT_VEL_CONTROL_ENABLE = true;
     public static final double DT_MAX_VEL = 20;

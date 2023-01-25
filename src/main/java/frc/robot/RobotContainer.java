@@ -48,7 +48,7 @@ public class RobotContainer {
     DriverStation.startDataLog(DataLogManager.getLog());
 
     m_swerve = new Swerve(() -> m_controller.getLeftX() * 5, () -> m_controller.getLeftY() * 5,
-        () -> m_controller.getRightX() * 5);
+        () -> m_controller.getRightX() * 180);
     m_arm = new Arm();
     m_intake = new Intake();
 
