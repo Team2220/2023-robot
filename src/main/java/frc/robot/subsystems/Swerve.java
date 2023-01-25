@@ -32,7 +32,7 @@ public class Swerve extends SubsystemBase {
 
   @Override
   public void periodic() {
-    DriveVector out = new DriveVector(y_axis.getAsDouble(), x_axis.getAsDouble(), rotation.getAsDouble());
+    DriveVector out = new DriveVector(-y_axis.getAsDouble(), -x_axis.getAsDouble(), rotation.getAsDouble());
 
     swerve.setDrive(out);
 

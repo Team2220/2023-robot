@@ -27,4 +27,12 @@ public class PIDconfig {
     public static final TunableDouble DT_AUTO_I = new TunableDouble("DT_AUTO_I", 0, SHUFFLEBOARD_VALUES_ENABLED);
     public static final TunableDouble DT_AUTO_D = new TunableDouble("DT_AUTO_D", 0, SHUFFLEBOARD_VALUES_ENABLED);
     public static final TunableDouble DT_AUTO_F = new TunableDouble("DT_AUTO_F", 0, SHUFFLEBOARD_VALUES_ENABLED);
+
+    
+    
+    // Gyro stabilize PID constants
+    public static final TunableDouble DT_GYRO_P = new TunableDouble("DT_GYRO_P", 0, SHUFFLEBOARD_VALUES_ENABLED);
+    public static final TunableDouble DT_GYRO_I = new TunableDouble("DT_GYRO_I", 0, SHUFFLEBOARD_VALUES_ENABLED);
+    public static final TunableDouble DT_GYRO_D = new TunableDouble("DT_GYRO_D", 0, SHUFFLEBOARD_VALUES_ENABLED);
+    public static final TunableDouble DT_GYRO_F = new TunableDouble("DT_GYRO_F", 0, SHUFFLEBOARD_VALUES_ENABLED);
 }
