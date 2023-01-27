@@ -1,4 +1,7 @@
 package frc.robot.commands.Arm;
+
+
+
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Arm;
 
@@ -12,7 +15,7 @@ public class ArmPosition extends CommandBase {
         addRequirements(arm);
         this.wristAngle = wristAngle;
         this.shoulderAngle = shoulderAngle;
-    }   
+    }
 
     @Override
     public void execute() {
