@@ -4,6 +4,8 @@
 
 package frc.robot;
 
+import com.ctre.phoenix.led.RainbowAnimation;
+
 import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.GenericHID;
@@ -12,8 +14,10 @@ import frc.robot.commands.Arm.ArmPosition;
 import frc.robot.commands.Arm.ShoulderPercentOutput;
 import frc.robot.commands.Arm.WristPercentOutput;
 import frc.robot.commands.Intake.IntakePercentOutput;
+import frc.robot.commands.Leds.RainbowLeds;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.LEDs;
 import frc.robot.subsystems.Swerve;
 import frc.twilight.Controller;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -36,7 +40,7 @@ public class RobotContainer {
   private final Swerve m_swerve; 
   private final Arm m_arm;
   private final Intake m_intake;
-private final Leds m_leds;
+  private final LEDs m_leds;
 
   private final Controller m_controller = new Controller(0);
 
@@ -53,10 +57,10 @@ private final Leds m_leds;
         () -> m_controller.getRightX() * 180);
     m_arm = new Arm();
     m_intake = new Intake();
-    m_leds = new Leds();
+    m_leds = new LEDs();
 
-     // Configure the button bindings
-     configureButtonBindings();
+    // Configure the button bindings
+    configureButtonBindings();
   }
 
   /**
@@ -72,22 +76,24 @@ private final Leds m_leds;
 
     // Intake Buttons
     new Trigger(() -> m_controller.getButton(frc.twilight.Controller.Button.UP))
-      .whileTrue(new IntakePercentOutput(0.1, m_intake));
+        .whileTrue(new IntakePercentOutput(0.1, m_intake));
     new Trigger(() -> m_controller.getButton(frc.twilight.Controller.Button.DOWN))
-      .whileTrue(new IntakePercentOutput(-0.1, m_intake));
+        .whileTrue(new IntakePercentOutput(-0.1, m_intake));
     new Trigger(() -> m_controller.getButton(frc.twilight.Controller.Button.RIGHT))
-    .whileTrue(new ArmPosition(45, 45, m_arm));
-    
+        .whileTrue(new ArmPosition(45, 45, m_arm));
+    new Trigger(() -> m_controller.getButton(frc.twilight.Controller.Button.LEFT))
+        .whileTrue(new RainbowLeds(m_leds));
+
     // Arm Buttons
     // Wrist
     new Trigger(() -> m_controller.getButton(frc.twilight.Controller.Button.A))
-    .whileTrue(new WristPercentOutput(0.5, m_arm));
+        .whileTrue(new WristPercentOutput(0.5, m_arm));
     new Trigger(() -> m_controller.getButton(frc.twilight.Controller.Button.B))
-    .whileTrue(new WristPercentOutput(-0.5, m_arm));
+        .whileTrue(new WristPercentOutput(-0.5, m_arm));
     // Shoulder
     new Trigger(() -> m_controller.getButton(frc.twilight.Controller.Button.X))
         .whileTrue(new ShoulderPercentOutput(0.5, m_arm));
-                  new Trigger(() -> m_controller.getButton(frc.twilight.Controller.Button.Y))
+    new Trigger(() -> m_controller.getButton(frc.twilight.Controller.Button.Y))
         .whileTrue(new ShoulderPercentOutput(-0.5, m_arm));
   }
 
@@ -97,7 +103,7 @@ private final Leds m_leds;
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    
+
     return null;
   }
 }

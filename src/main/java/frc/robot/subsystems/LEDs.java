@@ -5,9 +5,10 @@ import com.ctre.phoenix.led.CANdleConfiguration;
 import com.ctre.phoenix.led.RainbowAnimation;
 import com.ctre.phoenix.led.StrobeAnimation;
 
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
-public class LEDs {
+public class LEDs extends SubsystemBase{
     CANdle candle = new CANdle(Constants.CANDLE);
 
     public LEDs() {
@@ -16,7 +17,7 @@ public class LEDs {
         candle.configAllSettings(config);
     }
 
-    public void setLEDAnimation() {
+    public void setLEDRainAnimation() {
 
         RainbowAnimation rainbowAnim = new RainbowAnimation(1, 0.5, 64);
         candle.animate(rainbowAnim);
@@ -24,6 +25,11 @@ public class LEDs {
 
     public void setSolidColor() {
         candle.setLEDs(255, 255, 255);
+    }
+
+    
+    public void setOffLEDs() {
+        candle.setLEDs(0, 0, 0);
     }
 
     public void setLEDStrobeAnimation(int r, int g, int b, int w, double speed, int numLed, int ledOffset) {
