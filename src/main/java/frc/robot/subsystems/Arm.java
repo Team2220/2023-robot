@@ -1,5 +1,7 @@
 package frc.robot.subsystems;
 
+import java.util.ArrayList;
+
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.StatorCurrentLimitConfiguration;
 import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
@@ -98,5 +100,15 @@ public class Arm extends SubsystemBase {
         shoulderSB.setDouble(getShoulderPosition());
         wristSB.setDouble(getWristPosition());
     }
+public ArrayList<TalonFX> geTalonFXs() {
 
+    ArrayList<TalonFX> musicList = new ArrayList<>();
+    musicList.add(shoulder);
+    musicList.add(wrist);
+    
+
+
+    return musicList;
+
+}
 }

@@ -1,5 +1,7 @@
 package frc.robot.commands;
 
+import com.ctre.phoenix.music.Orchestra;
+
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Swerve;
 import frc.robot.subsystems.Intake;
@@ -9,19 +11,23 @@ public class PlayMusic extends CommandBase{
     private final Swerve swerve;
     private final Arm arm; 
     private final Intake intake;
+    private final Orchestra orchestra;
 
     public PlayMusic(Swerve swerve, Arm arm, Intake intake){
         this.swerve = swerve;
         this.arm = arm;
         this.intake = intake;
-        
-
-
+        this.orchestra = new Orchestra(null);
+        addRequirements(swerve);
+        addRequirements(intake);
+        addRequirements(arm);
 
     }
+    @Override
+    public void initialize() {
+        
+    }
 
-
-    
 }
 
 
