@@ -36,6 +36,7 @@ public class RobotContainer {
   private final Swerve m_swerve;
   private final Arm m_arm;
   private final Intake m_intake;
+private final Leds m_leds;
 
   private final Controller m_controller = new Controller(0);
 
@@ -52,9 +53,10 @@ public class RobotContainer {
         () -> m_controller.getRightX() * 180);
     m_arm = new Arm();
     m_intake = new Intake();
+    m_leds = new Leds();
 
-    // Configure the button bindings
-    configureButtonBindings();
+     // Configure the button bindings
+     configureButtonBindings();
   }
 
   /**
@@ -70,22 +72,22 @@ public class RobotContainer {
 
     // Intake Buttons
     new Trigger(() -> m_controller.getButton(frc.twilight.Controller.Button.UP))
-        .whileTrue(new IntakePercentOutput(0.1, m_intake));
+      .whileTrue(new IntakePercentOutput(0.1, m_intake));
     new Trigger(() -> m_controller.getButton(frc.twilight.Controller.Button.DOWN))
-        .whileTrue(new IntakePercentOutput(-0.1, m_intake));
+      .whileTrue(new IntakePercentOutput(-0.1, m_intake));
     new Trigger(() -> m_controller.getButton(frc.twilight.Controller.Button.RIGHT))
-        .whileTrue(new ArmPosition(45, 45, m_arm));
-
+        .whileTrue(new ArmPosition());
+    
     // Arm Buttons
     // Wrist
     new Trigger(() -> m_controller.getButton(frc.twilight.Controller.Button.A))
-        .whileTrue(new WristPercentOutput(0.5, m_arm));
+    .whileTrue(new WristPercentOutput(0.5, m_arm));
     new Trigger(() -> m_controller.getButton(frc.twilight.Controller.Button.B))
-        .whileTrue(new WristPercentOutput(-0.5, m_arm));
+    .whileTrue(new WristPercentOutput(-0.5, m_arm));
     // Shoulder
     new Trigger(() -> m_controller.getButton(frc.twilight.Controller.Button.X))
         .whileTrue(new ShoulderPercentOutput(0.5, m_arm));
-    new Trigger(() -> m_controller.getButton(frc.twilight.Controller.Button.Y))
+                  new Trigger(() -> m_controller.getButton(frc.twilight.Controller.Button.Y))
         .whileTrue(new ShoulderPercentOutput(-0.5, m_arm));
   }
 
@@ -95,7 +97,7 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-
+    
     return null;
   }
 }
