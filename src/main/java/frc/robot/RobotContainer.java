@@ -76,7 +76,7 @@ private final Leds m_leds;
     new Trigger(() -> m_controller.getButton(frc.twilight.Controller.Button.DOWN))
       .whileTrue(new IntakePercentOutput(-0.1, m_intake));
     new Trigger(() -> m_controller.getButton(frc.twilight.Controller.Button.RIGHT))
-        .whileTrue(new ArmPosition());
+        .whileTrue(new ArmPosition(45, 45, m_arm ));
     
     // Arm Buttons
     // Wrist
