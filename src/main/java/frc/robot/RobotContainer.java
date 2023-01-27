@@ -33,7 +33,7 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
 
-  private final Swerve m_swerve;
+  private final Swerve m_swerve; 
   private final Arm m_arm;
   private final Intake m_intake;
 private final Leds m_leds;
@@ -76,7 +76,7 @@ private final Leds m_leds;
     new Trigger(() -> m_controller.getButton(frc.twilight.Controller.Button.DOWN))
       .whileTrue(new IntakePercentOutput(-0.1, m_intake));
     new Trigger(() -> m_controller.getButton(frc.twilight.Controller.Button.RIGHT))
-        .whileTrue(new ArmPosition(45, 45, m_arm ));
+    .whileTrue(new ArmPosition(45, 45, m_arm));
     
     // Arm Buttons
     // Wrist
