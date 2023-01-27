@@ -1,5 +1,6 @@
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.StatorCurrentLimitConfiguration;
 import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
 import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
@@ -45,6 +46,9 @@ public class Arm extends SubsystemBase {
         config.enable = false;
         shoulder.configStatorCurrentLimit(config);
         wrist.configStatorCurrentLimit(config);
+
+        shoulder.setNeutralMode(NeutralMode.Brake);
+        wrist.setNeutralMode(NeutralMode.Brake);
 
         wrist.config_kP(0, 0);
         wrist.config_kI(0, 0);

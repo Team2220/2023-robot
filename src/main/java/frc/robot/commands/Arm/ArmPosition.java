@@ -15,7 +15,7 @@ public class ArmPosition extends CommandBase {
         addRequirements(arm);
         this.wristAngle = wristAngle;
         this.shoulderAngle = shoulderAngle;
-    }
+    }   
 
     @Override
     public void execute() {
