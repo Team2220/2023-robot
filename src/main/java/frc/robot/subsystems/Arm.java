@@ -5,6 +5,7 @@ import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
 import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.motorcontrol.can.TalonFXConfiguration;
+import com.fasterxml.jackson.annotation.JacksonInject.Value;
 
 import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
@@ -71,13 +72,13 @@ public class Arm extends SubsystemBase {
 
     public void setWristAngle(double angle) {
         double gearRatio = Constants.WRIST_GEAR_RATIO;
-        double posValue = ((angle/gearRatio)/360) * 2048;
+        double posValue = ((angle/gearRatio)*(1/360)) * 2048;
         wrist.set(TalonFXControlMode.Position, posValue);
     }
 
     public void setShoulderAngle(double angle) {
         double gearRatio = Constants.SHOULDER_GEAR_RATIO;
-        double posValue = ((angle/gearRatio)/360) * 2048;
+        double posValue = ((angle/gearRatio)*(1/360)) * 2048;
         shoulder.set(TalonFXControlMode.Position, posValue);
     }
 
