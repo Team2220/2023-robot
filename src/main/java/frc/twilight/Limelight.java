@@ -1,8 +1,5 @@
 package frc.twilight;
 
-import java.lang.reflect.Constructor;
-import java.util.function.Function;
-
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
 
@@ -29,11 +26,10 @@ public class Limelight {
     public long MCU() {
        return table.getEntry("thor").getInteger(0);
     }
-    public long CameraTransform() {
-        return table.getEntry("camtran").getInteger(0);
+    public Double[] CameraTransform() {
+        return table.getEntry("camtran").getDoubleArray(new Double[] {0.0, 0.0, 0.0, 0.0, 0.0, 0.0});
      }
      public Double[] RobotTransform() {
-        int[] getDoubleArray = new int[] {0, 0, 0, 0, 0, 0};
-        return table.getEntry("botpose").getDoubleArray(new Double[] {9.0, 8.0, 0.0});
+        return table.getEntry("botpose").getDoubleArray(new Double[] {0.0, .0, 0.0, 0.0, 0.0, 0.0});
      }
 }
