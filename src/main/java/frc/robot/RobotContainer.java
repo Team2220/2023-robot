@@ -6,6 +6,7 @@ package frc.robot;
 
 import com.ctre.phoenix.led.RainbowAnimation;
 
+import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.GenericHID;
@@ -90,12 +91,21 @@ public class RobotContainer {
         .whileTrue(new WristPercentOutput(0.5, m_arm));
     new Trigger(() -> m_controller.getButton(frc.twilight.Controller.Button.B))
         .whileTrue(new WristPercentOutput(-0.5, m_arm));
+
+    new Trigger(() -> !(m_controller.getButton(frc.twilight.Controller.Button.A) || m_controller.getButton(frc.twilight.Controller.Button.B)))
+        .whileTrue(new WristPercentOutput(0, m_arm));
+
+
     // Shoulder
     new Trigger(() -> m_controller.getButton(frc.twilight.Controller.Button.X))
         .whileTrue(new ShoulderPercentOutput(0.5, m_arm));
     new Trigger(() -> m_controller.getButton(frc.twilight.Controller.Button.Y))
         .whileTrue(new ShoulderPercentOutput(-0.5, m_arm));
+
+    new Trigger(() -> !(m_controller.getButton(frc.twilight.Controller.Button.X) || m_controller.getButton(frc.twilight.Controller.Button.Y)))
+        .whileTrue(new ShoulderPercentOutput(0, m_arm));
   }
+
 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
