@@ -30,7 +30,8 @@ public class Limelight {
     public long CameraTransform() {
         return table.getEntry("camtran").getInteger(0);
      }
-     public long RobotTransform() {
-        return table.getEntry("botpose").getDoubleArray(0);
+     public Double[] RobotTransform() {
+        int[] getDoubleArray = new int[] {0, 0, 0, 0, 0, 0};
+        return table.getEntry("botpose").getDoubleArray(new Double[] {9.0, 8.0, 0.0});
      }
 }
