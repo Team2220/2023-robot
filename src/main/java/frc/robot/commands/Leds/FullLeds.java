@@ -2,12 +2,11 @@ package frc.robot.commands.Leds;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.LEDs;
-
-public class RainbowLeds extends CommandBase {
+public class FullLeds extends CommandBase {
 
     private final LEDs leds;
 
-    public RainbowLeds(LEDs leds) {
+    public FullLeds(LEDs leds) {
 
         this.leds = leds;
 
@@ -16,14 +15,14 @@ public class RainbowLeds extends CommandBase {
     }
     @Override
     public void initialize() {
-        leds.setLEDRainAnimation();
+        leds.setSolidColor();
         System.out.println("INITIALIZE");
     }
 
     
     @Override
     public void end(boolean interrupted) {
-        leds.setAnimationOff();
+        leds.setOffLEDs();
         System.out.println("END");
     }
     
