@@ -111,6 +111,9 @@ public class RobotContainer {
          // ✧･ﾟ: *✧･ﾟ:*Rumble*:･ﾟ✧*:･ﾟ✧ babey
          new Trigger(() -> m_controller.getButton(frc.twilight.Controller.Button.LB))
          .whileTrue(new RunCommand(() -> m_controller.runRumble()));
+    
+        new Trigger(() -> (m_controller.getButton(frc.twilight.Controller.Button.START)))
+                .whileTrue(new PlayMusic(m_swerve, m_arm, m_intake));
   }
 
 
