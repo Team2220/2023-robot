@@ -9,6 +9,7 @@ import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.motorcontrol.can.TalonFXConfiguration;
 
+import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
@@ -26,6 +27,9 @@ public class Arm extends SubsystemBase {
     ShuffleboardTab arm = Shuffleboard.getTab("arm");
     GenericEntry shoulderSB = arm.add("shoulder angle", 0).getEntry();
     GenericEntry wristSB = arm.add("wrist angle", 0).getEntry();
+
+    private SlewRateLimiter shoulderAccel = new SlewRateLimiter(2);
+    private SlewRateLimiter wristAccel = new SlewRateLimiter(2);
 
     public Arm() {
         wrist.configAllSettings(new TalonFXConfiguration());
@@ -65,13 +69,20 @@ public class Arm extends SubsystemBase {
 
           double shoulderOffset = getShoulderPosition() / (Constants.SHOULDER_GEAR_RATIO) * (Constants.TALONFX_ENCODER_TICKS);
         wrist.setSelectedSensorPosition(shoulderOffset);
+
+        wristAccel.reset(0);
+        shoulderAccel.reset(0);
     }
 
     public void setWristPercentOutput(double value) {
+        value = wristAccel.calculate(value);
+
         wrist.set(TalonFXControlMode.PercentOutput, value);
     }
 
     public void setShoulderPercentOutput(double value) {
+        value = shoulderAccel.calculate(value);
+
         shoulder.set(TalonFXControlMode.PercentOutput, value);
     }
 
