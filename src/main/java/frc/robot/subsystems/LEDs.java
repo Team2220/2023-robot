@@ -1,5 +1,6 @@
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.led.Animation;
 import com.ctre.phoenix.led.CANdle;
 import com.ctre.phoenix.led.CANdleConfiguration;
 import com.ctre.phoenix.led.RainbowAnimation;
@@ -22,9 +23,15 @@ public class LEDs extends SubsystemBase{
         RainbowAnimation rainbowAnim = new RainbowAnimation(1, 0.5, 164);
         candle.animate(rainbowAnim);
     }
+public void setAnimationOff(){
+
+candle.animate(null);
+
+
+}
 
     public void setSolidColor() {
-        candle.setLEDs(255, 255, 255);
+        candle.setLEDs(255, 0, 0, 0, 0, 164);
     }
 
     
