@@ -16,6 +16,7 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.twilight.tunables.TunableDouble;
 
 public class Arm extends SubsystemBase {
     private DutyCycleEncoder wristEncoder = new DutyCycleEncoder(Constants.WRIST_DUTYENCODER);
@@ -30,6 +31,34 @@ public class Arm extends SubsystemBase {
 
     private SlewRateLimiter shoulderAccel = new SlewRateLimiter(2);
     private SlewRateLimiter wristAccel = new SlewRateLimiter(2);
+
+    private final boolean tunableDoubleEnabled = true;
+
+    private final TunableDouble wristP = new TunableDouble("wristP", 0, tunableDoubleEnabled);
+    private final TunableDouble wristI = new TunableDouble("wristI", 0, tunableDoubleEnabled);
+    private final TunableDouble wristD = new TunableDouble("wristD", 0, tunableDoubleEnabled);
+
+    private double oldP = wristP.getValue();
+    private double oldI = wristI.getValue();
+    private double oldD = wristD.getValue();
+
+    public void updatePID() {
+
+    if (wristP.getValue() != oldP) {
+        wrist.config_kP(0, wristP.getValue());
+        oldP = wristP.getValue();
+    }
+    
+    if (wristI.getValue() != oldI) {
+        wrist.config_kI(0, wristI.getValue());
+        oldI = wristI.getValue();
+    }
+
+    if (wristD.getValue() != oldD) {
+        wrist.config_kD(0, wristD.getValue());
+        oldD = wristD.getValue();
+    }
+}
 
     public Arm() {
         wrist.configAllSettings(new TalonFXConfiguration());
@@ -56,9 +85,9 @@ public class Arm extends SubsystemBase {
         shoulder.setNeutralMode(NeutralMode.Brake);
         wrist.setNeutralMode(NeutralMode.Brake);
 
-        wrist.config_kP(0, 0);
-        wrist.config_kI(0, 0);
-        wrist.config_kD(0, 0);
+        wrist.config_kP(0, wristP.getValue());
+        wrist.config_kI(0, wristI.getValue());
+        wrist.config_kD(0, wristD.getValue());
 
         shoulder.config_kP(0, 0);
         shoulder.config_kI(0, 0);
@@ -110,6 +139,7 @@ public class Arm extends SubsystemBase {
     public void periodic() {
         shoulderSB.setDouble(getShoulderPosition());
         wristSB.setDouble(getWristPosition());
+        updatePID();
     }
 public ArrayList<TalonFX> geTalonFXs() {
 
