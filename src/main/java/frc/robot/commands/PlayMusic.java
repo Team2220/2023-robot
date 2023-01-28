@@ -17,17 +17,22 @@ public class PlayMusic extends CommandBase{
         this.swerve = swerve;
         this.arm = arm;
         this.intake = intake;
-        this.orchestra = new Orchestra(null);
+        this.orchestra = new Orchestra(arm.geTalonFXs());
         addRequirements(swerve);
         addRequirements(intake);
         addRequirements(arm);
 
+        orchestra.loadMusic("song10.chrp");
     }
     @Override
     public void initialize() {
-        
+        orchestra.play();
     }
-
+    @Override
+    public void end(boolean interrupted) {
+        orchestra.stop();
+    }
+  
 }
 
 

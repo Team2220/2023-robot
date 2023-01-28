@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
+import frc.robot.commands.PlayMusic;
 import frc.robot.commands.Arm.ArmPosition;
 import frc.robot.commands.Arm.ShoulderPercentOutput;
 import frc.robot.commands.Arm.WristPercentOutput;
@@ -104,6 +105,12 @@ public class RobotContainer {
 
     new Trigger(() -> !(m_controller.getButton(frc.twilight.Controller.Button.X) || m_controller.getButton(frc.twilight.Controller.Button.Y)))
         .whileTrue(new ShoulderPercentOutput(0, m_arm));
+
+    // orchestra
+
+    new Trigger(() -> m_controller.getButton(frc.twilight.Controller.Button.START))
+        .whileTrue(new PlayMusic(m_swerve, m_arm, m_intake));
+
   }
 
 

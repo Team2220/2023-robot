@@ -1,5 +1,7 @@
 package frc.robot.subsystems;
 
+import java.util.ArrayList;
+
 import com.ctre.phoenix.motorcontrol.StatorCurrentLimitConfiguration;
 import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
 import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
@@ -42,5 +44,11 @@ public class Intake extends SubsystemBase {
     public void setPercentOutput(double value) {
         right.set(TalonFXControlMode.PercentOutput, value);
     }
-    
+    public ArrayList<TalonFX> geTalonFXs() {
+
+        ArrayList<TalonFX> musicList = new ArrayList<>();
+        musicList.add(left);
+        musicList.add(right);
+        return musicList;
+    }
 }
