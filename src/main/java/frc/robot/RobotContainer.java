@@ -16,6 +16,7 @@ import frc.robot.commands.Arm.ArmPosition;
 import frc.robot.commands.Arm.ShoulderPercentOutput;
 import frc.robot.commands.Arm.WristPercentOutput;
 import frc.robot.commands.Intake.IntakePercentOutput;
+import frc.robot.commands.Leds.FtoSRainbowAnimation;
 import frc.robot.commands.Leds.FullLeds;
 import frc.robot.commands.Leds.RainbowLeds;
 import frc.robot.subsystems.Arm;
