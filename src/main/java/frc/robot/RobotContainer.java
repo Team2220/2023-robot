@@ -105,6 +105,10 @@ public class RobotContainer {
 
     new Trigger(() -> !(m_controller.getButton(frc.twilight.Controller.Button.X) || m_controller.getButton(frc.twilight.Controller.Button.Y)))
         .whileTrue(new ShoulderPercentOutput(0, m_arm));
+        
+         // ✧･ﾟ: *✧･ﾟ:*Rumble*:･ﾟ✧*:･ﾟ✧ babey
+         new Trigger(() -> m_controller.getButton(frc.twilight.Controller.Button.LB))
+         .whileTrue(new RunCommand(() -> m_controller.runRumble()));
   }
 
 
