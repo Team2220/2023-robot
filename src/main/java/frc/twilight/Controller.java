@@ -1,6 +1,7 @@
 package frc.twilight;
 
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 
 /**
  * Controller class for Xbox controllers on the FRC robot.
@@ -204,6 +205,18 @@ public class Controller {
     } else {
       return 0.0;
     }
+  }
+/**
+ * make it ✧･ﾟ: *✧･ﾟ:*vibrate*:･ﾟ✧*:･ﾟ✧ babey
+ */
+  public void runRumble (){
+    controller.setRumble(RumbleType.kLeftRumble, deadzone);
+    controller.setRumble(RumbleType.kRightRumble, deadzone);
+    /**
+     * if(arm all the way || the other way)
+     * then (vibrate)
+     * 
+     */
   }
 
   /**
