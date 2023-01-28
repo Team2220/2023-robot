@@ -19,7 +19,7 @@ public class LEDs extends SubsystemBase{
 
     public void setLEDRainAnimation() {
 
-        RainbowAnimation rainbowAnim = new RainbowAnimation(1, 0.5, 64);
+        RainbowAnimation rainbowAnim = new RainbowAnimation(1, 0.5, 164);
         candle.animate(rainbowAnim);
     }
 
