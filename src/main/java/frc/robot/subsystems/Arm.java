@@ -93,11 +93,11 @@ public class Arm extends SubsystemBase {
         shoulder.config_kI(0, 0);
         shoulder.config_kD(0, 0);
 
-        double wristOffset = getWristPosition() / (Constants.WRIST_GEAR_RATIO) * (Constants.TALONFX_ENCODER_TICKS);
+        double wristOffset = getWristPosition() * (Constants.WRIST_GEAR_RATIO) * (Constants.TALONFX_ENCODER_TICKS);
         wrist.setSelectedSensorPosition(wristOffset);
 
           double shoulderOffset = getShoulderPosition() / (Constants.SHOULDER_GEAR_RATIO) * (Constants.TALONFX_ENCODER_TICKS);
-        wrist.setSelectedSensorPosition(shoulderOffset);
+        shoulder.setSelectedSensorPosition(shoulderOffset);
 
         wristAccel.reset(0);
         shoulderAccel.reset(0);
@@ -117,7 +117,9 @@ public class Arm extends SubsystemBase {
 
     public void setWristAngle(double angle) {
         double gearRatio = Constants.WRIST_GEAR_RATIO;
-        double posValue = ((angle/gearRatio)/360) * 2048;
+        double posValue = ((angle/360.0)*gearRatio) * 2048;
+
+        System.out.println("Wrist Pos Value = "+posValue);
         wrist.set(TalonFXControlMode.Position, posValue);
     }
 
