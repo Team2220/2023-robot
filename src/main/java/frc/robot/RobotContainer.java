@@ -3,10 +3,6 @@
 // the WPILib BSD license file in the root directory of this project.
 
 package frc.robot;
-
-import com.ctre.phoenix.led.RainbowAnimation;
-
-import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.GenericHID;
@@ -16,7 +12,6 @@ import frc.robot.commands.Arm.ArmPosition;
 import frc.robot.commands.Arm.ShoulderPercentOutput;
 import frc.robot.commands.Arm.WristPercentOutput;
 import frc.robot.commands.Intake.IntakePercentOutput;
-import frc.robot.commands.Leds.FullLeds;
 import frc.robot.commands.Leds.RainbowLeds;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Intake;
@@ -80,7 +75,14 @@ public class RobotContainer {
     // new Button(m_controller::getAButton).whenPressed(m_swerve::zeroGyro);
 
     // Arm Position
+
     new Trigger(() -> m_secondaryController.getButton(frc.twilight.Controller.Button.UP))
+    .whileTrue(new ArmPosition(90, 0, m_arm));
+
+    new Trigger(() -> m_secondaryController.getButton(frc.twilight.Controller.Button.DOWN))
+    .whileTrue(new ArmPosition(-90, 0, m_arm));
+
+    new Trigger(() -> m_secondaryController.getButton(frc.twilight.Controller.Button.RIGHT))
     .whileTrue(new ArmPosition(0, 0, m_arm));
 
     // Intake Buttons
