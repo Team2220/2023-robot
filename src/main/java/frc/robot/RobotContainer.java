@@ -87,6 +87,15 @@ public class RobotContainer {
     new Trigger(() -> m_secondaryController.getButton(frc.twilight.Controller.Button.RIGHT))
     .whileTrue(new ArmPosition(0, 0, m_arm));
 
+    new Trigger(() -> m_secondaryController.getButton(frc.twilight.Controller.Button.X))
+    .whileTrue(new ArmPosition(0, 90, m_arm));
+
+    new Trigger(() -> m_secondaryController.getButton(frc.twilight.Controller.Button.Y))
+    .whileTrue(new ArmPosition(0, 0, m_arm));
+
+    new Trigger(() -> m_secondaryController.getButton(frc.twilight.Controller.Button.B))
+    .whileTrue(new ArmPosition(0, -90, m_arm));
+
     // Intake Buttons
     new Trigger(() -> m_controller.getButton(frc.twilight.Controller.Button.UP))
         .whileTrue(new IntakePercentOutput(0.1, m_intake));
@@ -122,6 +131,9 @@ public class RobotContainer {
     
         new Trigger(() -> (m_controller.getButton(frc.twilight.Controller.Button.START)))
                 .whileTrue(new PlayMusic(m_swerve, m_arm, m_intake));
+
+        new Trigger(() -> (m_secondaryController.getButton(frc.twilight.Controller.Button.LEFT)))
+                .whileTrue(new RunCommand(() -> m_arm.zeroShoulder()));
   }
 
 
