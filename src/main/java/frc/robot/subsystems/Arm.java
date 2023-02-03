@@ -106,8 +106,11 @@ public class Arm extends SubsystemBase {
     }
 
     public void zeroShoulder() {
-        shoulder.setSelectedSensorPosition(0);
+        shoulder.setSelectedSensorPosition(0);    
     }
+    public void zeroWrist() {
+        wrist.setSelectedSensorPosition(0);
+    }    
 
     public void setWristPercentOutput(double value) {
         value = wristAccel.calculate(value);

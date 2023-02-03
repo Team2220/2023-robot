@@ -132,11 +132,12 @@ public class RobotContainer {
         new Trigger(() -> (m_controller.getButton(frc.twilight.Controller.Button.START)))
                 .whileTrue(new PlayMusic(m_swerve, m_arm, m_intake));
 
-        new Trigger(() -> (m_secondaryController.getButton(frc.twilight.Controller.Button.LEFT)))
+        new Trigger(() -> (m_secondaryController.getButton(frc.twilight.Controller.Button.BACK)))
                 .whileTrue(new RunCommand(() -> m_arm.zeroShoulder()));
+        new Trigger(() -> (m_secondaryController.getButton(frc.twilight.Controller.Button.START)))
+                .whileTrue(new RunCommand(() -> m_arm.zeroWrist()));
   }
-
-
+  
 
     /**
      * Use this to pass the autonomous command to the main {@link Robot} class.
