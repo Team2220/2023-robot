@@ -95,6 +95,8 @@ public class Arm extends SubsystemBase {
 
         double wristOffset = getWristPosition() * (Constants.WRIST_GEAR_RATIO) * (Constants.TALONFX_ENCODER_TICKS);
         wrist.setSelectedSensorPosition(wristOffset);
+        System.out.println("wristOffset = " + wristOffset);
+        System.out.println("wristPosition = " + getWristPosition());
 
           double shoulderOffset = getShoulderPosition() / (Constants.SHOULDER_GEAR_RATIO) * (Constants.TALONFX_ENCODER_TICKS);
         shoulder.setSelectedSensorPosition(shoulderOffset);
