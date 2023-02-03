@@ -19,6 +19,7 @@ import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.LEDs;
 import frc.robot.subsystems.Swerve;
 import frc.twilight.Controller;
+import frc.twilight.Controller.RumbleVariables;
 import edu.wpi.first.wpilibj2.command.Command;
 // import edu.wpi.first.wpilibj2.command.button.Button;
 import edu.wpi.first.wpilibj2.command.RunCommand;
@@ -117,7 +118,7 @@ public class RobotContainer {
         
          // ✧･ﾟ: *✧･ﾟ:*Rumble*:･ﾟ✧*:･ﾟ✧ babey
          new Trigger(() -> m_controller.getButton(frc.twilight.Controller.Button.LB))
-         .whileTrue(new RunCommand(() -> m_controller.runRumble()));
+         .whileTrue(new RunCommand(() -> m_controller.runRumble(RumbleVariables.high)));
     
         new Trigger(() -> (m_controller.getButton(frc.twilight.Controller.Button.START)))
                 .whileTrue(new PlayMusic(m_swerve, m_arm, m_intake));

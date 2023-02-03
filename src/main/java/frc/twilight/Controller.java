@@ -209,14 +209,14 @@ public class Controller {
      * makes own varibles for rumble
       */
   }
-  public enum RumbleVaribles {
+  public enum RumbleVariables {
     high, medium, low, right,left, off;
   }
   
 /**
  * make it ✧･ﾟ: *✧･ﾟ:*vibrate*:･ﾟ✧*:･ﾟ✧ babey
  */
-  public void runRumble (RumbleVaribles rum){
+  public void runRumble (RumbleVariables rum){
     switch(rum){
       case high: 
       controller.setRumble(RumbleType.kLeftRumble, 1);
