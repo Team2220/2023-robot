@@ -1,12 +1,6 @@
 package frc.robot.commands.Intake;
 
-import java.util.ArrayList;
-
-import com.ctre.phoenix.motorcontrol.can.TalonFX;
-
-import edu.wpi.first.wpilibj.AddressableLED;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.robot.subsystems.Intake;
 
 public class IntakePercentOutput extends CommandBase {
