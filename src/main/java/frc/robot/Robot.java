@@ -17,6 +17,7 @@ import frc.twilight.Controller;
  */
 public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
+  private Command m_teleopCommand;
 
   private RobotContainer m_robotContainer;
 
@@ -72,6 +73,8 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit() {
+    m_teleopCommand = m_robotContainer.getTeleopCommand();
+
     // This makes sure that the autonomous stops running when
     // teleop starts running. If you want the autonomous to
     // continue until interrupted by another command, remove
@@ -79,6 +82,8 @@ public class Robot extends TimedRobot {
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
+
+    m_teleopCommand.schedule();
   }
 
   /** This function is called periodically during operator control. */
