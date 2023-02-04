@@ -25,6 +25,7 @@ import frc.robot.subsystems.Swerve;
 import frc.twilight.Controller;
 import frc.twilight.Controller.RumbleVariables;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 // import edu.wpi.first.wpilibj2.command.button.Button;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -135,13 +136,18 @@ public class RobotContainer {
         new Trigger(() -> m_controller.getButton(frc.twilight.Controller.Button.LB))
          .whileTrue(new RunCommand(() -> m_controller.runRumble(RumbleVariables.high)));
     
-        new Trigger(() -> (m_controller.getButton(frc.twilight.Controller.Button.START)))
-                .whileTrue(new PlayMusic(m_swerve, m_arm, m_intake));
+     //   new Trigger(() -> (m_controller.getButton(frc.twilight.Controller.Button.START)))
+    //            .whileTrue(new PlayMusic(m_swerve, m_arm, m_intake));
 
-        new Trigger(() -> (m_secondaryController.getButton(frc.twilight.Controller.Button.BACK)))
+        new Trigger(() -> (m_controller.getButton(frc.twilight.Controller.Button.BACK)))
                 .whileTrue(new RunCommand(() -> m_arm.zeroShoulder()));
-        new Trigger(() -> (m_secondaryController.getButton(frc.twilight.Controller.Button.START)))
+        new Trigger(() -> (m_controller.getButton(frc.twilight.Controller.Button.START)))
                 .whileTrue(new RunCommand(() -> m_arm.zeroWrist()));
+
+                // Override limits
+        new Trigger(() -> (m_controller.getButton(frc.twilight.Controller.Button.RB)))
+          .onTrue(new InstantCommand(() -> m_arm.overrideSoftLimits(true)))
+          .onFalse(new InstantCommand(() -> m_arm.overrideSoftLimits(false)));
     }
 
     /**

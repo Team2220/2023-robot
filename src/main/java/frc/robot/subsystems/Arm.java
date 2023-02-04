@@ -35,17 +35,17 @@ public class Arm extends SubsystemBase {
 
     private final boolean tunableDoubleEnabled = true;
 
-    private final TunableDouble wristP = new TunableDouble("wristP", 0.2, tunableDoubleEnabled);
+    private final TunableDouble wristP = new TunableDouble("wristP", 0.1, tunableDoubleEnabled);
     private final TunableDouble wristI = new TunableDouble("wristI", 0, tunableDoubleEnabled);
-    private final TunableDouble wristD = new TunableDouble("wristD", 0.1, tunableDoubleEnabled);
+    private final TunableDouble wristD = new TunableDouble("wristD", 0.2, tunableDoubleEnabled);
 
     private double oldWristP = wristP.getValue();
     private double oldWristI = wristI.getValue();
     private double oldWristD = wristD.getValue();
 
-    private final TunableDouble shoulderP = new TunableDouble("shoulderP", 0.2, tunableDoubleEnabled);
+    private final TunableDouble shoulderP = new TunableDouble("shoulderP", 0.1, tunableDoubleEnabled);
     private final TunableDouble shoulderI = new TunableDouble("shoulderI", 0, tunableDoubleEnabled);
-    private final TunableDouble shoulderD = new TunableDouble("shoulderD", 0.1, tunableDoubleEnabled);
+    private final TunableDouble shoulderD = new TunableDouble("shoulderD", 0.2, tunableDoubleEnabled);
 
     private double oldShoulderP = shoulderP.getValue();
     private double oldShoulderI = shoulderI.getValue();
@@ -140,8 +140,13 @@ public class Arm extends SubsystemBase {
         wrist.configForwardSoftLimitThreshold(anglesToWristSensorPosition(Constants.WRIST_FORWARD_LIMIT));
         wrist.configReverseSoftLimitEnable(true);
         wrist.configReverseSoftLimitThreshold(anglesToWristSensorPosition(Constants.WRIST_REVERSE_LIMIT));
+    }
 
-        
+    public void 
+    overrideSoftLimits(boolean enabled) {
+        System.out.println("overrideSoftLimits " + enabled);
+        shoulder.overrideSoftLimitsEnable(enabled);
+        wrist.overrideSoftLimitsEnable(enabled);
     }
 
     public double anglesToWristSensorPosition(double angle) {
