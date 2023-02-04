@@ -16,6 +16,7 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.twilight.helpfulThings.Angles;
 import frc.twilight.tunables.TunableDouble;
 
 public class Arm extends SubsystemBase {
@@ -127,7 +128,34 @@ public class Arm extends SubsystemBase {
 
         wristAccel.reset(0);
         shoulderAccel.reset(0);
+
+        shoulder.configForwardSoftLimitEnable(true);
+        shoulder.configForwardSoftLimitThreshold(anglesToShoulderSensorPosition(100));
+        shoulder.configReverseSoftLimitEnable(true);
+        shoulder.configReverseSoftLimitThreshold(anglesToShoulderSensorPosition(-155));
+
+        wrist.configForwardSoftLimitEnable(true);
+        wrist.configForwardSoftLimitThreshold(anglesToWristSensorPosition(135));
+        wrist.configReverseSoftLimitEnable(true);
+        wrist.configReverseSoftLimitThreshold(anglesToWristSensorPosition(-135));
+
+        
     }
+
+    public double anglesToWristSensorPosition(double angle) {
+        double gearRatio = Constants.WRIST_GEAR_RATIO;
+        double posValue = ((angle / 360.0) * gearRatio) * Constants.TALONFX_ENCODER_TICKS;
+
+        return posValue;
+    }
+
+    public double anglesToShoulderSensorPosition(double angle) {
+        double gearRatio = Constants.SHOULDER_GEAR_RATIO;
+        double posValue = ((angle / 360.0) * gearRatio) * Constants.TALONFX_ENCODER_TICKS;
+
+        return posValue;
+    }
+
 
     /**
      * Arm enum for arm stataes
@@ -188,16 +216,14 @@ public class Arm extends SubsystemBase {
     }
 
     public void setWristAngle(double angle) {
-        double gearRatio = Constants.WRIST_GEAR_RATIO;
-        double posValue = ((angle / 360.0) * gearRatio) * 2048;
+       double posValue = anglesToWristSensorPosition(angle);
 
         System.out.println("Wrist Pos Value = " + posValue);
         wrist.set(TalonFXControlMode.Position, posValue);
     }
 
     public void setShoulderAngle(double angle) {
-        double gearRatio = Constants.SHOULDER_GEAR_RATIO;
-        double posValue = ((angle / 360.0) * gearRatio) * 2048;
+       double posValue = anglesToShoulderSensorPosition(angle);
         shoulder.set(TalonFXControlMode.Position, posValue);
     }
 
