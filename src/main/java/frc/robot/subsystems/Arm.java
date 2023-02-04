@@ -55,20 +55,20 @@ public class Arm extends SubsystemBase {
     public void updatePID() {
 
     if (wristP.getValue() != oldWristP) {
-        wrist.config_kP(0, wristP.getValue());
+            wrist.config_kP(0, wristP.getValue());
         oldWristP = wristP.getValue();
-    }
-    
+        }
+
     if (wristI.getValue() != oldWristI) {
-        wrist.config_kI(0, wristI.getValue());
+            wrist.config_kI(0, wristI.getValue());
         oldWristI = wristI.getValue();
-    }
+        }
 
     if (wristD.getValue() != oldWristD) {
-        wrist.config_kD(0, wristD.getValue());
+            wrist.config_kD(0, wristD.getValue());
         oldWristD = wristD.getValue();
-    }
-
+        }
+        
     if (shoulderP.getValue() != oldShoulderP) {
         shoulder.config_kP(0, shoulderP.getValue());
         oldShoulderP = shoulderP.getValue();
@@ -84,6 +84,8 @@ public class Arm extends SubsystemBase {
         oldShoulderD = shoulderD.getValue();
     }
     }
+    }
+
     public Arm() {
         wrist.configAllSettings(new TalonFXConfiguration());
         shoulder.configAllSettings(new TalonFXConfiguration());
