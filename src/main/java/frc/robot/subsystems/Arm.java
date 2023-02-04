@@ -141,8 +141,8 @@ public class Arm extends SubsystemBase {
     /**
      * arm states
      */
-    public void armsstuff(ArmStates hehehe) {
-        switch (hehehe) {
+    public void setArmState(ArmStates newState) {
+        switch (newState) {
             case INTAKE:
                 setPosition(135, -45);
                 break;
