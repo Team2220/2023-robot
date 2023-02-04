@@ -23,6 +23,7 @@ import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.LEDs;
 import frc.robot.subsystems.Swerve;
 import frc.twilight.Controller;
+import frc.twilight.Limelight;
 import frc.twilight.Controller.RumbleVariables;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -46,6 +47,7 @@ public class RobotContainer {
     private final Arm m_arm;
     private final Intake m_intake;
     private final LEDs m_leds;
+    private final Limelight m_LimeLight;
 
     private final Controller m_controller = new Controller(0);
   private final Controller m_secondaryController = new Controller(1);
@@ -65,6 +67,7 @@ public class RobotContainer {
         m_arm = new Arm();
         m_intake = new Intake();
         m_leds = new LEDs();
+        m_LimeLight = new Limelight("limelight");
 
         // Configure the button bindings
         configureButtonBindings();
