@@ -18,8 +18,6 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.twilight.tunables.TunableDouble;
 
-
-
 public class Arm extends SubsystemBase {
     private DutyCycleEncoder wristEncoder = new DutyCycleEncoder(Constants.WRIST_DUTYENCODER);
     private DutyCycleEncoder shoulderEncoder = new DutyCycleEncoder(Constants.SHOULDER_DUTYENCODER);
@@ -46,21 +44,21 @@ public class Arm extends SubsystemBase {
 
     public void updatePID() {
 
-    if (wristP.getValue() != oldP) {
-        wrist.config_kP(0, wristP.getValue());
-        oldP = wristP.getValue();
-    }
-    
-    if (wristI.getValue() != oldI) {
-        wrist.config_kI(0, wristI.getValue());
-        oldI = wristI.getValue();
-    }
+        if (wristP.getValue() != oldP) {
+            wrist.config_kP(0, wristP.getValue());
+            oldP = wristP.getValue();
+        }
 
-    if (wristD.getValue() != oldD) {
-        wrist.config_kD(0, wristD.getValue());
-        oldD = wristD.getValue();
+        if (wristI.getValue() != oldI) {
+            wrist.config_kI(0, wristI.getValue());
+            oldI = wristI.getValue();
+        }
+
+        if (wristD.getValue() != oldD) {
+            wrist.config_kD(0, wristD.getValue());
+            oldD = wristD.getValue();
+        }
     }
-}
 
     public Arm() {
         wrist.configAllSettings(new TalonFXConfiguration());
@@ -100,19 +98,59 @@ public class Arm extends SubsystemBase {
         System.out.println("wristOffset = " + wristOffset);
         System.out.println("wristPosition = " + getWristPosition());
 
-          double shoulderOffset = getShoulderPosition() * (Constants.SHOULDER_GEAR_RATIO) * (Constants.TALONFX_ENCODER_TICKS);
+        double shoulderOffset = getShoulderPosition() * (Constants.SHOULDER_GEAR_RATIO)
+                * (Constants.TALONFX_ENCODER_TICKS);
         shoulder.setSelectedSensorPosition(shoulderOffset);
 
         wristAccel.reset(0);
         shoulderAccel.reset(0);
     }
 
-    public void zeroShoulder() {
-        shoulder.setSelectedSensorPosition(0);    
+    /**
+     * Arm enum for arm stataes
+     */
+    public enum ArmStates {
+        INTAKE, MID_CUBE_NODE, HIGH_CUBE_NODE, MID_CONE_NODE, HIGH_CONE_NODE, MANUAL;
     }
+
+    private ArmStates state = ArmStates.MANUAL;
+
+    /**
+     * arm states
+     */
+    public void armsstuff(ArmStates hehehe) {
+        switch (hehehe) {
+            case INTAKE:
+                setPosition(135, -45);
+                break;
+            case MID_CUBE_NODE:
+                setPosition(90, 0);
+                break;
+            case HIGH_CUBE_NODE:
+                setPosition(40, 55);
+                break;
+            case MID_CONE_NODE:
+                setPosition(85, 0);
+                break;
+            case HIGH_CONE_NODE:
+                setPosition(15, 55);
+                break;
+            case MANUAL:
+        }
+    }
+
+    private void setPosition(double shouldereAng, double wristAng) {
+        setShoulderAngle(shouldereAng);
+        setWristAngle(wristAng);
+    }
+
+    public void zeroShoulder() {
+        shoulder.setSelectedSensorPosition(0);
+    }
+
     public void zeroWrist() {
         wrist.setSelectedSensorPosition(0);
-    }    
+    }
 
     public void setWristPercentOutput(double value) {
         value = wristAccel.calculate(value);
@@ -128,15 +166,15 @@ public class Arm extends SubsystemBase {
 
     public void setWristAngle(double angle) {
         double gearRatio = Constants.WRIST_GEAR_RATIO;
-        double posValue = ((angle/360.0)*gearRatio) * 2048;
+        double posValue = ((angle / 360.0) * gearRatio) * 2048;
 
-        System.out.println("Wrist Pos Value = "+posValue);
+        System.out.println("Wrist Pos Value = " + posValue);
         wrist.set(TalonFXControlMode.Position, posValue);
     }
 
     public void setShoulderAngle(double angle) {
         double gearRatio = Constants.SHOULDER_GEAR_RATIO;
-        double posValue = ((angle/360.0)*gearRatio) * 2048;
+        double posValue = ((angle / 360.0) * gearRatio) * 2048;
         shoulder.set(TalonFXControlMode.Position, posValue);
     }
 
@@ -154,15 +192,14 @@ public class Arm extends SubsystemBase {
         wristSB.setDouble(getWristPosition());
         updatePID();
     }
-public ArrayList<TalonFX> geTalonFXs() {
 
-    ArrayList<TalonFX> musicList = new ArrayList<>();
-    musicList.add(shoulder);
-    musicList.add(wrist);
-    
+    public ArrayList<TalonFX> geTalonFXs() {
 
+        ArrayList<TalonFX> musicList = new ArrayList<>();
+        musicList.add(shoulder);
+        musicList.add(wrist);
 
-    return musicList;
+        return musicList;
 
-}
+    }
 }
