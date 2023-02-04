@@ -84,7 +84,7 @@ public class Arm extends SubsystemBase {
         oldShoulderD = shoulderD.getValue();
     }
     }
-    }
+    
 
     public Arm() {
         wrist.configAllSettings(new TalonFXConfiguration());
