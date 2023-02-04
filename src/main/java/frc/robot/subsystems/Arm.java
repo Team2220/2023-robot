@@ -36,29 +36,53 @@ public class Arm extends SubsystemBase {
 
     private final boolean tunableDoubleEnabled = true;
 
-    private final TunableDouble wristP = new TunableDouble("wristP", 0, tunableDoubleEnabled);
+    private final TunableDouble wristP = new TunableDouble("wristP", 0.2, tunableDoubleEnabled);
     private final TunableDouble wristI = new TunableDouble("wristI", 0, tunableDoubleEnabled);
-    private final TunableDouble wristD = new TunableDouble("wristD", 0, tunableDoubleEnabled);
+    private final TunableDouble wristD = new TunableDouble("wristD", 0.1, tunableDoubleEnabled);
 
-    private double oldP = wristP.getValue();
-    private double oldI = wristI.getValue();
-    private double oldD = wristD.getValue();
+    private double oldWristP = wristP.getValue();
+    private double oldWristI = wristI.getValue();
+    private double oldWristD = wristD.getValue();
+
+    private final TunableDouble shoulderP = new TunableDouble("shoulderP", 0.2, tunableDoubleEnabled);
+    private final TunableDouble shoulderI = new TunableDouble("shoulderI", 0, tunableDoubleEnabled);
+    private final TunableDouble shoulderD = new TunableDouble("shoulderD", 0.1, tunableDoubleEnabled);
+
+    private double oldShoulderP = shoulderP.getValue();
+    private double oldShoulderI = shoulderI.getValue();
+    private double oldShoulderD = shoulderD.getValue();
+
 
     public void updatePID() {
 
-    if (wristP.getValue() != oldP) {
+    if (wristP.getValue() != oldWristP) {
         wrist.config_kP(0, wristP.getValue());
-        oldP = wristP.getValue();
+        oldWristP = wristP.getValue();
     }
     
-    if (wristI.getValue() != oldI) {
+    if (wristI.getValue() != oldWristI) {
         wrist.config_kI(0, wristI.getValue());
-        oldI = wristI.getValue();
+        oldWristI = wristI.getValue();
     }
 
-    if (wristD.getValue() != oldD) {
+    if (wristD.getValue() != oldWristD) {
         wrist.config_kD(0, wristD.getValue());
-        oldD = wristD.getValue();
+        oldWristD = wristD.getValue();
+    }
+
+    if (shoulderP.getValue() != oldShoulderP) {
+        shoulder.config_kP(0, shoulderP.getValue());
+        oldShoulderP = shoulderP.getValue();
+    }
+    
+    if (shoulderI.getValue() != oldShoulderI) {
+        shoulder.config_kI(0, shoulderI.getValue());
+        oldShoulderI = shoulderI.getValue();
+    }
+
+    if (shoulderD.getValue() != oldShoulderD) {
+        shoulder.config_kD(0, shoulderD.getValue());
+        oldShoulderD = shoulderD.getValue();
     }
 }
 
@@ -91,9 +115,9 @@ public class Arm extends SubsystemBase {
         wrist.config_kI(0, wristI.getValue());
         wrist.config_kD(0, wristD.getValue());
 
-        shoulder.config_kP(0, 0);
-        shoulder.config_kI(0, 0);
-        shoulder.config_kD(0, 0);
+        shoulder.config_kP(0, shoulderP.getValue());
+        shoulder.config_kI(0, shoulderI.getValue());
+        shoulder.config_kD(0, shoulderD.getValue());
 
         double wristOffset = getWristPosition() * (Constants.WRIST_GEAR_RATIO) * (Constants.TALONFX_ENCODER_TICKS);
         wrist.setSelectedSensorPosition(wristOffset);
