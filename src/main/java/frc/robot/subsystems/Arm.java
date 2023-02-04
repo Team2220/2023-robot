@@ -51,40 +51,39 @@ public class Arm extends SubsystemBase {
     private double oldShoulderI = shoulderI.getValue();
     private double oldShoulderD = shoulderD.getValue();
 
-
     public void updatePID() {
 
-    if (wristP.getValue() != oldWristP) {
+        if (wristP.getValue() != oldWristP) {
             wrist.config_kP(0, wristP.getValue());
-        oldWristP = wristP.getValue();
+            oldWristP = wristP.getValue();
         }
 
-    if (wristI.getValue() != oldWristI) {
+        if (wristI.getValue() != oldWristI) {
             wrist.config_kI(0, wristI.getValue());
-        oldWristI = wristI.getValue();
+            oldWristI = wristI.getValue();
         }
 
-    if (wristD.getValue() != oldWristD) {
+        if (wristD.getValue() != oldWristD) {
             wrist.config_kD(0, wristD.getValue());
-        oldWristD = wristD.getValue();
+            oldWristD = wristD.getValue();
         }
-        
-    if (shoulderP.getValue() != oldShoulderP) {
-        shoulder.config_kP(0, shoulderP.getValue());
-        oldShoulderP = shoulderP.getValue();
-    }
-    
-    if (shoulderI.getValue() != oldShoulderI) {
-        shoulder.config_kI(0, shoulderI.getValue());
-        oldShoulderI = shoulderI.getValue();
+
+        if (shoulderP.getValue() != oldShoulderP) {
+            shoulder.config_kP(0, shoulderP.getValue());
+            oldShoulderP = shoulderP.getValue();
+        }
+
+        if (shoulderI.getValue() != oldShoulderI) {
+            shoulder.config_kI(0, shoulderI.getValue());
+            oldShoulderI = shoulderI.getValue();
+        }
+
+        if (shoulderD.getValue() != oldShoulderD) {
+            shoulder.config_kD(0, shoulderD.getValue());
+            oldShoulderD = shoulderD.getValue();
+        }
     }
 
-    if (shoulderD.getValue() != oldShoulderD) {
-        shoulder.config_kD(0, shoulderD.getValue());
-        oldShoulderD = shoulderD.getValue();
-    }
-    }
-    
 
     public Arm() {
         wrist.configAllSettings(new TalonFXConfiguration());
