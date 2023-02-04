@@ -51,6 +51,9 @@ public class Arm extends SubsystemBase {
     private double oldShoulderI = shoulderI.getValue();
     private double oldShoulderD = shoulderD.getValue();
 
+    private double lastWristAngle = 0;
+    private double lastShoulderAngle = 0;
+
     public void updatePID() {
 
         if (wristP.getValue() != oldWristP) {
@@ -222,6 +225,7 @@ public class Arm extends SubsystemBase {
     }
 
     public void setWristAngle(double angle) {
+        lastWristAngle = angle;
        double posValue = anglesToWristSensorPosition(angle);
 
         System.out.println("Wrist Pos Value = " + posValue);
@@ -229,8 +233,17 @@ public class Arm extends SubsystemBase {
     }
 
     public void setShoulderAngle(double angle) {
+        lastShoulderAngle = angle;
        double posValue = anglesToShoulderSensorPosition(angle);
         shoulder.set(TalonFXControlMode.Position, posValue);
+    }
+
+    public void changeShoulderAngle(double amount) {
+        setShoulderAngle(lastShoulderAngle+amount);
+    }
+
+    public void changeWristAngle(double amount) {
+        setWristAngle(lastWristAngle+amount);
     }
 
     public double getShoulderPosition() {
