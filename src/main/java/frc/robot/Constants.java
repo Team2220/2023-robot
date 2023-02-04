@@ -33,5 +33,5 @@ public final class Constants {
     public static final double WRIST_FORWARD_LIMIT = 135.0;
     public static final double WRIST_REVERSE_LIMIT = -135.0;
     public static final double SHOULDER_FORWARD_LIMIT = 100.0;
-    public static final double SHOULDER_REVERSE_LIMIT = -155.0;
+    public static final double SHOULDER_REVERSE_LIMIT = -145.0;
 }

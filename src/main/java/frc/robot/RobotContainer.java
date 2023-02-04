@@ -153,8 +153,8 @@ public class RobotContainer {
 
         // Override limits
         new Trigger(() -> (m_controller.getButton(frc.twilight.Controller.Button.RB)))
-                .onTrue(new InstantCommand(() -> m_arm.overrideSoftLimits(true)))
-                .onFalse(new InstantCommand(() -> m_arm.overrideSoftLimits(false)));
+          .onTrue(new InstantCommand(() -> m_arm.overrideSoftLimits(false)))
+          .onFalse(new InstantCommand(() -> m_arm.overrideSoftLimits(true)));
     }
 
     /**
