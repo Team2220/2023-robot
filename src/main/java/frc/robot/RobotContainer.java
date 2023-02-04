@@ -3,6 +3,10 @@
 // the WPILib BSD license file in the root directory of this project.
 
 package frc.robot;
+
+import com.ctre.phoenix.led.RainbowAnimation;
+
+import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.GenericHID;
@@ -35,46 +39,46 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
  * subsystems, commands, and button mappings) should be declared here.
  */
 public class RobotContainer {
-  // The robot's subsystems and commands are defined here...
+    // The robot's subsystems and commands are defined here...
 
-  private final Swerve m_swerve; 
-  private final Arm m_arm;
-  private final Intake m_intake;
-  private final LEDs m_leds;
+    private final Swerve m_swerve;
+    private final Arm m_arm;
+    private final Intake m_intake;
+    private final LEDs m_leds;
 
-  private final Controller m_controller = new Controller(0);
+    private final Controller m_controller = new Controller(0);
   private final Controller m_secondaryController = new Controller(1);
 
 
-  /**
-   * The container for the robot. Contains subsystems, OI devices, and commands.
-   */
-  public RobotContainer() {
-    // Starts recording to data log
-    DataLogManager.start();
-    // Record both DS control and joystick data
-    DriverStation.startDataLog(DataLogManager.getLog());
+    /**
+     * The container for the robot. Contains subsystems, OI devices, and commands.
+     */
+    public RobotContainer() {
+        // Starts recording to data log
+        DataLogManager.start();
+        // Record both DS control and joystick data
+        DriverStation.startDataLog(DataLogManager.getLog());
 
-    m_swerve = new Swerve(() -> m_controller.getLeftX() * 5, () -> m_controller.getLeftY() * 5,
-        () -> m_controller.getRightX() * 180);
-    m_arm = new Arm();
-    m_intake = new Intake();
-    m_leds = new LEDs();
+        m_swerve = new Swerve(() -> m_controller.getLeftX() * 5, () -> m_controller.getLeftY() * 5,
+                () -> m_controller.getRightX() * 180);
+        m_arm = new Arm();
+        m_intake = new Intake();
+        m_leds = new LEDs();
 
-    // Configure the button bindings
-    configureButtonBindings();
-  }
+        // Configure the button bindings
+        configureButtonBindings();
+    }
 
-  /**
-   * Use this method to define your button->command mappings. Buttons can be
-   * created by
-   * instantiating a {@link GenericHID} or one of its subclasses ({@link
-   * edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then passing
-   * it to a {@link
-   * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
-   */
-  private void configureButtonBindings() {
-    // new Button(m_controller::getAButton).whenPressed(m_swerve::zeroGyro);
+    /**
+     * Use this method to define your button->command mappings. Buttons can be
+     * created by
+     * instantiating a {@link GenericHID} or one of its subclasses ({@link
+     * edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then passing
+     * it to a {@link
+     * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
+     */
+    private void configureButtonBindings() {
+        // new Button(m_controller::getAButton).whenPressed(m_swerve::zeroGyro);
 
     // Arm Position
 
@@ -96,37 +100,39 @@ public class RobotContainer {
     new Trigger(() -> m_secondaryController.getButton(frc.twilight.Controller.Button.B))
     .whileTrue(new ArmPosition(0, -90, m_arm));
 
-    // Intake Buttons
-    new Trigger(() -> m_controller.getButton(frc.twilight.Controller.Button.UP))
-        .whileTrue(new IntakePercentOutput(0.1, m_intake));
-    new Trigger(() -> m_controller.getButton(frc.twilight.Controller.Button.DOWN))
-        .whileTrue(new IntakePercentOutput(-0.1, m_intake));
-    new Trigger(() -> m_controller.getButton(frc.twilight.Controller.Button.RIGHT))
-        .whileTrue(new ArmPosition(45, 45, m_arm));
-    new Trigger(() -> m_controller.getButton(frc.twilight.Controller.Button.LEFT))
-        .whileTrue(new RainbowLeds(m_leds));
+        // Intake Buttons
+        new Trigger(() -> m_controller.getButton(frc.twilight.Controller.Button.UP))
+                .whileTrue(new IntakePercentOutput(0.1, m_intake));
+        new Trigger(() -> m_controller.getButton(frc.twilight.Controller.Button.DOWN))
+                .whileTrue(new IntakePercentOutput(-0.1, m_intake));
+        new Trigger(() -> m_controller.getButton(frc.twilight.Controller.Button.RIGHT))
+                .whileTrue(new ArmPosition(45, 45, m_arm));
+        new Trigger(() -> m_controller.getButton(frc.twilight.Controller.Button.LEFT))
+                .whileTrue(new RainbowLeds(m_leds));
 
-    // Arm Buttons
-    // Wrist
-    new Trigger(() -> m_controller.getButton(frc.twilight.Controller.Button.A))
-        .whileTrue(new WristPercentOutput(0.5, m_arm));
-    new Trigger(() -> m_controller.getButton(frc.twilight.Controller.Button.B))
-        .whileTrue(new WristPercentOutput(-0.5, m_arm));
+        // Arm Buttons
+        // Wrist
+        new Trigger(() -> m_controller.getButton(frc.twilight.Controller.Button.A))
+                .whileTrue(new WristPercentOutput(0.5, m_arm));
+        new Trigger(() -> m_controller.getButton(frc.twilight.Controller.Button.B))
+                .whileTrue(new WristPercentOutput(-0.5, m_arm));
 
-    new Trigger(() -> !(m_controller.getButton(frc.twilight.Controller.Button.A) || m_controller.getButton(frc.twilight.Controller.Button.B)))
-        .whileTrue(new WristPercentOutput(0, m_arm));
+        new Trigger(() -> !(m_controller.getButton(frc.twilight.Controller.Button.A)
+                || m_controller.getButton(frc.twilight.Controller.Button.B)))
+                .whileTrue(new WristPercentOutput(0, m_arm));
 
-    // Shoulder
-    new Trigger(() -> m_controller.getButton(frc.twilight.Controller.Button.X))
-        .whileTrue(new ShoulderPercentOutput(0.5, m_arm));
-    new Trigger(() -> m_controller.getButton(frc.twilight.Controller.Button.Y))
-        .whileTrue(new ShoulderPercentOutput(-0.5, m_arm));
+        // Shoulder
+        new Trigger(() -> m_controller.getButton(frc.twilight.Controller.Button.X))
+                .whileTrue(new ShoulderPercentOutput(0.5, m_arm));
+        new Trigger(() -> m_controller.getButton(frc.twilight.Controller.Button.Y))
+                .whileTrue(new ShoulderPercentOutput(-0.5, m_arm));
 
-    new Trigger(() -> !(m_controller.getButton(frc.twilight.Controller.Button.X) || m_controller.getButton(frc.twilight.Controller.Button.Y)))
-        .whileTrue(new ShoulderPercentOutput(0, m_arm));
-        
-         // ✧･ﾟ: *✧･ﾟ:*Rumble*:･ﾟ✧*:･ﾟ✧ babey
-         new Trigger(() -> m_controller.getButton(frc.twilight.Controller.Button.LB))
+        new Trigger(() -> !(m_controller.getButton(frc.twilight.Controller.Button.X)
+                || m_controller.getButton(frc.twilight.Controller.Button.Y)))
+                .whileTrue(new ShoulderPercentOutput(0, m_arm));
+
+        // ✧･ﾟ: *✧･ﾟ:*Rumble*:･ﾟ✧*:･ﾟ✧ babey
+        new Trigger(() -> m_controller.getButton(frc.twilight.Controller.Button.LB))
          .whileTrue(new RunCommand(() -> m_controller.runRumble(RumbleVariables.high)));
     
         new Trigger(() -> (m_controller.getButton(frc.twilight.Controller.Button.START)))
@@ -136,8 +142,7 @@ public class RobotContainer {
                 .whileTrue(new RunCommand(() -> m_arm.zeroShoulder()));
         new Trigger(() -> (m_secondaryController.getButton(frc.twilight.Controller.Button.START)))
                 .whileTrue(new RunCommand(() -> m_arm.zeroWrist()));
-  }
-  
+    }
 
     /**
      * Use this to pass the autonomous command to the main {@link Robot} class.
@@ -149,4 +154,3 @@ public class RobotContainer {
         return null;
     }
 }
-  
