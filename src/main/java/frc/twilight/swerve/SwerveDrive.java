@@ -170,6 +170,4 @@ public class SwerveDrive {
     gyro.zeroSensor();
     setOdo(0, 0, 0);
   }
-
-  
 }

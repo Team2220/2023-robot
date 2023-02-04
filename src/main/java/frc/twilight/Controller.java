@@ -198,39 +198,40 @@ public class Controller {
     } else {
       return 0.0;
     }
-    /**Enum to make it ✧･ﾟ: *✧･ﾟ:*vibrate*:･ﾟ✧*:･ﾟ✧ babey
-     * makes own varibles for rumble
-      */
+    /** Enum to make it ✧･ﾟ: *✧･ﾟ:*vibrate*:･ﾟ✧*:･ﾟ✧ babey makes own varibles for rumble */
   }
-  public enum RumbleVariables {
-    high, medium, low, right,left, off;
-  }
-  
-/**
- * make it ✧･ﾟ: *✧･ﾟ:*vibrate*:･ﾟ✧*:･ﾟ✧ babey
- */
-  public void runRumble (RumbleVariables rum){
-    switch(rum){
-      case high: 
-      controller.setRumble(RumbleType.kLeftRumble, 1);
-      controller.setRumble(RumbleType.kRightRumble, 1);
-      case medium: 
-      controller.setRumble(RumbleType.kLeftRumble, 0.5);
-      controller.setRumble(RumbleType.kRightRumble, 0.5);
-      case low: 
-      controller.setRumble(RumbleType.kLeftRumble, 0.1);
-      controller.setRumble(RumbleType.kRightRumble, 0.1);
-      case left:
-      controller.setRumble(RumbleType.kLeftRumble, 0.5);
-      controller.setRumble(RumbleType.kRightRumble, 0);
-      case right:
-      controller.setRumble(RumbleType.kRightRumble, 0.5);
-      controller.setRumble(RumbleType.kLeftRumble, 0);
-      case off:
-      controller.setRumble(RumbleType.kLeftRumble, 0);
-      controller.setRumble(RumbleType.kRightRumble, 0);
-    }
 
+  public enum RumbleVariables {
+    high,
+    medium,
+    low,
+    right,
+    left,
+    off;
+  }
+
+  /** make it ✧･ﾟ: *✧･ﾟ:*vibrate*:･ﾟ✧*:･ﾟ✧ babey */
+  public void runRumble(RumbleVariables rum) {
+    switch (rum) {
+      case high:
+        controller.setRumble(RumbleType.kLeftRumble, 1);
+        controller.setRumble(RumbleType.kRightRumble, 1);
+      case medium:
+        controller.setRumble(RumbleType.kLeftRumble, 0.5);
+        controller.setRumble(RumbleType.kRightRumble, 0.5);
+      case low:
+        controller.setRumble(RumbleType.kLeftRumble, 0.1);
+        controller.setRumble(RumbleType.kRightRumble, 0.1);
+      case left:
+        controller.setRumble(RumbleType.kLeftRumble, 0.5);
+        controller.setRumble(RumbleType.kRightRumble, 0);
+      case right:
+        controller.setRumble(RumbleType.kRightRumble, 0.5);
+        controller.setRumble(RumbleType.kLeftRumble, 0);
+      case off:
+        controller.setRumble(RumbleType.kLeftRumble, 0);
+        controller.setRumble(RumbleType.kRightRumble, 0);
+    }
   }
 
   /** Enumeration of all buttons on an Xbox controller. */

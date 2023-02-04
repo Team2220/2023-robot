@@ -1,5 +1,3 @@
 package candle;
 
-public class setLEDs {
-
-}
+public class setLEDs {}

@@ -5,26 +5,24 @@ import frc.robot.subsystems.LEDs;
 
 public class RainbowLeds extends CommandBase {
 
-    private final LEDs leds;
+  private final LEDs leds;
 
-    public RainbowLeds(LEDs leds) {
+  public RainbowLeds(LEDs leds) {
 
-        this.leds = leds;
+    this.leds = leds;
 
-        addRequirements(leds);
+    addRequirements(leds);
+  }
 
-    }
-    @Override
-    public void initialize() {
-        leds.setLEDRainAnimation();
-        System.out.println("INITIALIZE");
-    }
+  @Override
+  public void initialize() {
+    leds.setLEDRainAnimation();
+    System.out.println("INITIALIZE");
+  }
 
-    
-    @Override
-    public void end(boolean interrupted) {
-        leds.setAnimationOff();
-        System.out.println("END");
-    }
-    
+  @Override
+  public void end(boolean interrupted) {
+    leds.setAnimationOff();
+    System.out.println("END");
+  }
 }

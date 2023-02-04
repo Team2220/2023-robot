@@ -12,43 +12,43 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 public class Intake extends SubsystemBase {
-    private TalonFX left = new TalonFX(Constants.INTAKE_LEFT_TALONFX);
-    private TalonFX right = new TalonFX(Constants.INTAKE_RIGHT_TALONFX);
+  private TalonFX left = new TalonFX(Constants.INTAKE_LEFT_TALONFX);
+  private TalonFX right = new TalonFX(Constants.INTAKE_RIGHT_TALONFX);
 
-    public Intake(){
+  public Intake() {
     left.configAllSettings(new TalonFXConfiguration());
     right.configAllSettings(new TalonFXConfiguration());
 
+    left.configVoltageCompSaturation(10);
+    right.configVoltageCompSaturation(10);
 
-        left.configVoltageCompSaturation(10);
-        right.configVoltageCompSaturation(10);
+    left.setInverted(Constants.INTAKE_LEFT_INVERTED);
+    right.setInverted(Constants.INTAKE_RIGHT_INVERTED);
 
-        left.setInverted(Constants.INTAKE_LEFT_INVERTED);
-        right.setInverted(Constants.INTAKE_RIGHT_INVERTED);
-        
-        StatorCurrentLimitConfiguration statorConfig = new StatorCurrentLimitConfiguration();
-        statorConfig.enable = true;
-        statorConfig.currentLimit = 10;
-        right.configStatorCurrentLimit(statorConfig);
-        left.configStatorCurrentLimit(statorConfig);     
-        
-        SupplyCurrentLimitConfiguration supplyConfig = new SupplyCurrentLimitConfiguration();
-        supplyConfig.enable = true;
-        supplyConfig.currentLimit = 10;
-        right.configSupplyCurrentLimit(supplyConfig);
-        left.configSupplyCurrentLimit(supplyConfig);
+    StatorCurrentLimitConfiguration statorConfig = new StatorCurrentLimitConfiguration();
+    statorConfig.enable = true;
+    statorConfig.currentLimit = 10;
+    right.configStatorCurrentLimit(statorConfig);
+    left.configStatorCurrentLimit(statorConfig);
 
-        right.follow(left);
-    }
+    SupplyCurrentLimitConfiguration supplyConfig = new SupplyCurrentLimitConfiguration();
+    supplyConfig.enable = true;
+    supplyConfig.currentLimit = 10;
+    right.configSupplyCurrentLimit(supplyConfig);
+    left.configSupplyCurrentLimit(supplyConfig);
 
-    public void setPercentOutput(double value) {
-        right.set(TalonFXControlMode.PercentOutput, value);
-    }
-    public ArrayList<TalonFX> geTalonFXs() {
+    right.follow(left);
+  }
 
-        ArrayList<TalonFX> musicList = new ArrayList<>();
-        musicList.add(left);
-        musicList.add(right);
-        return musicList;
-    }
+  public void setPercentOutput(double value) {
+    right.set(TalonFXControlMode.PercentOutput, value);
+  }
+
+  public ArrayList<TalonFX> geTalonFXs() {
+
+    ArrayList<TalonFX> musicList = new ArrayList<>();
+    musicList.add(left);
+    musicList.add(right);
+    return musicList;
+  }
 }
