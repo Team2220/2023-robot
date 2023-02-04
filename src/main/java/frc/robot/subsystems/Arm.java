@@ -50,6 +50,10 @@ public class Arm extends SubsystemBase {
     private double oldShoulderP = shoulderP.getValue();
     private double oldShoulderI = shoulderI.getValue();
     private double oldShoulderD = shoulderD.getValue();
+    
+	/** Config Objects for motor controllers */
+	TalonFXConfiguration wristConfig = new TalonFXConfiguration();
+	TalonFXConfiguration shoulderConfig = new TalonFXConfiguration();
 
     public void updatePID() {
 
@@ -86,8 +90,17 @@ public class Arm extends SubsystemBase {
 
 
     public Arm() {
-        wrist.configAllSettings(new TalonFXConfiguration());
-        shoulder.configAllSettings(new TalonFXConfiguration());
+        /* Motion Magic Configurations */
+		wristConfig.motionAcceleration = 2000;
+        wristConfig.motionCruiseVelocity = 2000;
+
+		shoulderConfig.motionCruiseVelocity = 2000;
+        shoulderConfig.motionAcceleration = 2000;
+
+
+        wrist.configAllSettings(wristConfig);
+        shoulder.configAllSettings(shoulderConfig);
+        
 
         wrist.configVoltageCompSaturation(10);
         shoulder.configVoltageCompSaturation(10);
