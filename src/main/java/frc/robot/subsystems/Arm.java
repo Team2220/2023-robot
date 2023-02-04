@@ -90,21 +90,21 @@ public class Arm extends SubsystemBase {
         wrist.configAllSettings(new TalonFXConfiguration());
         shoulder.configAllSettings(new TalonFXConfiguration());
 
-        wrist.configVoltageCompSaturation(12);
-        shoulder.configVoltageCompSaturation(12);
+        wrist.configVoltageCompSaturation(10);
+        shoulder.configVoltageCompSaturation(10);
 
         wrist.setInverted(Constants.WRIST_INVERTED);
         shoulder.setInverted(Constants.SHOULDER_INVERTED);
 
         SupplyCurrentLimitConfiguration supplyConfig = new SupplyCurrentLimitConfiguration();
         supplyConfig.currentLimit = 33;
-        supplyConfig.enable = false;
+        supplyConfig.enable = true;
         shoulder.configSupplyCurrentLimit(supplyConfig);
         wrist.configSupplyCurrentLimit(supplyConfig);
 
         StatorCurrentLimitConfiguration config = new StatorCurrentLimitConfiguration();
-        config.currentLimit = 33;
-        config.enable = false;
+        config.currentLimit = 15;
+        config.enable = true;
         shoulder.configStatorCurrentLimit(config);
         wrist.configStatorCurrentLimit(config);
 
@@ -132,14 +132,14 @@ public class Arm extends SubsystemBase {
         shoulderAccel.reset(0);
 
         shoulder.configForwardSoftLimitEnable(true);
-        shoulder.configForwardSoftLimitThreshold(anglesToShoulderSensorPosition(100));
+        shoulder.configForwardSoftLimitThreshold(anglesToShoulderSensorPosition(Constants.SHOULDER_FORWARD_LIMIT));
         shoulder.configReverseSoftLimitEnable(true);
-        shoulder.configReverseSoftLimitThreshold(anglesToShoulderSensorPosition(-155));
+        shoulder.configReverseSoftLimitThreshold(anglesToShoulderSensorPosition(Constants.SHOULDER_REVERSE_LIMIT));
 
         wrist.configForwardSoftLimitEnable(true);
-        wrist.configForwardSoftLimitThreshold(anglesToWristSensorPosition(135));
+        wrist.configForwardSoftLimitThreshold(anglesToWristSensorPosition(Constants.WRIST_FORWARD_LIMIT));
         wrist.configReverseSoftLimitEnable(true);
-        wrist.configReverseSoftLimitThreshold(anglesToWristSensorPosition(-135));
+        wrist.configReverseSoftLimitThreshold(anglesToWristSensorPosition(Constants.WRIST_REVERSE_LIMIT));
 
         
     }
