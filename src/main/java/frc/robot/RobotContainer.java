@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import frc.robot.commands.PlayMusic;
 import frc.robot.commands.Arm.ArmPosition;
 import frc.robot.commands.Arm.ShoulderPercentOutput;
@@ -48,6 +49,8 @@ public class RobotContainer {
     private final Intake m_intake;
     private final LEDs m_leds;
     private final Limelight m_LimeLight;
+    private final SendableChooser<Command> autoChooser = new SendableChooser<>();
+
 
     private final Controller m_controller = new Controller(0);
   private final Controller m_secondaryController = new Controller(1);
@@ -71,6 +74,8 @@ public class RobotContainer {
 
         // Configure the button bindings
         configureButtonBindings();
+        //auto stuff
+        autoChooser.setDefaultOption("Do Nothing", new InstantCommand());
     }
 
     /**
@@ -160,6 +165,5 @@ public class RobotContainer {
      */
     public Command getAutonomousCommand() {
 
-        return null;
-    }
+        return autoChooser.getSelected();    }
 }
