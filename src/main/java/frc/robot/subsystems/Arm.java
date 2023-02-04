@@ -90,6 +90,14 @@ public class Arm extends SubsystemBase {
 
 
     public Arm() {
+        /* Motion Magic Configurations */
+		wristConfig.motionAcceleration = 2000;
+        wristConfig.motionCruiseVelocity = 2000;
+
+		shoulderConfig.motionCruiseVelocity = 2000;
+        shoulderConfig.motionAcceleration = 2000;
+
+
         wrist.configAllSettings(wristConfig);
         shoulder.configAllSettings(shoulderConfig);
         
