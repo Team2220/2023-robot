@@ -51,10 +51,8 @@ public class RobotContainer {
     private final Limelight m_LimeLight;
     private final SendableChooser<Command> autoChooser = new SendableChooser<>();
 
-
     private final Controller m_controller = new Controller(0);
-  private final Controller m_secondaryController = new Controller(1);
-
+    private final Controller m_secondaryController = new Controller(1);
 
     /**
      * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -74,7 +72,7 @@ public class RobotContainer {
 
         // Configure the button bindings
         configureButtonBindings();
-        //auto stuff
+        // auto stuff
         autoChooser.setDefaultOption("Do Nothing", new InstantCommand());
     }
 
@@ -89,25 +87,25 @@ public class RobotContainer {
     private void configureButtonBindings() {
         // new Button(m_controller::getAButton).whenPressed(m_swerve::zeroGyro);
 
-    // Arm Position
+        // Arm Position
 
-    new Trigger(() -> m_secondaryController.getButton(frc.twilight.Controller.Button.UP))
-    .whileTrue(new ArmPosition(90, 0, m_arm));
+        new Trigger(() -> m_secondaryController.getButton(frc.twilight.Controller.Button.UP))
+                .whileTrue(new ArmPosition(90, 0, m_arm));
 
-    new Trigger(() -> m_secondaryController.getButton(frc.twilight.Controller.Button.DOWN))
-    .whileTrue(new ArmPosition(-90, 0, m_arm));
+        new Trigger(() -> m_secondaryController.getButton(frc.twilight.Controller.Button.DOWN))
+                .whileTrue(new ArmPosition(-90, 0, m_arm));
 
-    new Trigger(() -> m_secondaryController.getButton(frc.twilight.Controller.Button.RIGHT))
-    .whileTrue(new ArmPosition(0, 0, m_arm));
+        new Trigger(() -> m_secondaryController.getButton(frc.twilight.Controller.Button.RIGHT))
+                .whileTrue(new ArmPosition(0, 0, m_arm));
 
-    new Trigger(() -> m_secondaryController.getButton(frc.twilight.Controller.Button.X))
-    .whileTrue(new ArmPosition(0, 90, m_arm));
+        new Trigger(() -> m_secondaryController.getButton(frc.twilight.Controller.Button.X))
+                .whileTrue(new ArmPosition(0, 90, m_arm));
 
-    new Trigger(() -> m_secondaryController.getButton(frc.twilight.Controller.Button.Y))
-    .whileTrue(new ArmPosition(0, 0, m_arm));
+        new Trigger(() -> m_secondaryController.getButton(frc.twilight.Controller.Button.Y))
+                .whileTrue(new ArmPosition(0, 0, m_arm));
 
-    new Trigger(() -> m_secondaryController.getButton(frc.twilight.Controller.Button.B))
-    .whileTrue(new ArmPosition(0, -90, m_arm));
+        new Trigger(() -> m_secondaryController.getButton(frc.twilight.Controller.Button.B))
+                .whileTrue(new ArmPosition(0, -90, m_arm));
 
         // Intake Buttons
         new Trigger(() -> m_controller.getButton(frc.twilight.Controller.Button.UP))
@@ -142,20 +140,21 @@ public class RobotContainer {
 
         // ✧･ﾟ: *✧･ﾟ:*Rumble*:･ﾟ✧*:･ﾟ✧ babey
         new Trigger(() -> m_controller.getButton(frc.twilight.Controller.Button.LB))
-         .whileTrue(new RunCommand(() -> m_controller.runRumble(RumbleVariables.high)));
-    
-     //   new Trigger(() -> (m_controller.getButton(frc.twilight.Controller.Button.START)))
-    //            .whileTrue(new PlayMusic(m_swerve, m_arm, m_intake));
+                .whileTrue(new RunCommand(() -> m_controller.runRumble(RumbleVariables.high)));
+
+        // new Trigger(() ->
+        // (m_controller.getButton(frc.twilight.Controller.Button.START)))
+        // .whileTrue(new PlayMusic(m_swerve, m_arm, m_intake));
 
         new Trigger(() -> (m_controller.getButton(frc.twilight.Controller.Button.BACK)))
                 .whileTrue(new RunCommand(() -> m_arm.zeroShoulder()));
         new Trigger(() -> (m_controller.getButton(frc.twilight.Controller.Button.START)))
                 .whileTrue(new RunCommand(() -> m_arm.zeroWrist()));
 
-                // Override limits
+        // Override limits
         new Trigger(() -> (m_controller.getButton(frc.twilight.Controller.Button.RB)))
-          .onTrue(new InstantCommand(() -> m_arm.overrideSoftLimits(true)))
-          .onFalse(new InstantCommand(() -> m_arm.overrideSoftLimits(false)));
+                .onTrue(new InstantCommand(() -> m_arm.overrideSoftLimits(true)))
+                .onFalse(new InstantCommand(() -> m_arm.overrideSoftLimits(false)));
     }
 
     /**
@@ -165,5 +164,6 @@ public class RobotContainer {
      */
     public Command getAutonomousCommand() {
 
-        return autoChooser.getSelected();    }
+        return autoChooser.getSelected();
+    }
 }
