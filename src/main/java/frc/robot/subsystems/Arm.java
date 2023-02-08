@@ -18,6 +18,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.twilight.tunables.TunableDouble;
 
+
 public class Arm extends SubsystemBase {
   private DutyCycleEncoder wristEncoder = new DutyCycleEncoder(Constants.WRIST_DUTYENCODER);
   private DutyCycleEncoder shoulderEncoder = new DutyCycleEncoder(Constants.SHOULDER_DUTYENCODER);
@@ -209,7 +210,10 @@ public class Arm extends SubsystemBase {
       case MANUAL:
     }
   }
-
+private double hfkehfasmygh(double angle, double gearRatio){
+double gfx =((angle / 360.0) * gearRatio) * Constants.TALONFX_ENCODER_TICKS * 1/10;
+return gfx;
+ }
   private void setPosition(double shouldereAng, double wristAng) {
     setShoulderAngle(shouldereAng);
     setWristAngle(wristAng);
