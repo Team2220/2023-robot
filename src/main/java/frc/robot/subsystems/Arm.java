@@ -16,14 +16,15 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.Constants.ArmConfig;
 import frc.twilight.tunables.TunableDouble;
 
 public class Arm extends SubsystemBase {
-  private DutyCycleEncoder wristEncoder = new DutyCycleEncoder(Constants.WRIST_DUTYENCODER);
-  private DutyCycleEncoder shoulderEncoder = new DutyCycleEncoder(Constants.SHOULDER_DUTYENCODER);
+  private DutyCycleEncoder wristEncoder = new DutyCycleEncoder(ArmConfig.WRIST_DUTYENCODER);
+  private DutyCycleEncoder shoulderEncoder = new DutyCycleEncoder(ArmConfig.SHOULDER_DUTYENCODER);
 
-  private TalonFX wrist = new TalonFX(Constants.WRIST_TALONFX);
-  private TalonFX shoulder = new TalonFX(Constants.SHOULDER_TALONFX);
+  private TalonFX wrist = new TalonFX(ArmConfig.WRIST_TALONFX);
+  private TalonFX shoulder = new TalonFX(ArmConfig.SHOULDER_TALONFX);
 
   ShuffleboardTab arm = Shuffleboard.getTab("arm");
   GenericEntry shoulderSB = arm.add("shoulder angle", 0).getEntry();
@@ -102,8 +103,8 @@ public class Arm extends SubsystemBase {
     wrist.configVoltageCompSaturation(10);
     shoulder.configVoltageCompSaturation(10);
 
-    wrist.setInverted(Constants.WRIST_INVERTED);
-    shoulder.setInverted(Constants.SHOULDER_INVERTED);
+    wrist.setInverted(ArmConfig.WRIST_INVERTED);
+    shoulder.setInverted(ArmConfig.SHOULDER_INVERTED);
 
     SupplyCurrentLimitConfiguration supplyConfig = new SupplyCurrentLimitConfiguration();
     supplyConfig.currentLimit = 33;
@@ -129,13 +130,13 @@ public class Arm extends SubsystemBase {
     shoulder.config_kD(0, shoulderD.getValue());
 
     double wristOffset =
-        getWristPosition() * (Constants.WRIST_GEAR_RATIO) * (Constants.TALONFX_ENCODER_TICKS);
+        getWristPosition() * (ArmConfig.WRIST_GEAR_RATIO) * (ArmConfig.TALONFX_ENCODER_TICKS);
     wrist.setSelectedSensorPosition(wristOffset);
     System.out.println("wristOffset = " + wristOffset);
     System.out.println("wristPosition = " + getWristPosition());
 
     double shoulderOffset =
-        getShoulderPosition() * (Constants.SHOULDER_GEAR_RATIO) * (Constants.TALONFX_ENCODER_TICKS);
+        getShoulderPosition() * (ArmConfig.SHOULDER_GEAR_RATIO) * (ArmConfig.TALONFX_ENCODER_TICKS);
     shoulder.setSelectedSensorPosition(shoulderOffset);
 
     wristAccel.reset(0);
@@ -143,17 +144,17 @@ public class Arm extends SubsystemBase {
 
     shoulder.configForwardSoftLimitEnable(true);
     shoulder.configForwardSoftLimitThreshold(
-        anglesToShoulderSensorPosition(Constants.SHOULDER_FORWARD_LIMIT));
+        anglesToShoulderSensorPosition(ArmConfig.SHOULDER_FORWARD_LIMIT));
     shoulder.configReverseSoftLimitEnable(true);
     shoulder.configReverseSoftLimitThreshold(
-        anglesToShoulderSensorPosition(Constants.SHOULDER_REVERSE_LIMIT));
+        anglesToShoulderSensorPosition(ArmConfig.SHOULDER_REVERSE_LIMIT));
 
     wrist.configForwardSoftLimitEnable(true);
     wrist.configForwardSoftLimitThreshold(
-        anglesToWristSensorPosition(Constants.WRIST_FORWARD_LIMIT));
+        anglesToWristSensorPosition(ArmConfig.WRIST_FORWARD_LIMIT));
     wrist.configReverseSoftLimitEnable(true);
     wrist.configReverseSoftLimitThreshold(
-        anglesToWristSensorPosition(Constants.WRIST_REVERSE_LIMIT));
+        anglesToWristSensorPosition(ArmConfig.WRIST_REVERSE_LIMIT));
   }
 
   public void overrideSoftLimits(boolean enabled) {
@@ -163,15 +164,15 @@ public class Arm extends SubsystemBase {
   }
 
   public double anglesToWristSensorPosition(double angle) {
-    double gearRatio = Constants.WRIST_GEAR_RATIO;
-    double posValue = ((angle / 360.0) * gearRatio) * Constants.TALONFX_ENCODER_TICKS;
+    double gearRatio = ArmConfig.WRIST_GEAR_RATIO;
+    double posValue = ((angle / 360.0) * gearRatio) * ArmConfig.TALONFX_ENCODER_TICKS;
 
     return posValue;
   }
 
   public double anglesToShoulderSensorPosition(double angle) {
-    double gearRatio = Constants.SHOULDER_GEAR_RATIO;
-    double posValue = ((angle / 360.0) * gearRatio) * Constants.TALONFX_ENCODER_TICKS;
+    double gearRatio = ArmConfig.SHOULDER_GEAR_RATIO;
+    double posValue = ((angle / 360.0) * gearRatio) * ArmConfig.TALONFX_ENCODER_TICKS;
 
     return posValue;
   }
@@ -209,12 +210,19 @@ public class Arm extends SubsystemBase {
       case MANUAL:
     }
   }
+<<<<<<< Updated upstream
 
   private double hfkehfasmygh(double angle, double gearRatio) {
     double gfx = ((angle / 360.0) * gearRatio) * Constants.TALONFX_ENCODER_TICKS * 1 / 10;
     return gfx;
   }
 
+=======
+private double hfkehfasmygh(double angle, double gearRatio){
+double gfx =((angle / 360.0) * gearRatio) * ArmConfig.TALONFX_ENCODER_TICKS * 1/10;
+return gfx;
+ }
+>>>>>>> Stashed changes
   private void setPosition(double shouldereAng, double wristAng) {
     setShoulderAngle(shouldereAng);
     setWristAngle(wristAng);
@@ -253,11 +261,11 @@ public class Arm extends SubsystemBase {
   }
 
   public double getShoulderPosition() {
-    return shoulderEncoder.getAbsolutePosition() - Constants.SHOULDER_ENCODER_OFFSET;
+    return shoulderEncoder.getAbsolutePosition() - ArmConfig.SHOULDER_ENCODER_OFFSET;
   }
 
   public double getWristPosition() {
-    return wristEncoder.getAbsolutePosition() - Constants.WRIST_ENCODER_OFFSET;
+    return wristEncoder.getAbsolutePosition() - ArmConfig.WRIST_ENCODER_OFFSET;
   }
 
   @Override
