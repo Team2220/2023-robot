@@ -6,10 +6,10 @@ import com.ctre.phoenix.led.RainbowAnimation;
 import com.ctre.phoenix.led.StrobeAnimation;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants;
+import frc.robot.Constants.LEDS;
 
 public class LEDs extends SubsystemBase {
-  CANdle candle = new CANdle(Constants.CANDLE);
+  CANdle candle = new CANdle(LEDS.CANDLE);
 
   public LEDs() {
 
