@@ -10,6 +10,7 @@ import frc.twilight.swerve.subsystems.Swerve;
 import frc.twilight.swerve.vectors.DriveVector;
 import frc.twilight.swerve.vectors.Position;
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
@@ -59,6 +60,9 @@ public class GoToCommand extends CommandBase {
   private boolean yDone = false;
   private boolean rotDone = false;
 
+  private double movTol = 0.05;
+  private double rotTol = 2.5;
+
   /**
    * Creates a new GoToCommand.
    *
@@ -72,6 +76,10 @@ public class GoToCommand extends CommandBase {
     goalX = new TrapezoidProfile.State(goal.getX(), 0);
     goalY = new TrapezoidProfile.State(goal.getY(), 0);
     goalRot = new TrapezoidProfile.State(goal.getAngle(), 0);
+  }
+
+  public GoToCommand(Swerve subsystem, Pose2d goal) {
+    this(subsystem, new Position(goal.getX(), goal.getY(), goal.getRotation().getDegrees()));
   }
 
   // Called when the command is initially scheduled.
@@ -121,9 +129,9 @@ public class GoToCommand extends CommandBase {
 
     m_subsystem.setDrive(new DriveVector(yVel, xVel, rotVel).maxVel());
 
-    xDone = Math.abs(currentPos.getX() - goalX.position) < 0.05;
-    yDone = Math.abs(currentPos.getY() - goalY.position) < 0.05;
-    rotDone = Math.abs(currentPos.getAngle() - goalRot.position) < 2.5;
+    xDone = Math.abs(currentPos.getX() - goalX.position) < movTol;
+    yDone = Math.abs(currentPos.getY() - goalY.position) < movTol;
+    rotDone = Math.abs(currentPos.getAngle() - goalRot.position) < rotTol;
   }
 
   // Called once the command ends or is interrupted.
@@ -136,5 +144,16 @@ public class GoToCommand extends CommandBase {
   @Override
   public boolean isFinished() {
     return xDone && yDone && rotDone;
+  }
+
+  public void setTolerence(double mov, double rot) {
+    movTol = mov;
+    rotTol = rot;
+  }
+
+  public void endVel(double xVel, double yVel, double rotVel) {
+    goalX.velocity = xVel;
+    goalY.velocity = yVel;
+    goalRot.velocity = rotVel;
   }
 }
