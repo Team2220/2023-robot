@@ -13,10 +13,10 @@ package frc.robot;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
-  public static final class LEDS{
+  public static final class LEDS {
     public static final int CANDLE = 0;
   }
-  
+
   public static final class Intake {
     public static final int INTAKE_LEFT_TALONFX = 103; // TODO:REALNUMBER
     public static final int INTAKE_RIGHT_TALONFX = 103; // TODO:REALNUMBER
@@ -24,7 +24,7 @@ public final class Constants {
     public static final boolean INTAKE_RIGHT_INVERTED = false;
   }
 
-  public static final class Arm{
+  public static final class Arm {
     public static final int WRIST_TALONFX = 20;
     public static final int SHOULDER_TALONFX = 19;
     public static final boolean SHOULDER_INVERTED = false;
