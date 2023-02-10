@@ -151,11 +151,12 @@ public class RobotContainer {
         .onFalse(new InstantCommand(() -> m_arm.overrideSoftLimits(true)));
 
     new Trigger(() -> (Math.abs(m_secondaryController.getLeftY()) > 0.1))
-        .whileTrue(new InstantCommand(() -> m_arm.changeShoulderAngle(10)));
+        .whileTrue(
+            new RunCommand(() -> m_arm.setShoulderPercentOutput(m_secondaryController.getLeftY())));
 
-    new Trigger(() -> (m_controller.getButton(frc.twilight.Controller.Button.BACK)))
-        .whileTrue(new RunCommand(() -> m_arm.zeroWrist()))
-        .whileTrue(new RunCommand(() -> m_arm.zeroShoulder()));
+    new Trigger(() -> (Math.abs(m_secondaryController.getRightY()) > 0.1))
+        .whileTrue(
+            new RunCommand(() -> m_arm.setWristPercentOutput(m_secondaryController.getRightY())));
 
     new Trigger(() -> (m_controller.getButton(frc.twilight.Controller.Button.BACK)))
         .whileTrue(new RunCommand(() -> m_arm.zeroWrist()))
@@ -163,11 +164,6 @@ public class RobotContainer {
 
     new Trigger(() -> m_controller.getButtonPressed(Controller.Button.START))
         .onTrue(new ResetGyro(m_swerve));
-
-    // Override limits
-    new Trigger(() -> (m_controller.getButton(frc.twilight.Controller.Button.RB)))
-        .onTrue(new InstantCommand(() -> m_arm.overrideSoftLimits(false)))
-        .onFalse(new InstantCommand(() -> m_arm.overrideSoftLimits(true)));
   }
 
   public Command getTeleopCommand() {
