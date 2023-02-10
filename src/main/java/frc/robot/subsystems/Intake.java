@@ -30,8 +30,6 @@ public class Intake extends SubsystemBase {
     supplyConfig.enable = true;
     supplyConfig.currentLimit = 10;
     intake.configSupplyCurrentLimit(supplyConfig);
-
-
   }
 
   public void setPercentOutput(double value) {
