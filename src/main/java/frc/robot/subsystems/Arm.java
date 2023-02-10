@@ -9,7 +9,6 @@ import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.motorcontrol.can.TalonFXConfiguration;
 
-import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.RobotController;
@@ -154,7 +153,7 @@ public class Arm extends SubsystemBase {
     wrist.configReverseSoftLimitThreshold(
         anglesToWristSensorPosition(ArmConfig.WRIST_REVERSE_LIMIT));
 
-        setUpTestCommands();
+    setUpTestCommands();
   }
 
   public void overrideSoftLimits(boolean enabled) {
