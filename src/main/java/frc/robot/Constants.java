@@ -14,7 +14,7 @@ package frc.robot;
  */
 public final class Constants {
   public static final class LEDS {
-    public static final int CANDLE = 0;
+    public static final int CANDLE = 1;
   }
 
   public static final class IntakeConfig {
