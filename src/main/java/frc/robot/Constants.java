@@ -18,8 +18,7 @@ public final class Constants {
   }
 
   public static final class IntakeConfig {
-    public static final int INTAKE_LEFT_TALONFX = 103; // TODO:REALNUMBER
-    public static final int INTAKE_RIGHT_TALONFX = 103; // TODO:REALNUMBER
+    public static final int INTAKE_TALONFX = 10; // TODO:REALNUMBER 
     public static final boolean INTAKE_LEFT_INVERTED = false;
     public static final boolean INTAKE_RIGHT_INVERTED = false;
   }
