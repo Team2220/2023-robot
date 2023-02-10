@@ -12,37 +12,36 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 public class LEDs extends SubsystemBase {
-  CANdle candle = new CANdle(Constants.LEDS.CANDLE);
-  public double m_lastDisconectTime = 0.0;
-  public double m_lastBrownedOutTime = 0.0;
+  private CANdle candle = new CANdle(Constants.LEDS.CANDLE);
+  private double m_lastDisconectTime = 0.0;
+  private double m_lastBrownedOutTime = 0.0;
 
-  enum DesieredState {
+  public enum DesieredState {
     RAINBOW_ANIMATION,
     STROBE_ANIMATION,
     FULL_LEDS,
     OFF,
   }
 
-  DesieredState desieredState = DesieredState.OFF;
+  private DesieredState desieredState = DesieredState.OFF;
 
-  enum SystemState {
+  private enum SystemState {
     RAINBOW_ANIMATION,
     STROBE_ANIMATION,
     FULL_LEDS,
     DRIVER_STATION_DISCONNECTED,
     BROWNOUT,
     OFF,
-    ANIMATION_OFF,
   }
 
-  SystemState systemState = SystemState.OFF;
+  private SystemState systemState = SystemState.OFF;
 
   public void setDesieredState(DesieredState desieredState) {
 
     this.desieredState = desieredState;
   }
 
-  public void transitionSystemState(SystemState newsystemState) {
+  private void transitionSystemState(SystemState newsystemState) {
 
     if (this.systemState == newsystemState) {
 
@@ -51,24 +50,35 @@ public class LEDs extends SubsystemBase {
     this.systemState = newsystemState;
 
     switch (newsystemState) {
-      case FULL_LEDS:
-        {
-          setSolidColor();
-        }
+      case FULL_LEDS: {
+        setSolidColor();
+      }
+        break;
 
-      case RAINBOW_ANIMATION:
-        {
-          setLEDRainAnimationFast();
-        }
-      case STROBE_ANIMATION:
-        {
-          setLEDStrobeAnimation(0, 0, 0, 0, m_lastBrownedOutTime, 0, 0);
-        }
+      case DRIVER_STATION_DISCONNECTED: {
 
-      case OFF:
-        {
-          setOffLEDs();
-        }
+        setPurple();
+
+      }
+
+      case RAINBOW_ANIMATION: {
+        setLEDRainAnimationFast();
+      }
+        break;
+      case STROBE_ANIMATION: {
+        setLEDStrobeAnimation(0, 0, 0, 0, m_lastBrownedOutTime, 0, 0);
+      }
+        break;
+
+      case BROWNOUT: {
+        setBrown();
+
+      }
+
+      case OFF: {
+        setOffLEDs();
+      }
+        break;
     }
   }
 
@@ -76,6 +86,32 @@ public class LEDs extends SubsystemBase {
 
     CANdleConfiguration config = new CANdleConfiguration();
     candle.configAllSettings(config);
+  }
+
+ private void switchDesieredState() {
+
+    switch (desieredState) {
+
+      case RAINBOW_ANIMATION: {
+        transitionSystemState(SystemState.RAINBOW_ANIMATION);
+      }
+        break;
+      case FULL_LEDS: {
+        transitionSystemState(SystemState.FULL_LEDS);
+      }
+        break;
+
+      case OFF: {
+        transitionSystemState(SystemState.OFF);
+      }
+        break;
+
+      case STROBE_ANIMATION: {
+        transitionSystemState(SystemState.STROBE_ANIMATION);
+      }
+        break;
+    }
+
   }
 
   @Override
@@ -94,69 +130,58 @@ public class LEDs extends SubsystemBase {
     }
 
     switch (systemState) {
-      case DRIVER_STATION_DISCONNECTED:
-        {
-          if (Timer.getFPGATimestamp() > m_lastDisconectTime + 5) {
-            setAnimationOff();
-          }
+      case DRIVER_STATION_DISCONNECTED: {
+        if (Timer.getFPGATimestamp() > m_lastDisconectTime + 5) {
+          switchDesieredState();
         }
+      }
         break;
 
-      case BROWNOUT:
-        {
-          if (Timer.getFPGATimestamp() > m_lastBrownedOutTime + 5) {
-            setAnimationOff();
-          }
+      case BROWNOUT: {
+        if (Timer.getFPGATimestamp() > m_lastBrownedOutTime + 5) {
+          switchDesieredState();
         }
+      }
+        break;
+
+      case FULL_LEDS: {
+      }
+        break;
+
+      case OFF: {
+      }
+        break;
+
+      case RAINBOW_ANIMATION: {
+      }
+        break;
+      case STROBE_ANIMATION: {
+      }
         break;
     }
-  }
-  // if (!DriverStation.isDSAttached())
 
-  // {
-  // m_driverstation = Timer.getFPGATimestamp();
-
-  // }
-
-  // if (m_driverstation + 5 >= Timer.getFPGATimestamp()) {
-  // setSolidColor();
-
-  // }
-
-  // else {
-  // // setOffLEDs();
-  // }
-
-  // if (DriverStation.isDSAttached())
-
-  // {
-  // m_driverstation = Timer.getFPGATimestamp();
-
-  // }
-
-  // if (m_driverstation + 5 >= Timer.getFPGATimestamp()) {
-  // Donothing();
-  // }
-
-  public void setLEDRainAnimation() {
-
-    RainbowAnimation rainbowAnim = new RainbowAnimation(1, 0.3, 164);
-    candle.animate(rainbowAnim);
   }
 
-  public void setLEDRainAnimationFast() {
+  // private void setLEDRainAnimation() {
+
+  //   RainbowAnimation rainbowAnim = new RainbowAnimation(1, 0.3, 164);
+   //   candle.animate(rainbowAnim);
+// }
+
+private void setPurple() {
+
+    candle.setLEDs(0, 0, 0, 0, 0, 0);
+
+  }
+
+  private void setLEDRainAnimationFast() {
 
     RainbowAnimation rAnimation = new RainbowAnimation(1, 1, 164);
     candle.animate(rAnimation);
   }
 
-  public void setAnimationOff() {
-
-    candle.animate(null);
-  }
-
-  public void setSolidColor() {
-    candle.setLEDs(255, 0, 0, 0, 0, 164);
+  private void setSolidColor() {
+    candle.setLEDs(255, 0, 225, 0, 0, 164);
   }
 
   public void setOffLEDs() {
@@ -164,11 +189,17 @@ public class LEDs extends SubsystemBase {
     candle.setLEDs(0, 0, 0, 0, 0, 164);
   }
 
-  public void setLEDStrobeAnimation(
+  private void setBrown() {
+
+    candle.setLEDs(100, 50, 0, 0, 0, 164);
+
+  }
+
+  private void setLEDStrobeAnimation(
       int r, int g, int b, int w, double speed, int numLed, int ledOffset) {
     StrobeAnimation strobeAnimation = new StrobeAnimation(r, g, b, w, speed, numLed, ledOffset);
     candle.animate(strobeAnimation);
   }
-
-  public void Donothing() {}
 }
+
+
