@@ -145,14 +145,14 @@ public class RobotContainer {
     // (m_controller.getButton(frc.twilight.Controller.Button.START)))
     // .whileTrue(new PlayMusic(m_swerve, m_arm, m_intake));
 
-        // Override limits
-        new Trigger(() -> (m_controller.getButton(frc.twilight.Controller.Button.RB)))
-          .onTrue(new InstantCommand(() -> m_arm.overrideSoftLimits(false)))
-          .onFalse(new InstantCommand(() -> m_arm.overrideSoftLimits(true)));
+    // Override limits
+    new Trigger(() -> (m_controller.getButton(frc.twilight.Controller.Button.RB)))
+        .onTrue(new InstantCommand(() -> m_arm.overrideSoftLimits(false)))
+        .onFalse(new InstantCommand(() -> m_arm.overrideSoftLimits(true)));
 
-        new Trigger(() -> (Math.abs(m_secondaryController.getLeftY()) > 0.1))
+    new Trigger(() -> (Math.abs(m_secondaryController.getLeftY()) > 0.1))
         .whileTrue(new InstantCommand(() -> m_arm.changeShoulderAngle(10)));
-    
+
     new Trigger(() -> (m_controller.getButton(frc.twilight.Controller.Button.BACK)))
         .whileTrue(new RunCommand(() -> m_arm.zeroWrist()))
         .whileTrue(new RunCommand(() -> m_arm.zeroShoulder()));
