@@ -1,103 +1,128 @@
 package frc.twilight.swerve.vectors;
 
+import frc.twilight.helpfulThings.SlewRateLimiter;
 import frc.twilight.swerve.config.GeneralConfig;
 
 public class DriveVector {
-    // Forward/backward velocity m/s
-    private double fwd;
-    // Left/right velocity m/s
-    private double str;
-    // Rotational velocity deg/s
-    private double rcw;
+  // Forward/backward velocity m/s
+  private double fwd;
+  // Left/right velocity m/s
+  private double str;
+  // Rotational velocity deg/s
+  private double rcw;
 
-    public DriveVector(double fwd, double str, double rcw) {
-        this.fwd = fwd;
-        this.str = str;
-        this.rcw = rcw;
+  private static SlewRateLimiter fwdLimiter =
+      new SlewRateLimiter(GeneralConfig.DT_MAX_ACCEL.getValue());
+  private static SlewRateLimiter strLimiter =
+      new SlewRateLimiter(GeneralConfig.DT_MAX_ACCEL.getValue());
+  private static SlewRateLimiter rcwLimiter =
+      new SlewRateLimiter(GeneralConfig.DT_MAX_ROT_ACCEL.getValue());
+
+  public DriveVector(double fwd, double str, double rcw) {
+    this.fwd = fwd;
+    this.str = str;
+    this.rcw = rcw;
+  }
+
+  public double getFwd() {
+    return fwd;
+  }
+
+  public double getStr() {
+    return str;
+  }
+
+  public double getRcw() {
+    return rcw;
+  }
+
+  public void setFwd(double fwd) {
+    this.fwd = fwd;
+  }
+
+  public void setStr(double str) {
+    this.str = str;
+  }
+
+  public void setRcw(double rcw) {
+    this.rcw = rcw;
+  }
+
+  public DriveVector zeroDirection(double facing) {
+    double fwdOut =
+        (fwd * Math.cos(Math.toRadians(facing))) + (str * Math.sin(Math.toRadians(facing)));
+    double strOut =
+        (str * Math.cos(Math.toRadians(facing))) - (fwd * Math.sin(Math.toRadians(facing)));
+
+    fwd = fwdOut;
+    str = strOut;
+
+    return this;
+  }
+
+  public DriveVector maxVel() {
+    if (Math.abs(fwd) > GeneralConfig.DT_MAX_VEL.getValue()) {
+      double ratio = GeneralConfig.DT_MAX_VEL.getValue() / Math.abs(fwd);
+
+      fwd *= ratio;
+      str *= ratio;
     }
 
-    public double getFwd() {
-        return fwd;
+    if (Math.abs(str) > GeneralConfig.DT_MAX_VEL.getValue()) {
+      double ratio = GeneralConfig.DT_MAX_VEL.getValue() / Math.abs(str);
+
+      fwd *= ratio;
+      str *= ratio;
     }
 
-    public double getStr() {
-        return str;
+    if (rcw > GeneralConfig.DT_MAX_ROT_VEL.getValue()) {
+      rcw = GeneralConfig.DT_MAX_ROT_VEL.getValue();
+    } else if (rcw < -GeneralConfig.DT_MAX_ROT_VEL.getValue()) {
+      rcw = -GeneralConfig.DT_MAX_ROT_VEL.getValue();
     }
 
-    public double getRcw() {
-        return rcw;
+    return this;
+  }
+
+  public DriveVector maxVel(double maxVel, double maxRotVel) {
+    if (Math.abs(fwd) > maxVel) {
+      double ratio = maxVel / Math.abs(fwd);
+
+      fwd *= ratio;
+      str *= ratio;
     }
 
-    public void setFwd(double fwd) {
-        this.fwd = fwd;
+    if (Math.abs(str) > maxVel) {
+      double ratio = maxVel / Math.abs(str);
+
+      fwd *= ratio;
+      str *= ratio;
     }
 
-    public void setStr(double str) {
-        this.str = str;
+    if (rcw > maxRotVel) {
+      rcw = maxRotVel;
+    } else if (rcw < -maxRotVel) {
+      rcw = -maxRotVel;
     }
 
-    public void setRcw(double rcw) {
-        this.rcw = rcw;
-    }
+    return this;
+  }
 
-    public void zeroDirection(double facing) {
-        double fwdOut = (fwd * Math.cos(Math.toRadians(facing))) + (str * Math.sin(Math.toRadians(facing)));
-        double strOut = (str * Math.cos(Math.toRadians(facing))) - (fwd * Math.sin(Math.toRadians(facing)));
+  public DriveVector maxAccel() {
+    fwdLimiter.setRateLimit(GeneralConfig.DT_MAX_ACCEL.getValue());
+    strLimiter.setRateLimit(GeneralConfig.DT_MAX_ACCEL.getValue());
+    rcwLimiter.setRateLimit(GeneralConfig.DT_MAX_ROT_ACCEL.getValue());
 
-        fwd = fwdOut;
-        str = strOut;
-    }
+    fwd = fwdLimiter.calculate(fwd);
+    str = strLimiter.calculate(str);
+    rcw = rcwLimiter.calculate(rcw);
 
-    public void controlVel() {
-        if (GeneralConfig.DT_VEL_CONTROL_ENABLE) {
-            if (fwd > GeneralConfig.DT_MAX_VEL) {
-                fwd = GeneralConfig.DT_MAX_VEL;
-            } else if (fwd < -GeneralConfig.DT_MAX_VEL) {
-                fwd = -GeneralConfig.DT_MAX_VEL;
-            }
+    return this;
+  }
 
-            if (str > GeneralConfig.DT_MAX_VEL) {
-                str = GeneralConfig.DT_MAX_VEL;
-            } else if (str < -GeneralConfig.DT_MAX_VEL) {
-                str = -GeneralConfig.DT_MAX_VEL;
-            }
-        }
-
-        if (GeneralConfig.DT_ROT_VEL_CONTROL_ENABLE) {
-            if (rcw > GeneralConfig.DT_MAX_ROT_VEL) {
-                rcw = GeneralConfig.DT_MAX_ROT_VEL;
-            } else if (rcw < -GeneralConfig.DT_MAX_ROT_VEL) {
-                rcw = -GeneralConfig.DT_MAX_ROT_VEL;
-            }
-        }
-    }
-
-    public void controlAccel(DriveVector current) {
-        if (GeneralConfig.DT_ACCEL_CONTROL_ENABLE) {
-            double fwdDiff = fwd - current.getFwd() / 0.02;
-            double strDiff = str - current.getStr() / 0.02;
-
-            if (fwdDiff > GeneralConfig.DT_MAX_ACCEL) {
-                fwd = current.getFwd() + GeneralConfig.DT_MAX_ACCEL;
-            } else if (fwdDiff < -GeneralConfig.DT_MAX_ACCEL) {
-                fwd = current.getFwd() - GeneralConfig.DT_MAX_ACCEL;
-            }
-
-            if (strDiff > GeneralConfig.DT_MAX_ACCEL) {
-                str = current.getStr() + GeneralConfig.DT_MAX_ACCEL;
-            } else if (strDiff < -GeneralConfig.DT_MAX_ACCEL) {
-                str = current.getStr() - GeneralConfig.DT_MAX_ACCEL;
-            }
-        }
-
-        if (GeneralConfig.DT_ROT_ACCEL_CONTROL_ENABLE) {
-            double rcwDiff = rcw - current.getRcw();
-
-            if (rcwDiff > GeneralConfig.DT_MAX_ROT_ACCEL) {
-                rcw = current.getRcw() + GeneralConfig.DT_MAX_ROT_ACCEL;
-            } else if (rcwDiff < -GeneralConfig.DT_MAX_ROT_ACCEL) {
-                rcw = current.getRcw() - GeneralConfig.DT_MAX_ROT_ACCEL;
-            }
-        }
-    }
+  public static void resetAccel() {
+    fwdLimiter.reset(0);
+    strLimiter.reset(0);
+    rcwLimiter.reset(0);
+  }
 }
