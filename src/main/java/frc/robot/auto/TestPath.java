@@ -7,9 +7,6 @@ import frc.twilight.swerve.vectors.Position;
 
 public class TestPath extends SequentialCommandGroup {
   public TestPath(Swerve swerve) {
-    addCommands(
-      new GoToCommand(swerve, new Position(1, 1, 0))
-    );
-       
+    addCommands(new GoToCommand(swerve, new Position(1, 1, 0)));
   }
 }
