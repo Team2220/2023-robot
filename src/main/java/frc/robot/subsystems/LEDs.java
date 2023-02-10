@@ -50,34 +50,37 @@ public class LEDs extends SubsystemBase {
     this.systemState = newsystemState;
 
     switch (newsystemState) {
-      case FULL_LEDS: {
-        setSolidColor();
-      }
+      case FULL_LEDS:
+        {
+          setSolidColor();
+        }
         break;
 
-      case DRIVER_STATION_DISCONNECTED: {
+      case DRIVER_STATION_DISCONNECTED:
+        {
+          setPurple();
+        }
 
-        setPurple();
-
-      }
-
-      case RAINBOW_ANIMATION: {
-        setLEDRainAnimationFast();
-      }
+      case RAINBOW_ANIMATION:
+        {
+          setLEDRainAnimationFast();
+        }
         break;
-      case STROBE_ANIMATION: {
-        setLEDStrobeAnimation(0, 0, 0, 0, m_lastBrownedOutTime, 0, 0);
-      }
+      case STROBE_ANIMATION:
+        {
+          setLEDStrobeAnimation(0, 0, 0, 0, m_lastBrownedOutTime, 0, 0);
+        }
         break;
 
-      case BROWNOUT: {
-        setBrown();
+      case BROWNOUT:
+        {
+          setBrown();
+        }
 
-      }
-
-      case OFF: {
-        setOffLEDs();
-      }
+      case OFF:
+        {
+          setOffLEDs();
+        }
         break;
     }
   }
@@ -88,30 +91,32 @@ public class LEDs extends SubsystemBase {
     candle.configAllSettings(config);
   }
 
- private void switchDesieredState() {
+  private void switchDesieredState() {
 
     switch (desieredState) {
-
-      case RAINBOW_ANIMATION: {
-        transitionSystemState(SystemState.RAINBOW_ANIMATION);
-      }
+      case RAINBOW_ANIMATION:
+        {
+          transitionSystemState(SystemState.RAINBOW_ANIMATION);
+        }
         break;
-      case FULL_LEDS: {
-        transitionSystemState(SystemState.FULL_LEDS);
-      }
-        break;
-
-      case OFF: {
-        transitionSystemState(SystemState.OFF);
-      }
+      case FULL_LEDS:
+        {
+          transitionSystemState(SystemState.FULL_LEDS);
+        }
         break;
 
-      case STROBE_ANIMATION: {
-        transitionSystemState(SystemState.STROBE_ANIMATION);
-      }
+      case OFF:
+        {
+          transitionSystemState(SystemState.OFF);
+        }
+        break;
+
+      case STROBE_ANIMATION:
+        {
+          transitionSystemState(SystemState.STROBE_ANIMATION);
+        }
         break;
     }
-
   }
 
   @Override
@@ -130,48 +135,52 @@ public class LEDs extends SubsystemBase {
     }
 
     switch (systemState) {
-      case DRIVER_STATION_DISCONNECTED: {
-        if (Timer.getFPGATimestamp() > m_lastDisconectTime + 5) {
-          switchDesieredState();
+      case DRIVER_STATION_DISCONNECTED:
+        {
+          if (Timer.getFPGATimestamp() > m_lastDisconectTime + 5) {
+            switchDesieredState();
+          }
         }
-      }
         break;
 
-      case BROWNOUT: {
-        if (Timer.getFPGATimestamp() > m_lastBrownedOutTime + 5) {
-          switchDesieredState();
+      case BROWNOUT:
+        {
+          if (Timer.getFPGATimestamp() > m_lastBrownedOutTime + 5) {
+            switchDesieredState();
+          }
         }
-      }
         break;
 
-      case FULL_LEDS: {
-      }
+      case FULL_LEDS:
+        {
+        }
         break;
 
-      case OFF: {
-      }
+      case OFF:
+        {
+        }
         break;
 
-      case RAINBOW_ANIMATION: {
-      }
+      case RAINBOW_ANIMATION:
+        {
+        }
         break;
-      case STROBE_ANIMATION: {
-      }
+      case STROBE_ANIMATION:
+        {
+        }
         break;
     }
-
   }
 
   // private void setLEDRainAnimation() {
 
   //   RainbowAnimation rainbowAnim = new RainbowAnimation(1, 0.3, 164);
-   //   candle.animate(rainbowAnim);
-// }
+  //   candle.animate(rainbowAnim);
+  // }
 
-private void setPurple() {
+  private void setPurple() {
 
     candle.setLEDs(0, 0, 0, 0, 0, 0);
-
   }
 
   private void setLEDRainAnimationFast() {
@@ -192,7 +201,6 @@ private void setPurple() {
   private void setBrown() {
 
     candle.setLEDs(100, 50, 0, 0, 0, 164);
-
   }
 
   private void setLEDStrobeAnimation(
@@ -201,5 +209,3 @@ private void setPurple() {
     candle.animate(strobeAnimation);
   }
 }
-
-
