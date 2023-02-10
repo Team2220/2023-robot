@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import frc.robot.auto.TestPath;
 import frc.robot.commands.Arm.ArmPosition;
 import frc.robot.commands.Arm.ShoulderPercentOutput;
 import frc.robot.commands.Arm.WristPercentOutput;
@@ -151,7 +152,7 @@ public class RobotContainer {
 
         new Trigger(() -> (Math.abs(m_secondaryController.getLeftY()) > 0.1))
         .whileTrue(new InstantCommand(() -> m_arm.changeShoulderAngle(10)));
-    }
+    
     new Trigger(() -> (m_controller.getButton(frc.twilight.Controller.Button.BACK)))
         .whileTrue(new RunCommand(() -> m_arm.zeroWrist()))
         .whileTrue(new RunCommand(() -> m_arm.zeroShoulder()));

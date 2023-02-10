@@ -9,11 +9,11 @@ import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.motorcontrol.can.TalonFXConfiguration;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants;
+import frc.robot.Constants.IntakeConfig;
 
 public class Intake extends SubsystemBase {
-  private TalonFX left = new TalonFX(Constants.INTAKE_LEFT_TALONFX);
-  private TalonFX right = new TalonFX(Constants.INTAKE_RIGHT_TALONFX);
+  private TalonFX left = new TalonFX(IntakeConfig.INTAKE_LEFT_TALONFX);
+  private TalonFX right = new TalonFX(IntakeConfig.INTAKE_RIGHT_TALONFX);
 
   public Intake() {
     left.configAllSettings(new TalonFXConfiguration());
@@ -22,8 +22,8 @@ public class Intake extends SubsystemBase {
     left.configVoltageCompSaturation(10);
     right.configVoltageCompSaturation(10);
 
-    left.setInverted(Constants.INTAKE_LEFT_INVERTED);
-    right.setInverted(Constants.INTAKE_RIGHT_INVERTED);
+    left.setInverted(IntakeConfig.INTAKE_LEFT_INVERTED);
+    right.setInverted(IntakeConfig.INTAKE_RIGHT_INVERTED);
 
     StatorCurrentLimitConfiguration statorConfig = new StatorCurrentLimitConfiguration();
     statorConfig.enable = true;

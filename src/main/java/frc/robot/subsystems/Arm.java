@@ -54,7 +54,6 @@ public class Arm extends SubsystemBase {
     private double lastWristAngle = 0;
     private double lastShoulderAngle = 0;
 
-    public void updatePID() {
   /** Config Objects for motor controllers */
   TalonFXConfiguration wristConfig = new TalonFXConfiguration();
 
@@ -214,7 +213,7 @@ public class Arm extends SubsystemBase {
       case MANUAL:
     }
   }
-private double hfkehfasmygh(double angle, double gearRatio){
+private double degreesPerSecondToEncoderTicks(double angle, double gearRatio){
 double gfx =((angle / 360.0) * gearRatio) * ArmConfig.TALONFX_ENCODER_TICKS * 1/10;
 return gfx;
  }
@@ -240,10 +239,13 @@ return gfx;
   public void setShoulderPercentOutput(double value) {
     value = shoulderAccel.calculate(value);
 
+    shoulder.set(TalonFXControlMode.PercentOutput, value);
+  }
+
     public void setWristAngle(double angle) {
         lastWristAngle = angle;
        double posValue = anglesToWristSensorPosition(angle);
-    shoulder.set(TalonFXControlMode.PercentOutput, value);
+    shoulder.set(TalonFXControlMode.Position, posValue);
   }
 
     public void setShoulderAngle(double angle) {
@@ -255,22 +257,10 @@ return gfx;
     public void changeShoulderAngle(double amount) {
         setShoulderAngle(lastShoulderAngle+amount);
     }
-    
+
     public void changeWristAngle(double amount) {
         setWristAngle(lastWristAngle+amount);
     }
-
-    public double getShoulderPosition() {
-        return shoulderEncoder.getAbsolutePosition() - Constants.SHOULDER_ENCODER_OFFSET;
-    }
-    System.out.println("Wrist Pos Value = " + posValue);
-    wrist.set(TalonFXControlMode.Position, posValue);
-  }
-
-  public void setShoulderAngle(double angle) {
-    double posValue = anglesToShoulderSensorPosition(angle);
-    shoulder.set(TalonFXControlMode.Position, posValue);
-  }
 
   public double getShoulderPosition() {
     return shoulderEncoder.getAbsolutePosition() - ArmConfig.SHOULDER_ENCODER_OFFSET;
