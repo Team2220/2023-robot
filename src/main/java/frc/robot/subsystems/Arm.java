@@ -9,13 +9,14 @@ import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.motorcontrol.can.TalonFXConfiguration;
 
-import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
+import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ArmConfig;
+import frc.robot.commands.Arm.SetArmState;
 import frc.twilight.tunables.TunableDouble;
 
 public class Arm extends SubsystemBase {
@@ -28,9 +29,6 @@ public class Arm extends SubsystemBase {
   ShuffleboardTab arm = Shuffleboard.getTab("arm");
   GenericEntry shoulderSB = arm.add("shoulder angle", 0).getEntry();
   GenericEntry wristSB = arm.add("wrist angle", 0).getEntry();
-
-  private SlewRateLimiter shoulderAccel = new SlewRateLimiter(2);
-  private SlewRateLimiter wristAccel = new SlewRateLimiter(2);
 
   private final boolean tunableDoubleEnabled = true;
 
@@ -141,9 +139,6 @@ public class Arm extends SubsystemBase {
         getShoulderPosition() * (ArmConfig.SHOULDER_GEAR_RATIO) * (ArmConfig.TALONFX_ENCODER_TICKS);
     shoulder.setSelectedSensorPosition(shoulderOffset);
 
-    wristAccel.reset(0);
-    shoulderAccel.reset(0);
-
     shoulder.configForwardSoftLimitEnable(true);
     shoulder.configForwardSoftLimitThreshold(
         anglesToShoulderSensorPosition(ArmConfig.SHOULDER_FORWARD_LIMIT));
@@ -157,6 +152,8 @@ public class Arm extends SubsystemBase {
     wrist.configReverseSoftLimitEnable(true);
     wrist.configReverseSoftLimitThreshold(
         anglesToWristSensorPosition(ArmConfig.WRIST_REVERSE_LIMIT));
+
+    setUpTestCommands();
   }
 
   public void overrideSoftLimits(boolean enabled) {
@@ -186,10 +183,7 @@ public class Arm extends SubsystemBase {
     HIGH_CUBE_NODE,
     MID_CONE_NODE,
     HIGH_CONE_NODE,
-    MANUAL;
   }
-
-  private ArmStates state = ArmStates.MANUAL;
 
   /** arm states */
   public void setArmState(ArmStates newState) {
@@ -209,7 +203,6 @@ public class Arm extends SubsystemBase {
       case HIGH_CONE_NODE:
         setPosition(15, 55);
         break;
-      case MANUAL:
     }
   }
 
@@ -232,21 +225,17 @@ public class Arm extends SubsystemBase {
   }
 
   public void setWristPercentOutput(double value) {
-    value = wristAccel.calculate(value);
-
     wrist.set(TalonFXControlMode.PercentOutput, value);
   }
 
   public void setShoulderPercentOutput(double value) {
-    value = shoulderAccel.calculate(value);
-
     shoulder.set(TalonFXControlMode.PercentOutput, value);
   }
 
   public void setWristAngle(double angle) {
     lastWristAngle = angle;
     double posValue = anglesToWristSensorPosition(angle);
-    shoulder.set(TalonFXControlMode.Position, posValue);
+    wrist.set(TalonFXControlMode.Position, posValue);
   }
 
   public void setShoulderAngle(double angle) {
@@ -271,10 +260,21 @@ public class Arm extends SubsystemBase {
     return wristEncoder.getAbsolutePosition() - ArmConfig.WRIST_ENCODER_OFFSET;
   }
 
+  public void setUpTestCommands() {
+    arm.add(ArmStates.HIGH_CONE_NODE.name(), new SetArmState(ArmStates.HIGH_CONE_NODE, this));
+  }
+
   @Override
   public void periodic() {
     shoulderSB.setDouble(getShoulderPosition());
     wristSB.setDouble(getWristPosition());
+    if (!RobotController.isSysActive()) {
+      double currentWristPosition = wrist.getSelectedSensorPosition();
+      double currentShoulderPosition = shoulder.getSelectedSensorPosition();
+
+      wrist.set(TalonFXControlMode.Position, currentWristPosition);
+      shoulder.set(TalonFXControlMode.Position, currentShoulderPosition);
+    }
     updatePID();
   }
 

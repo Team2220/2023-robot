@@ -12,43 +12,36 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.IntakeConfig;
 
 public class Intake extends SubsystemBase {
-  private TalonFX left = new TalonFX(IntakeConfig.INTAKE_LEFT_TALONFX);
-  private TalonFX right = new TalonFX(IntakeConfig.INTAKE_RIGHT_TALONFX);
+  private TalonFX intake = new TalonFX(IntakeConfig.INTAKE_TALONFX);
 
   public Intake() {
-    left.configAllSettings(new TalonFXConfiguration());
-    right.configAllSettings(new TalonFXConfiguration());
+    intake.configAllSettings(new TalonFXConfiguration());
 
-    left.configVoltageCompSaturation(10);
-    right.configVoltageCompSaturation(10);
+    intake.configVoltageCompSaturation(10);
 
-    left.setInverted(IntakeConfig.INTAKE_LEFT_INVERTED);
-    right.setInverted(IntakeConfig.INTAKE_RIGHT_INVERTED);
+    intake.setInverted(IntakeConfig.INTAKE_LEFT_INVERTED);
 
     StatorCurrentLimitConfiguration statorConfig = new StatorCurrentLimitConfiguration();
     statorConfig.enable = true;
     statorConfig.currentLimit = 10;
-    right.configStatorCurrentLimit(statorConfig);
-    left.configStatorCurrentLimit(statorConfig);
+    intake.configStatorCurrentLimit(statorConfig);
 
     SupplyCurrentLimitConfiguration supplyConfig = new SupplyCurrentLimitConfiguration();
     supplyConfig.enable = true;
     supplyConfig.currentLimit = 10;
-    right.configSupplyCurrentLimit(supplyConfig);
-    left.configSupplyCurrentLimit(supplyConfig);
+    intake.configSupplyCurrentLimit(supplyConfig);
 
-    right.follow(left);
+
   }
 
   public void setPercentOutput(double value) {
-    right.set(TalonFXControlMode.PercentOutput, value);
+    intake.set(TalonFXControlMode.PercentOutput, value);
   }
 
   public ArrayList<TalonFX> geTalonFXs() {
 
     ArrayList<TalonFX> musicList = new ArrayList<>();
-    musicList.add(left);
-    musicList.add(right);
+    musicList.add(intake);
     return musicList;
   }
 }
