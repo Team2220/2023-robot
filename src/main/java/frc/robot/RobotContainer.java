@@ -161,6 +161,10 @@ public class RobotContainer {
                 .whileTrue(new RunCommand(() -> m_arm.zeroWrist()))
                 .whileTrue(new RunCommand(() -> m_arm.zeroShoulder()));
 
+        new Trigger(() -> (m_controller.getButton(frc.twilight.Controller.Button.BACK)))
+                .whileTrue(new RunCommand(() -> m_arm.zeroWrist()))
+                .whileTrue(new RunCommand(() -> m_arm.zeroShoulder()));
+
         new Trigger(() -> m_controller.getButtonPressed(Controller.Button.START))
                 .onTrue(new ResetGyro(m_swerve));
 
