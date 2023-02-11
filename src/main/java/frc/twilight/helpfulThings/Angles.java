@@ -18,26 +18,33 @@ public class Angles {
     double angle = current.getAngle();
     double angleNew = set.getAngle();
 
-    int angleRevo = (int) (angle / 360);
-
-    angle %= 360;
-    angleNew %= 360;
+    angleNew = flipAround(angle, angleNew);
 
     double velNew = set.getVelocity();
 
     double change = angle - angleNew;
 
-    if (Math.abs(change) > 90 && Math.abs(change) < 270) {
+    if (Math.abs(change) > 90) {
       angleNew += 180;
       velNew = -velNew;
-    } else if (change > 270) {
-      angleNew += 360;
-    } else if (change < -270) {
-      angleNew -= 360;
     }
+
+    return new WheelVector(velNew, angleNew);
+  }
+
+  public static double flipAround(double angle, double angleNew) {
+    int angleRevo = (int) (angle / 360);
+
+    angle %= 360;
+    angleNew %= 360;
+
+    double change = angle - angleNew;
+
+    if (change > 180) angleNew += 360;
+    else if (change < -180) angleNew -= 360;
 
     angleNew += 360 * angleRevo;
 
-    return new WheelVector(velNew, angleNew);
+    return angleNew;
   }
 }

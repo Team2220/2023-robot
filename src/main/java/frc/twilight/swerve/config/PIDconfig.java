@@ -25,7 +25,7 @@ public class PIDconfig {
 
   // Autonomous PID constants
   public static final TunableDouble DT_AUTO_P =
-      new TunableDouble("DT_AUTO_P", 2, SHUFFLEBOARD_VALUES_ENABLED).setSpot(0, 2);
+      new TunableDouble("DT_AUTO_P", 3, SHUFFLEBOARD_VALUES_ENABLED).setSpot(0, 2);
   public static final TunableDouble DT_AUTO_I =
       new TunableDouble("DT_AUTO_I", 0.01, SHUFFLEBOARD_VALUES_ENABLED).setSpot(1, 2);
   public static final TunableDouble DT_AUTO_D =
@@ -33,19 +33,19 @@ public class PIDconfig {
 
   // Gyro autonomous PID constants
   public static final TunableDouble DT_AUTO_ROT_P =
-      new TunableDouble("DT_AUTO_ROT_P", 4.5, SHUFFLEBOARD_VALUES_ENABLED).setSpot(0, 3);
+      new TunableDouble("DT_AUTO_ROT_P", 4.7, SHUFFLEBOARD_VALUES_ENABLED).setSpot(0, 3);
   public static final TunableDouble DT_AUTO_ROT_I =
-      new TunableDouble("DT_AUTO_ROT_I", 0.3, SHUFFLEBOARD_VALUES_ENABLED).setSpot(1, 3);
+      new TunableDouble("DT_AUTO_ROT_I", 0.2, SHUFFLEBOARD_VALUES_ENABLED).setSpot(1, 3);
   public static final TunableDouble DT_AUTO_ROT_D =
-      new TunableDouble("DT_AUTO_ROT_D", 0, SHUFFLEBOARD_VALUES_ENABLED).setSpot(2, 3);
+      new TunableDouble("DT_AUTO_ROT_D", 0.2, SHUFFLEBOARD_VALUES_ENABLED).setSpot(2, 3);
 
   // Gyro velocity PID constants
   public static final TunableDouble DT_GYRO_P =
-      new TunableDouble("DT_GYRO_P", 0, SHUFFLEBOARD_VALUES_ENABLED).setSpot(0, 4);
+      new TunableDouble("DT_GYRO_P", 0.0001, SHUFFLEBOARD_VALUES_ENABLED).setSpot(0, 4);
   public static final TunableDouble DT_GYRO_I =
       new TunableDouble("DT_GYRO_I", 0, SHUFFLEBOARD_VALUES_ENABLED).setSpot(1, 4);
   public static final TunableDouble DT_GYRO_D =
       new TunableDouble("DT_GYRO_D", 0, SHUFFLEBOARD_VALUES_ENABLED).setSpot(2, 4);
   public static final TunableDouble DT_GYRO_F =
-      new TunableDouble("DT_GYRO_F", 0.01, SHUFFLEBOARD_VALUES_ENABLED).setSpot(3, 4);
+      new TunableDouble("DT_GYRO_F", 0.007, SHUFFLEBOARD_VALUES_ENABLED).setSpot(3, 4);
 }
