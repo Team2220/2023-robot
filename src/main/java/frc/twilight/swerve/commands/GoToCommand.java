@@ -127,8 +127,7 @@ public class GoToCommand extends CommandBase {
     double yVel = pidY.calculate(currentPos.getY(), yPos);
     double rotVel = pidRot.calculate(currentPos.getAngle(), rotPos);
 
-    m_subsystem.setDrive(
-        new DriveVector(yVel, xVel, rotVel).maxVel());
+    m_subsystem.setDrive(new DriveVector(yVel, xVel, rotVel).maxVel());
 
     xDone = Math.abs(currentPos.getX() - goalX.position) < movTol;
     yDone = Math.abs(currentPos.getY() - goalY.position) < movTol;

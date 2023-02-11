@@ -17,7 +17,7 @@ public class TunableDouble {
    * @param tunable
    */
   public TunableDouble(String name, double defaultValue, boolean tunable, String tab) {
-    this.defaultValue = defaultValue; 
+    this.defaultValue = defaultValue;
 
     if (tunable) {
       shuffleboardWidget = Shuffleboard.getTab(tab).add(name, defaultValue);
