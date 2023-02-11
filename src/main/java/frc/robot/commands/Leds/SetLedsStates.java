@@ -19,4 +19,10 @@ public class SetLedsStates extends CommandBase {
 
     m_LEDs.setDesieredState(m_DesieredState);
   }
+@Override
+public String getName() {
+  
+  return m_DesieredState.name();
+}
+
 }

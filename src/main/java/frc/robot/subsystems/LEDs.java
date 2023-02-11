@@ -1,20 +1,30 @@
 package frc.robot.subsystems;
 
+import java.util.Map;
+
 import com.ctre.phoenix.led.CANdle;
 import com.ctre.phoenix.led.CANdleConfiguration;
 import com.ctre.phoenix.led.RainbowAnimation;
+import com.ctre.phoenix.led.SingleFadeAnimation;
 import com.ctre.phoenix.led.StrobeAnimation;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.commands.Arm.SetArmState;
+import frc.robot.commands.Leds.SetLedsStates;
 
 public class LEDs extends SubsystemBase {
   private CANdle candle = new CANdle(Constants.LEDS.CANDLE);
   private double m_lastDisconectTime = 0.0;
   private double m_lastBrownedOutTime = 0.0;
+  ShuffleboardTab leds = Shuffleboard.getTab("LEDs");
 
   public enum DesieredState {
     RAINBOW_ANIMATION,
@@ -48,7 +58,7 @@ public class LEDs extends SubsystemBase {
       return;
     }
     this.systemState = newsystemState;
-
+    setOffLEDs();
     switch (newsystemState) {
       case FULL_LEDS: {
         setSolidColor();
@@ -56,7 +66,7 @@ public class LEDs extends SubsystemBase {
         break;
 
       case DRIVER_STATION_DISCONNECTED: {
-        setPurple();
+        setBLue();
       }
         break;
 
@@ -65,7 +75,7 @@ public class LEDs extends SubsystemBase {
       }
         break;
       case STROBE_ANIMATION: {
-        setLEDStrobeAnimation(0, 0, 0, 0, m_lastBrownedOutTime, 0, 0);
+        setLEDStrobeAnimation(98, 56, 50, 0, .5, 164, 0);
       }
         break;
 
@@ -84,6 +94,7 @@ public class LEDs extends SubsystemBase {
 
     CANdleConfiguration config = new CANdleConfiguration();
     candle.configAllSettings(config);
+    setUpTestCommands();
   }
 
   private void switchDesieredState() {
@@ -167,9 +178,10 @@ public class LEDs extends SubsystemBase {
   // candle.animate(rainbowAnim);
   // }
 
-  private void setPurple() {
+  private void setBLue() {
 
-    candle.setLEDs(100, 0, 100, 0, 0, 0);
+  SingleFadeAnimation singleFadeAnimation = new SingleFadeAnimation(0, 0, 100, 0,.5, 164);
+  candle.animate(singleFadeAnimation);
   }
 
   private void setLEDRainAnimationFast() {
@@ -189,7 +201,8 @@ public class LEDs extends SubsystemBase {
 
   private void setBrown() {
 
-    candle.setLEDs(100, 50, 0, 0, 0, 164);
+    StrobeAnimation strobeAnimation = new StrobeAnimation(64, 36, 0, 0, 0.1, 164);
+    candle.animate(strobeAnimation);
   }
 
   private void setLEDStrobeAnimation(
@@ -197,4 +210,26 @@ public class LEDs extends SubsystemBase {
     StrobeAnimation strobeAnimation = new StrobeAnimation(r, g, b, w, speed, numLed, ledOffset);
     candle.animate(strobeAnimation);
   }
+
+  public void setUpTestCommands() {
+    // Arm States
+    ShuffleboardLayout stateLayout = Shuffleboard.getTab("leds")
+        .getLayout("States", BuiltInLayouts.kList)
+        .withSize(2, 3)
+        .withProperties(Map.of("Label position", "HIDDEN"));
+
+    for (DesieredState state : DesieredState.values()) {
+      stateLayout.add(state.name(), new SetLedsStates(state, this));
+    }
+
+    // Everything else
+    ShuffleboardLayout angLayout = Shuffleboard.getTab("leds")
+        .getLayout("Angles", BuiltInLayouts.kGrid)
+        .withSize(2, 3)
+        .withProperties(Map.of("Label position", "TOP"));
+
+    angLayout.addString("DesieredStatew", () -> this.desieredState.name());
+    angLayout.addString("SystemState", () -> this.systemState.name());
+  }
+
 }
