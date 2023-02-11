@@ -87,9 +87,8 @@ public class RobotContainer {
   private void configureButtonBindings() {
     // new Button(m_controller::getAButton).whenPressed(m_swerve::zeroGyro);
 
-
     // Intake Buttons
-    new Trigger(() -> m_controller.getButton(frc.twilight.Controller.Button.UP)) 
+    new Trigger(() -> m_controller.getButton(frc.twilight.Controller.Button.UP))
         .whileTrue(new IntakePercentOutput(0.1, m_intake));
     new Trigger(() -> m_controller.getButton(frc.twilight.Controller.Button.DOWN))
         .whileTrue(new IntakePercentOutput(-0.1, m_intake));

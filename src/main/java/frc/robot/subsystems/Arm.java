@@ -10,7 +10,6 @@ import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.motorcontrol.can.TalonFXConfiguration;
 
-import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
@@ -264,35 +263,46 @@ public class Arm extends SubsystemBase {
 
   public void setUpTestCommands() {
     // Arm States
-    ShuffleboardLayout stateLayout = Shuffleboard.getTab("arm")
-    .getLayout("States", BuiltInLayouts.kList)
-    .withSize(2, 3)
-    .withProperties(Map.of("Label position", "HIDDEN"));
-    
+    ShuffleboardLayout stateLayout =
+        Shuffleboard.getTab("arm")
+            .getLayout("States", BuiltInLayouts.kList)
+            .withSize(2, 3)
+            .withProperties(Map.of("Label position", "HIDDEN"));
+
     for (ArmStates state : ArmStates.values()) {
       stateLayout.add(state.name(), new SetArmState(state, this));
     }
 
     // Test Positions
-    ShuffleboardLayout testPositionLayout = Shuffleboard.getTab("arm")
-    .getLayout("Test Positions", BuiltInLayouts.kList)
-    .withSize(2,3)
-    .withProperties(Map.of("Label position", "HIDDEN"));
+    ShuffleboardLayout testPositionLayout =
+        Shuffleboard.getTab("arm")
+            .getLayout("Test Positions", BuiltInLayouts.kList)
+            .withSize(2, 3)
+            .withProperties(Map.of("Label position", "HIDDEN"));
 
-    testPositionLayout.add("ZeroShoulder", new InstantCommand(() -> zeroShoulder()).withName("ZeroShoulder"));
-    testPositionLayout.add("ZeroWrist", new InstantCommand(() -> zeroWrist()).withName("ZeroWrist"));
-    testPositionLayout.add("Wrist=90", new InstantCommand(() -> setWristAngle(90)).withName("Wrist=90"));
-    testPositionLayout.add("Wrist=0", new InstantCommand(() -> setWristAngle(0)).withName("Wrist=0"));
-    testPositionLayout.add("Wrist=-90", new InstantCommand(() -> setWristAngle(-90)).withName("Wrist=-90"));
-    testPositionLayout.add("Shoulder=0", new InstantCommand(() -> setShoulderAngle(0)).withName("Shoulder=0"));
-    testPositionLayout.add("Shoulder=90", new InstantCommand(() -> setShoulderAngle(90)).withName("Shoulder=90"));
-    testPositionLayout.add("Shoulder=-90", new InstantCommand(() -> setShoulderAngle(-90)).withName("Shoulder=-90"));
-    
+    testPositionLayout.add(
+        "ZeroShoulder", new InstantCommand(() -> zeroShoulder()).withName("ZeroShoulder"));
+    testPositionLayout.add(
+        "ZeroWrist", new InstantCommand(() -> zeroWrist()).withName("ZeroWrist"));
+    testPositionLayout.add(
+        "Wrist=90", new InstantCommand(() -> setWristAngle(90)).withName("Wrist=90"));
+    testPositionLayout.add(
+        "Wrist=0", new InstantCommand(() -> setWristAngle(0)).withName("Wrist=0"));
+    testPositionLayout.add(
+        "Wrist=-90", new InstantCommand(() -> setWristAngle(-90)).withName("Wrist=-90"));
+    testPositionLayout.add(
+        "Shoulder=0", new InstantCommand(() -> setShoulderAngle(0)).withName("Shoulder=0"));
+    testPositionLayout.add(
+        "Shoulder=90", new InstantCommand(() -> setShoulderAngle(90)).withName("Shoulder=90"));
+    testPositionLayout.add(
+        "Shoulder=-90", new InstantCommand(() -> setShoulderAngle(-90)).withName("Shoulder=-90"));
+
     // Everything else
-    ShuffleboardLayout angLayout = Shuffleboard.getTab("arm")
-    .getLayout("Angles", BuiltInLayouts.kGrid)
-    .withSize(2, 3)
-    .withProperties(Map.of("Label position", "TOP"));
+    ShuffleboardLayout angLayout =
+        Shuffleboard.getTab("arm")
+            .getLayout("Angles", BuiltInLayouts.kGrid)
+            .withSize(2, 3)
+            .withProperties(Map.of("Label position", "TOP"));
 
     angLayout.addDouble("shoulder angle", this::getShoulderPosition);
     angLayout.addDouble("wrist angle", this::getWristPosition);
