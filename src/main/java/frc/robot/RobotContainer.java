@@ -15,9 +15,12 @@ import frc.robot.commands.Arm.ArmPosition;
 import frc.robot.commands.Arm.ShoulderPercentOutput;
 import frc.robot.commands.Arm.WristPercentOutput;
 import frc.robot.commands.Intake.IntakePercentOutput;
+import frc.robot.commands.Leds.SetLedsStates;
+// import frc.robot.commands.Leds.RainbowLeds;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.LEDs;
+import frc.robot.subsystems.LEDs.DesieredState;
 import frc.twilight.swerve.subsystems.Swerve;
 import frc.twilight.Controller;
 import frc.twilight.Limelight;
@@ -111,6 +114,8 @@ public class RobotContainer {
         .whileTrue(new IntakePercentOutput(-0.1, m_intake));
     new Trigger(() -> m_controller.getButton(frc.twilight.Controller.Button.RIGHT))
         .whileTrue(new ArmPosition(45, 45, m_arm));
+    new Trigger(() -> m_controller.getButton(frc.twilight.Controller.Button.LEFT))
+         .whileTrue(new SetLedsStates(DesieredState.RAINBOW_ANIMATION,m_leds));
 
     // Arm Buttons
     // Wrist
@@ -164,6 +169,11 @@ public class RobotContainer {
 
     new Trigger(() -> m_controller.getButtonPressed(Controller.Button.START))
         .onTrue(new ResetGyro(m_swerve));
+
+    // Override limits
+    new Trigger(() -> (m_controller.getButton(frc.twilight.Controller.Button.RB)))
+        .onTrue(new InstantCommand(() -> m_arm.overrideSoftLimits(false)))
+        .onFalse(new InstantCommand(() -> m_arm.overrideSoftLimits(true)));
   }
 
   public Command getTeleopCommand() {
