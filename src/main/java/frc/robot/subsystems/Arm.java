@@ -209,12 +209,19 @@ public class Arm extends SubsystemBase {
         break;
     }
   }
+<<<<<<< Updated upstream
 
   private double degreesPerSecondToEncoderTicks(double angle, double gearRatio) {
     double gfx = ((angle / 360.0) * gearRatio) * ArmConfig.TALONFX_ENCODER_TICKS * 1 / 10;
     return gfx;
   }
 
+=======
+private double hfkehfasmygh(double angle, double gearRatio){
+double gfx =((angle / 360.0) * gearRatio) * ArmConfig.TALONFX_ENCODER_TICKS * 1/10;
+return gfx;
+ }
+>>>>>>> Stashed changes
   private void setPosition(double shouldereAng, double wristAng) {
     setShoulderAngle(shouldereAng);
     setWristAngle(wristAng);
