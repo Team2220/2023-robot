@@ -261,7 +261,7 @@ public class Arm extends SubsystemBase {
   }
 
   public void setUpTestCommands() {
-    for (ArmStates state:ArmStates.values()) {
+    for (ArmStates state : ArmStates.values()) {
       arm.add(state.name(), new SetArmState(state, this));
     }
   }
