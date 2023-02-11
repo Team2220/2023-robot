@@ -11,7 +11,6 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.auto.Mobility;
-import frc.robot.auto.TestPath;
 import frc.robot.commands.Arm.ArmPosition;
 import frc.robot.commands.Arm.ShoulderPercentOutput;
 import frc.robot.commands.Arm.WristPercentOutput;
