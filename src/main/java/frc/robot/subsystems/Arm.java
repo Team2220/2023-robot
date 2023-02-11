@@ -261,7 +261,9 @@ public class Arm extends SubsystemBase {
   }
 
   public void setUpTestCommands() {
-    arm.add(ArmStates.HIGH_CONE_NODE.name(), new SetArmState(ArmStates.HIGH_CONE_NODE, this));
+    for (ArmStates state:ArmStates.values()) {
+      arm.add(state.name(), new SetArmState(state, this));
+    }
   }
 
   @Override
