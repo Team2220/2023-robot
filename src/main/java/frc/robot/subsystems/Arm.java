@@ -113,7 +113,7 @@ public class Arm extends SubsystemBase {
     wrist.configSupplyCurrentLimit(supplyConfig);
 
     StatorCurrentLimitConfiguration config = new StatorCurrentLimitConfiguration();
-    config.currentLimit = 15;
+    config.currentLimit = 3;
     config.enable = true;
     shoulder.configStatorCurrentLimit(config);
     wrist.configStatorCurrentLimit(config);
