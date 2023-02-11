@@ -14,7 +14,6 @@ import frc.robot.commands.Arm.ArmPosition;
 import frc.robot.commands.Arm.ShoulderPercentOutput;
 import frc.robot.commands.Arm.WristPercentOutput;
 import frc.robot.commands.Intake.IntakePercentOutput;
-import frc.robot.commands.Leds.RainbowLeds;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.LEDs;
@@ -109,8 +108,6 @@ public class RobotContainer {
         .whileTrue(new IntakePercentOutput(-0.1, m_intake));
     new Trigger(() -> m_controller.getButton(frc.twilight.Controller.Button.RIGHT))
         .whileTrue(new ArmPosition(45, 45, m_arm));
-    new Trigger(() -> m_controller.getButton(frc.twilight.Controller.Button.LEFT))
-        .whileTrue(new RainbowLeds(m_leds));
 
     // Arm Buttons
     // Wrist
