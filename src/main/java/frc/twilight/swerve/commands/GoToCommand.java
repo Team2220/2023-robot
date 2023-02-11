@@ -151,6 +151,10 @@ public class GoToCommand extends CommandBase {
     rotTol = rot;
   }
 
+  // public void endPos(double x, double y, double rot) {
+    
+  // }
+
   public void endVel(double xVel, double yVel, double rotVel) {
     goalX.velocity = xVel;
     goalY.velocity = yVel;

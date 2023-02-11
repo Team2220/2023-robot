@@ -15,7 +15,7 @@ public final class GeneralConfig {
   public static final double DT_START_X = 0;
   public static final double DT_START_Y = 0;
 
-  public static final boolean SWERVE_SHUFFLEBOARD_ENABLED = false;
+  public static final boolean SWERVE_SHUFFLEBOARD_ENABLED = true;
 
   // Velocity restrictions m/s
   public static final TunableDouble DT_MAX_VEL =
@@ -23,16 +23,15 @@ public final class GeneralConfig {
 
   // Acceleration restrictions m/s2
   public static final TunableDouble DT_MAX_ACCEL =
-      new TunableDouble("DT_MAX_ACCEL", 30, SWERVE_SHUFFLEBOARD_ENABLED, "Swerve").setSpot(5, 0);
+      new TunableDouble("DT_MAX_ACCEL", 10, SWERVE_SHUFFLEBOARD_ENABLED, "Swerve").setSpot(5, 0);
 
   // Rotational velocity restrictions deg/s
   public static final TunableDouble DT_MAX_ROT_VEL =
-      new TunableDouble("DT_MAX_ROT_VEL", 90, SWERVE_SHUFFLEBOARD_ENABLED, "Swerve").setSpot(4, 1);
+      new TunableDouble("DT_MAX_ROT_VEL", 180, SWERVE_SHUFFLEBOARD_ENABLED, "Swerve").setSpot(4, 1);
 
   // Rotational acceleration restrictions deg/s2
-  public static final TunableDouble DT_MAX_ROT_ACCEL =
-      new TunableDouble("DT_MAX_ROT_ACCEL", 180, SWERVE_SHUFFLEBOARD_ENABLED, "Swerve")
-          .setSpot(5, 1);
+  public static final TunableDouble DT_MAX_ROT_ACCEL = 
+      new TunableDouble("DT_MAX_ROT_ACCEL", 360, SWERVE_SHUFFLEBOARD_ENABLED, "Swerve").setSpot(5, 1);
 
   // Don't touch these plz ty
   public static final double DT_DIAMETER =

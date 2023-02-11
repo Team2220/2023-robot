@@ -38,6 +38,10 @@ public class Swerve extends SubsystemBase {
     swerve.zeroGyro();
   }
 
+  public void setOdo(double x, double y, double rot) {
+    swerve.setOdo(x, y, rot);
+  }
+
   public Position getOdo() {
     return swerve.getOdo();
   }

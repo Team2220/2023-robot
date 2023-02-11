@@ -104,10 +104,12 @@ public class SwerveDrive {
           .addNumber("BR Vel", () -> backRight.get().getVelocity())
           .withPosition(2, 3);
 
-      Shuffleboard.getTab("Swerve").addNumber("X Pos", () -> odoPosition.getX()).withPosition(4, 4);
-      Shuffleboard.getTab("Swerve").addNumber("Y Pos", () -> odoPosition.getY()).withPosition(5, 4);
+      Shuffleboard.getTab("Swerve").addNumber("X Pos", () -> odoPosition.getX()).withPosition(4, 3);
+      Shuffleboard.getTab("Swerve").addNumber("Y Pos", () -> odoPosition.getY()).withPosition(5, 3);
 
-      Shuffleboard.getTab("Swerve").addNumber("Gyro", () -> gyro.getAngle()).withPosition(6, 4);
+      Shuffleboard.getTab("Swerve").addNumber("Gyro", () -> gyro.getAngle()).withPosition(6, 3);
+
+      Shuffleboard.getTab("Swerve").addNumber("Gyro Rate", () -> gyro.getAngleSpeed()).withPosition(7, 3);
     }
   }
 
@@ -146,6 +148,7 @@ public class SwerveDrive {
 
   public void setOdo(double x, double y, double angle) {
     odoPosition = new Position(x, y, angle);
+    gyro.setPosition(angle);
   }
 
   public void updateOdo() {

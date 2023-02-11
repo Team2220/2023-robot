@@ -3,7 +3,7 @@ package frc.twilight.swerve.config;
 import frc.twilight.tunables.TunableDouble;
 
 public class PIDconfig {
-  public static final boolean SHUFFLEBOARD_VALUES_ENABLED = false;
+  public static final boolean SHUFFLEBOARD_VALUES_ENABLED = true;
 
   // PID values for the drive motor
   public static final TunableDouble DT_DRIVE_P =
@@ -33,7 +33,7 @@ public class PIDconfig {
 
   // Gyro autonomous PID constants
   public static final TunableDouble DT_AUTO_ROT_P =
-      new TunableDouble("DT_AUTO_ROT_P", 1.5, SHUFFLEBOARD_VALUES_ENABLED).setSpot(0, 3);
+      new TunableDouble("DT_AUTO_ROT_P", 4.5, SHUFFLEBOARD_VALUES_ENABLED).setSpot(0, 3);
   public static final TunableDouble DT_AUTO_ROT_I =
       new TunableDouble("DT_AUTO_ROT_I", 0.3, SHUFFLEBOARD_VALUES_ENABLED).setSpot(1, 3);
   public static final TunableDouble DT_AUTO_ROT_D =
