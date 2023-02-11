@@ -8,7 +8,21 @@
   },
   "NTProvider": {
     "types": {
-      "/FMSInfo": "FMSInfo"
+      "/FMSInfo": "FMSInfo",
+      "/Shuffleboard/arm/States/HIGH_CONE_NODE": "Command",
+      "/Shuffleboard/arm/States/HIGH_CUBE_NODE": "Command",
+      "/Shuffleboard/arm/States/INTAKE": "Command",
+      "/Shuffleboard/arm/States/MID_CONE_NODE": "Command",
+      "/Shuffleboard/arm/States/MID_CUBE_NODE": "Command",
+      "/Shuffleboard/arm/Test Positions/Shoulder=-90": "Command",
+      "/Shuffleboard/arm/Test Positions/Shoulder=0": "Command",
+      "/Shuffleboard/arm/Test Positions/Shoulder=90": "Command",
+      "/Shuffleboard/arm/Test Positions/Wrist=-90": "Command",
+      "/Shuffleboard/arm/Test Positions/Wrist=0": "Command",
+      "/Shuffleboard/arm/Test Positions/Wrist=90": "Command",
+      "/Shuffleboard/arm/Test Positions/ZeroShoulder": "Command",
+      "/Shuffleboard/arm/Test Positions/ZeroWrist": "Command",
+      "/SmartDashboard/SendableChooser[0]": "String Chooser"
     }
   }
 }

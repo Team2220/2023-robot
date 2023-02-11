@@ -1,7 +1,11 @@
 package frc.twilight.swerve;
 
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.twilight.helpfulThings.Angles;
 import frc.twilight.swerve.config.CANidConfig;
 import frc.twilight.swerve.config.GeneralConfig;
@@ -29,6 +33,8 @@ public class SwerveDrive {
 
   private double odoLastCheck = -1;
   private Position odoPosition;
+
+  private Field2d field = new Field2d();
 
   public SwerveDrive() {
     frontLeft =
@@ -107,6 +113,8 @@ public class SwerveDrive {
       Shuffleboard.getTab("Swerve").addNumber("X Pos", () -> odoPosition.getX()).withPosition(4, 3);
       Shuffleboard.getTab("Swerve").addNumber("Y Pos", () -> odoPosition.getY()).withPosition(5, 3);
 
+      SmartDashboard.putData("Field", field);
+
       Shuffleboard.getTab("Swerve").addNumber("Gyro", () -> gyro.getAngle()).withPosition(6, 3);
 
       Shuffleboard.getTab("Swerve")
@@ -133,10 +141,20 @@ public class SwerveDrive {
     wheelVectors[2] = Angles.optimizeWheel(backRight.get(), wheelVectors[2]);
     wheelVectors[3] = Angles.optimizeWheel(backLeft.get(), wheelVectors[3]);
 
-    frontRight.set(wheelVectors[0]);
-    frontLeft.set(wheelVectors[1]);
-    backRight.set(wheelVectors[2]);
-    backLeft.set(wheelVectors[3]);
+    if (Math.abs(wheelVectors[0].getVelocity()) > 0.02
+        || Math.abs(wheelVectors[1].getVelocity()) > 0.02
+        || Math.abs(wheelVectors[2].getVelocity()) > 0.02
+        || Math.abs(wheelVectors[3].getVelocity()) > 0.02) {
+      frontRight.set(wheelVectors[0]);
+      frontLeft.set(wheelVectors[1]);
+      backRight.set(wheelVectors[2]);
+      backLeft.set(wheelVectors[3]);
+    } else {
+      frontRight.stop();
+      frontLeft.stop();
+      backRight.stop();
+      backLeft.stop();
+    }
   }
 
   public DriveVector getDrive() {
@@ -165,6 +183,8 @@ public class SwerveDrive {
     double angle = gyro.getAngle();
 
     odoPosition = new Position(x, y, angle);
+
+    field.setRobotPose(x, y, new Rotation2d(Units.degreesToRadians(angle)));
   }
 
   public Position getOdo() {
