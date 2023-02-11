@@ -50,37 +50,32 @@ public class LEDs extends SubsystemBase {
     this.systemState = newsystemState;
 
     switch (newsystemState) {
-      case FULL_LEDS:
-        {
-          setSolidColor();
-        }
+      case FULL_LEDS: {
+        setSolidColor();
+      }
         break;
 
-      case DRIVER_STATION_DISCONNECTED:
-        {
-          setPurple();
-        }
-
-      case RAINBOW_ANIMATION:
-        {
-          setLEDRainAnimationFast();
-        }
-        break;
-      case STROBE_ANIMATION:
-        {
-          setLEDStrobeAnimation(0, 0, 0, 0, m_lastBrownedOutTime, 0, 0);
-        }
+      case DRIVER_STATION_DISCONNECTED: {
+        setPurple();
+      }
         break;
 
-      case BROWNOUT:
-        {
-          setBrown();
-        }
+      case RAINBOW_ANIMATION: {
+        setLEDRainAnimationFast();
+      }
+        break;
+      case STROBE_ANIMATION: {
+        setLEDStrobeAnimation(0, 0, 0, 0, m_lastBrownedOutTime, 0, 0);
+      }
+        break;
 
-      case OFF:
-        {
-          setOffLEDs();
-        }
+      case BROWNOUT: {
+        setBrown();
+      }
+        break;
+      case OFF: {
+        setOffLEDs();
+      }
         break;
     }
   }
@@ -94,27 +89,23 @@ public class LEDs extends SubsystemBase {
   private void switchDesieredState() {
 
     switch (desieredState) {
-      case RAINBOW_ANIMATION:
-        {
-          transitionSystemState(SystemState.RAINBOW_ANIMATION);
-        }
+      case RAINBOW_ANIMATION: {
+        transitionSystemState(SystemState.RAINBOW_ANIMATION);
+      }
         break;
-      case FULL_LEDS:
-        {
-          transitionSystemState(SystemState.FULL_LEDS);
-        }
+      case FULL_LEDS: {
+        transitionSystemState(SystemState.FULL_LEDS);
+      }
         break;
 
-      case OFF:
-        {
-          transitionSystemState(SystemState.OFF);
-        }
+      case OFF: {
+        transitionSystemState(SystemState.OFF);
+      }
         break;
 
-      case STROBE_ANIMATION:
-        {
-          transitionSystemState(SystemState.STROBE_ANIMATION);
-        }
+      case STROBE_ANIMATION: {
+        transitionSystemState(SystemState.STROBE_ANIMATION);
+      }
         break;
     }
   }
@@ -135,52 +126,50 @@ public class LEDs extends SubsystemBase {
     }
 
     switch (systemState) {
-      case DRIVER_STATION_DISCONNECTED:
-        {
-          if (Timer.getFPGATimestamp() > m_lastDisconectTime + 5) {
-            switchDesieredState();
-          }
+      case DRIVER_STATION_DISCONNECTED: {
+        if (Timer.getFPGATimestamp() > m_lastDisconectTime + 5) {
+          switchDesieredState();
         }
+      }
         break;
 
-      case BROWNOUT:
-        {
-          if (Timer.getFPGATimestamp() > m_lastBrownedOutTime + 5) {
-            switchDesieredState();
-          }
+      case BROWNOUT: {
+        if (Timer.getFPGATimestamp() > m_lastBrownedOutTime + 5) {
+          switchDesieredState();
         }
+      }
         break;
 
-      case FULL_LEDS:
-        {
-        }
+      case FULL_LEDS: {
+        switchDesieredState();
+      }
         break;
 
-      case OFF:
-        {
-        }
+      case OFF: {
+        switchDesieredState();
+      }
         break;
 
-      case RAINBOW_ANIMATION:
-        {
-        }
+      case RAINBOW_ANIMATION: {
+        switchDesieredState();
+      }
         break;
-      case STROBE_ANIMATION:
-        {
-        }
+      case STROBE_ANIMATION: {
+        switchDesieredState();
+      }
         break;
     }
   }
 
   // private void setLEDRainAnimation() {
 
-  //   RainbowAnimation rainbowAnim = new RainbowAnimation(1, 0.3, 164);
-  //   candle.animate(rainbowAnim);
+  // RainbowAnimation rainbowAnim = new RainbowAnimation(1, 0.3, 164);
+  // candle.animate(rainbowAnim);
   // }
 
   private void setPurple() {
 
-    candle.setLEDs(0, 0, 0, 0, 0, 0);
+    candle.setLEDs(100, 0, 100, 0, 0, 0);
   }
 
   private void setLEDRainAnimationFast() {

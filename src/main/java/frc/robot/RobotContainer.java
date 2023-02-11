@@ -15,9 +15,12 @@ import frc.robot.commands.Arm.ArmPosition;
 import frc.robot.commands.Arm.ShoulderPercentOutput;
 import frc.robot.commands.Arm.WristPercentOutput;
 import frc.robot.commands.Intake.IntakePercentOutput;
+import frc.robot.commands.Leds.SetLedsStates;
+// import frc.robot.commands.Leds.RainbowLeds;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.LEDs;
+import frc.robot.subsystems.LEDs.DesieredState;
 import frc.twilight.swerve.subsystems.Swerve;
 import frc.twilight.Controller;
 import frc.twilight.Limelight;
@@ -84,26 +87,6 @@ public class RobotContainer {
   private void configureButtonBindings() {
     // new Button(m_controller::getAButton).whenPressed(m_swerve::zeroGyro);
 
-    // Arm Position
-
-    new Trigger(() -> m_secondaryController.getButton(frc.twilight.Controller.Button.UP))
-        .whileTrue(new ArmPosition(90, 0, m_arm));
-
-    new Trigger(() -> m_secondaryController.getButton(frc.twilight.Controller.Button.DOWN))
-        .whileTrue(new ArmPosition(-90, 0, m_arm));
-
-    new Trigger(() -> m_secondaryController.getButton(frc.twilight.Controller.Button.RIGHT))
-        .whileTrue(new ArmPosition(0, 0, m_arm));
-
-    new Trigger(() -> m_secondaryController.getButton(frc.twilight.Controller.Button.X))
-        .whileTrue(new ArmPosition(0, 90, m_arm));
-
-    new Trigger(() -> m_secondaryController.getButton(frc.twilight.Controller.Button.Y))
-        .whileTrue(new ArmPosition(0, 0, m_arm));
-
-    new Trigger(() -> m_secondaryController.getButton(frc.twilight.Controller.Button.B))
-        .whileTrue(new ArmPosition(0, -90, m_arm));
-
     // Intake Buttons
     new Trigger(() -> m_controller.getButton(frc.twilight.Controller.Button.UP))
         .whileTrue(new IntakePercentOutput(.75, m_intake));
@@ -111,6 +94,8 @@ public class RobotContainer {
         .whileTrue(new IntakePercentOutput(-.75, m_intake));
     new Trigger(() -> m_controller.getButton(frc.twilight.Controller.Button.RIGHT))
         .whileTrue(new ArmPosition(45, 45, m_arm));
+    new Trigger(() -> m_controller.getButton(frc.twilight.Controller.Button.LEFT))
+        .whileTrue(new SetLedsStates(DesieredState.RAINBOW_ANIMATION, m_leds));
 
     // Arm Buttons
     // Wrist
@@ -158,12 +143,13 @@ public class RobotContainer {
         .whileTrue(
             new RunCommand(() -> m_arm.setWristPercentOutput(m_secondaryController.getRightY())));
 
-    new Trigger(() -> (m_controller.getButton(frc.twilight.Controller.Button.BACK)))
-        .whileTrue(new RunCommand(() -> m_arm.zeroWrist()))
-        .whileTrue(new RunCommand(() -> m_arm.zeroShoulder()));
-
     new Trigger(() -> m_controller.getButtonPressed(Controller.Button.START))
         .onTrue(new ResetGyro(m_swerve));
+
+    // Override limits
+    new Trigger(() -> (m_controller.getButton(frc.twilight.Controller.Button.RB)))
+        .onTrue(new InstantCommand(() -> m_arm.overrideSoftLimits(false)))
+        .onFalse(new InstantCommand(() -> m_arm.overrideSoftLimits(true)));
   }
 
   public Command getTeleopCommand() {

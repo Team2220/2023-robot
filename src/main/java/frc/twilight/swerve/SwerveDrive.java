@@ -133,10 +133,20 @@ public class SwerveDrive {
     wheelVectors[2] = Angles.optimizeWheel(backRight.get(), wheelVectors[2]);
     wheelVectors[3] = Angles.optimizeWheel(backLeft.get(), wheelVectors[3]);
 
-    frontRight.set(wheelVectors[0]);
-    frontLeft.set(wheelVectors[1]);
-    backRight.set(wheelVectors[2]);
-    backLeft.set(wheelVectors[3]);
+    if (Math.abs(wheelVectors[0].getVelocity()) > 0.02
+        || Math.abs(wheelVectors[1].getVelocity()) > 0.02
+        || Math.abs(wheelVectors[2].getVelocity()) > 0.02
+        || Math.abs(wheelVectors[3].getVelocity()) > 0.02) {
+      frontRight.set(wheelVectors[0]);
+      frontLeft.set(wheelVectors[1]);
+      backRight.set(wheelVectors[2]);
+      backLeft.set(wheelVectors[3]);
+    } else {
+      frontRight.stop();
+      frontLeft.stop();
+      backRight.stop();
+      backLeft.stop();
+    }
   }
 
   public DriveVector getDrive() {
