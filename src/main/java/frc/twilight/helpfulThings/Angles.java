@@ -40,11 +40,9 @@ public class Angles {
 
     double change = angle - angleNew;
 
-    if (change > 180)
-      angleNew += 360;
-    else if (change < -180)
-      angleNew -= 360;
-      
+    if (change > 180) angleNew += 360;
+    else if (change < -180) angleNew -= 360;
+
     angleNew += 360 * angleRevo;
 
     return angleNew;
