@@ -1,6 +1,5 @@
 package frc.robot.subsystems;
 
-import java.security.cert.TrustAnchor;
 import java.util.ArrayList;
 
 import com.ctre.phoenix.motorcontrol.StatorCurrentLimitConfiguration;
@@ -23,12 +22,12 @@ public class Intake extends SubsystemBase {
     intake.setInverted(IntakeConfig.INTAKE_INVERTED);
 
     StatorCurrentLimitConfiguration statorConfig = new StatorCurrentLimitConfiguration();
-    statorConfig.enable = false ;
+    statorConfig.enable = false;
     statorConfig.currentLimit = 10;
     intake.configStatorCurrentLimit(statorConfig);
 
     SupplyCurrentLimitConfiguration supplyConfig = new SupplyCurrentLimitConfiguration();
-    supplyConfig.enable = false ;
+    supplyConfig.enable = false;
     supplyConfig.currentLimit = 10;
     intake.configSupplyCurrentLimit(supplyConfig);
   }
