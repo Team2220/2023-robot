@@ -46,6 +46,7 @@ public class RobotContainer {
   private final Intake m_intake;
   private final LEDs m_leds;
   private final Limelight m_LimeLight;
+  private final DriverTab drivertab = new DriverTab();
   private final SendableChooser<Command> autoChooser = new SendableChooser<>();
 
   private final Controller m_controller = new Controller(0);
@@ -112,15 +113,15 @@ public class RobotContainer {
 
     // Shoulder
     new Trigger(() -> m_controller.getButton(frc.twilight.Controller.Button.X))
-        .whileTrue(new ShoulderPercentOutput(0.5, m_arm));
+        .whileTrue(new ShoulderPercentOutput(0.75, m_arm));
     new Trigger(() -> m_controller.getButton(frc.twilight.Controller.Button.Y))
-        .whileTrue(new ShoulderPercentOutput(-0.5, m_arm));
+        .whileTrue(new ShoulderPercentOutput(-0.75, m_arm));
 
-    new Trigger(
-            () ->
-                !(m_controller.getButton(frc.twilight.Controller.Button.X)
-                    || m_controller.getButton(frc.twilight.Controller.Button.Y)))
-        .whileTrue(new ShoulderPercentOutput(0, m_arm));
+    // new Trigger(
+    //         () ->
+    //             !(m_controller.getButton(frc.twilight.Controller.Button.X)
+    //                 || m_controller.getButton(frc.twilight.Controller.Button.Y)))
+    //     .whileTrue(new ShoulderPercentOutput(0, m_arm));
 
     // ✧･ﾟ: *✧･ﾟ:*Rumble*:･ﾟ✧*:･ﾟ✧ babey
     new Trigger(() -> m_controller.getButton(frc.twilight.Controller.Button.LB))
