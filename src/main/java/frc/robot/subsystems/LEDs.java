@@ -152,21 +152,25 @@ public class LEDs extends SubsystemBase {
         break;
 
       case FULL_LEDS:
-        { switchDesieredState();
+        {
+          switchDesieredState();
         }
         break;
 
       case OFF:
-        { switchDesieredState();
+        {
+          switchDesieredState();
         }
         break;
 
       case RAINBOW_ANIMATION:
-        { switchDesieredState();
+        {
+          switchDesieredState();
         }
         break;
       case STROBE_ANIMATION:
-        { switchDesieredState();
+        {
+          switchDesieredState();
         }
         break;
     }
