@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ArmConfig;
 import frc.robot.commands.Arm.SetArmState;
@@ -264,6 +265,8 @@ public class Arm extends SubsystemBase {
     for (ArmStates state : ArmStates.values()) {
       arm.add(state.name(), new SetArmState(state, this));
     }
+    arm.add("ZeroShoulder", new InstantCommand(() -> zeroShoulder()));
+    arm.add("ZeroWrist", new InstantCommand(() -> zeroWrist()));
   }
 
   @Override
