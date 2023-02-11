@@ -1,3 +1,6 @@
+// Sourced from Mechanical Advangave from Littleton, MA
+// https://github.com/Mechanical-Advantage/RobotCode2023/blob/4f706fe0bf1d521a4539833d622cd0db981de765/src/main/java/org/littletonrobotics/frc2023/util/GeomUtil.java
+//
 // Copyright (c) 2023 FRC 6328
 // http://github.com/Mechanical-Advantage
 //

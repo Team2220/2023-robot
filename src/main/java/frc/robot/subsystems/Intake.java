@@ -19,7 +19,7 @@ public class Intake extends SubsystemBase {
 
     intake.configVoltageCompSaturation(10);
 
-    intake.setInverted(IntakeConfig.INTAKE_LEFT_INVERTED);
+    intake.setInverted(IntakeConfig.INTAKE_INVERTED);
 
     StatorCurrentLimitConfiguration statorConfig = new StatorCurrentLimitConfiguration();
     statorConfig.enable = true;

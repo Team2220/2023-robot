@@ -4,6 +4,7 @@
 
 package frc.twilight.swerve.subsystems;
 
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.twilight.swerve.SwerveDrive;
 import frc.twilight.swerve.vectors.DriveVector;
@@ -40,6 +41,10 @@ public class Swerve extends SubsystemBase {
 
   public void setOdo(double x, double y, double rot) {
     swerve.setOdo(x, y, rot);
+  }
+
+  public void setPose2d(Pose2d pose2d) {
+    setOdo(pose2d.getX(), pose2d.getY(), pose2d.getRotation().getDegrees());
   }
 
   public Position getOdo() {

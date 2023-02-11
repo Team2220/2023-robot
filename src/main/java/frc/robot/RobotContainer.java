@@ -9,6 +9,8 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.auto.Mobility;
 import frc.robot.auto.TestPath;
 import frc.robot.commands.Arm.ArmPosition;
 import frc.robot.commands.Arm.ShoulderPercentOutput;
@@ -70,6 +72,8 @@ public class RobotContainer {
     configureButtonBindings();
     // auto stuff
     autoChooser.setDefaultOption("Do Nothing", new InstantCommand());
+    autoChooser.addOption("mobility", new Mobility(m_swerve));
+    SmartDashboard.putData(autoChooser);
   }
 
   /**
@@ -174,6 +178,6 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
-    return new TestPath(m_swerve);
+    return autoChooser.getSelected();
   }
 }
