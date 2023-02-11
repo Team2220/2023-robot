@@ -12,16 +12,15 @@ public class Mobility extends SequentialCommandGroup {
   public Mobility(Swerve swerve) {
     addCommands(
         new InstantCommand(
-            () ->
-                swerve.setPose2d(
-                    new Pose2d(
-                        FieldConstants.Community.chargingStationCorners[0],
-                        Rotation2d.fromDegrees(90)))));
+            () -> swerve.setPose2d(
+                new Pose2d(
+                    FieldConstants.Community.chargingStationCorners[0],
+                    Rotation2d.fromDegrees(90)))));
     addCommands(
         new GoToCommand(
             swerve,
             new Pose2d(
-                FieldConstants.Community.chargingStationCorners[2], Rotation2d.fromDegrees(90))));
+                FieldConstants.Community.chargingStationCorners[2], Rotation2d.fromDegrees(-90))));
     for (int i = 0; i < 4; i++) {
       System.out.println(FieldConstants.Community.chargingStationCorners[i]);
     }
