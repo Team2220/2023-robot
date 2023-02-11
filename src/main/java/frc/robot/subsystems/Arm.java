@@ -93,10 +93,13 @@ public class Arm extends SubsystemBase {
   public Arm() {
     /* Motion Magic Configurations */
     wristConfig.motionAcceleration = degreesPerSecondToEncoderTicks(10, ArmConfig.WRIST_GEAR_RATIO);
-    wristConfig.motionCruiseVelocity = degreesPerSecondToEncoderTicks(10, ArmConfig.WRIST_GEAR_RATIO);
+    wristConfig.motionCruiseVelocity =
+        degreesPerSecondToEncoderTicks(10, ArmConfig.WRIST_GEAR_RATIO);
 
-    shoulderConfig.motionCruiseVelocity = degreesPerSecondToEncoderTicks(10, ArmConfig.SHOULDER_GEAR_RATIO);
-    shoulderConfig.motionAcceleration = degreesPerSecondToEncoderTicks(10, ArmConfig.SHOULDER_GEAR_RATIO);
+    shoulderConfig.motionCruiseVelocity =
+        degreesPerSecondToEncoderTicks(10, ArmConfig.SHOULDER_GEAR_RATIO);
+    shoulderConfig.motionAcceleration =
+        degreesPerSecondToEncoderTicks(10, ArmConfig.SHOULDER_GEAR_RATIO);
 
     wrist.configAllSettings(wristConfig);
     shoulder.configAllSettings(shoulderConfig);
