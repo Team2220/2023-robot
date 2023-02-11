@@ -109,7 +109,9 @@ public class SwerveDrive {
 
       Shuffleboard.getTab("Swerve").addNumber("Gyro", () -> gyro.getAngle()).withPosition(6, 3);
 
-      Shuffleboard.getTab("Swerve").addNumber("Gyro Rate", () -> gyro.getAngleSpeed()).withPosition(7, 3);
+      Shuffleboard.getTab("Swerve")
+          .addNumber("Gyro Rate", () -> gyro.getAngleSpeed())
+          .withPosition(7, 3);
     }
   }
 

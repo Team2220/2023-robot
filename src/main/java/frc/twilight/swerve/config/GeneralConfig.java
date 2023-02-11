@@ -30,8 +30,9 @@ public final class GeneralConfig {
       new TunableDouble("DT_MAX_ROT_VEL", 180, SWERVE_SHUFFLEBOARD_ENABLED, "Swerve").setSpot(4, 1);
 
   // Rotational acceleration restrictions deg/s2
-  public static final TunableDouble DT_MAX_ROT_ACCEL = 
-      new TunableDouble("DT_MAX_ROT_ACCEL", 360, SWERVE_SHUFFLEBOARD_ENABLED, "Swerve").setSpot(5, 1);
+  public static final TunableDouble DT_MAX_ROT_ACCEL =
+      new TunableDouble("DT_MAX_ROT_ACCEL", 360, SWERVE_SHUFFLEBOARD_ENABLED, "Swerve")
+          .setSpot(5, 1);
 
   // Don't touch these plz ty
   public static final double DT_DIAMETER =

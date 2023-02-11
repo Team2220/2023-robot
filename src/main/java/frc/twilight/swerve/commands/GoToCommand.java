@@ -152,7 +152,7 @@ public class GoToCommand extends CommandBase {
   }
 
   // public void endPos(double x, double y, double rot) {
-    
+
   // }
 
   public void endVel(double xVel, double yVel, double rotVel) {
