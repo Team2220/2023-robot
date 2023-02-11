@@ -17,6 +17,13 @@ public final class Constants {
     public static final int CANDLE = 1;
   }
 
+  public static final class LimelightConfig {
+    public static final String LEFT_NAME = "limelight-left";
+    public static final String RIGHT_NAME = "limelight-right";
+    public static final String LEFT_URL = "http://10.22.20.45:5800/stream.mjpg";
+    public static final String RIGHT_URL = "http://10.22.20.45:5800/stream.mjpg";
+  }
+
   public static final class IntakeConfig {
     public static final int INTAKE_TALONFX = 10; // TODO:REALNUMBER
     public static final boolean INTAKE_INVERTED = false;
