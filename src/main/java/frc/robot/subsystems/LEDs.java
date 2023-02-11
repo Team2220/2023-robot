@@ -60,6 +60,7 @@ public class LEDs extends SubsystemBase {
         {
           setPurple();
         }
+        break;
 
       case RAINBOW_ANIMATION:
         {
@@ -76,7 +77,7 @@ public class LEDs extends SubsystemBase {
         {
           setBrown();
         }
-
+        break;
       case OFF:
         {
           setOffLEDs();
@@ -178,13 +179,13 @@ public class LEDs extends SubsystemBase {
 
   // private void setLEDRainAnimation() {
 
-  //   RainbowAnimation rainbowAnim = new RainbowAnimation(1, 0.3, 164);
-  //   candle.animate(rainbowAnim);
+  // RainbowAnimation rainbowAnim = new RainbowAnimation(1, 0.3, 164);
+  // candle.animate(rainbowAnim);
   // }
 
   private void setPurple() {
 
-    candle.setLEDs(0, 0, 0, 0, 0, 0);
+    candle.setLEDs(100, 0, 100, 0, 0, 0);
   }
 
   private void setLEDRainAnimationFast() {

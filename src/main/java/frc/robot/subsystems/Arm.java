@@ -92,11 +92,14 @@ public class Arm extends SubsystemBase {
 
   public Arm() {
     /* Motion Magic Configurations */
-    wristConfig.motionAcceleration = 2000;
-    wristConfig.motionCruiseVelocity = 2000;
+    wristConfig.motionAcceleration = degreesPerSecondToEncoderTicks(10, ArmConfig.WRIST_GEAR_RATIO);
+    wristConfig.motionCruiseVelocity =
+        degreesPerSecondToEncoderTicks(10, ArmConfig.WRIST_GEAR_RATIO);
 
-    shoulderConfig.motionCruiseVelocity = 2000;
-    shoulderConfig.motionAcceleration = 2000;
+    shoulderConfig.motionCruiseVelocity =
+        degreesPerSecondToEncoderTicks(10, ArmConfig.SHOULDER_GEAR_RATIO);
+    shoulderConfig.motionAcceleration =
+        degreesPerSecondToEncoderTicks(10, ArmConfig.SHOULDER_GEAR_RATIO);
 
     wrist.configAllSettings(wristConfig);
     shoulder.configAllSettings(shoulderConfig);
@@ -114,7 +117,7 @@ public class Arm extends SubsystemBase {
     wrist.configSupplyCurrentLimit(supplyConfig);
 
     StatorCurrentLimitConfiguration config = new StatorCurrentLimitConfiguration();
-    config.currentLimit = 15;
+    config.currentLimit = 3;
     config.enable = true;
     shoulder.configStatorCurrentLimit(config);
     wrist.configStatorCurrentLimit(config);
@@ -206,12 +209,19 @@ public class Arm extends SubsystemBase {
         break;
     }
   }
+<<<<<<< Updated upstream
 
   private double degreesPerSecondToEncoderTicks(double angle, double gearRatio) {
     double gfx = ((angle / 360.0) * gearRatio) * ArmConfig.TALONFX_ENCODER_TICKS * 1 / 10;
     return gfx;
   }
 
+=======
+private double hfkehfasmygh(double angle, double gearRatio){
+double gfx =((angle / 360.0) * gearRatio) * ArmConfig.TALONFX_ENCODER_TICKS * 1/10;
+return gfx;
+ }
+>>>>>>> Stashed changes
   private void setPosition(double shouldereAng, double wristAng) {
     setShoulderAngle(shouldereAng);
     setWristAngle(wristAng);

@@ -22,12 +22,12 @@ public class Intake extends SubsystemBase {
     intake.setInverted(IntakeConfig.INTAKE_INVERTED);
 
     StatorCurrentLimitConfiguration statorConfig = new StatorCurrentLimitConfiguration();
-    statorConfig.enable = true;
+    statorConfig.enable = false;
     statorConfig.currentLimit = 10;
     intake.configStatorCurrentLimit(statorConfig);
 
     SupplyCurrentLimitConfiguration supplyConfig = new SupplyCurrentLimitConfiguration();
-    supplyConfig.enable = true;
+    supplyConfig.enable = false;
     supplyConfig.currentLimit = 10;
     intake.configSupplyCurrentLimit(supplyConfig);
   }
