@@ -4,6 +4,7 @@
 
 package frc.twilight.swerve.commands;
 
+import frc.twilight.helpfulThings.Angles;
 import frc.twilight.swerve.config.GeneralConfig;
 import frc.twilight.swerve.config.PIDconfig;
 import frc.twilight.swerve.subsystems.Swerve;
@@ -75,6 +76,7 @@ public class GoToCommand extends CommandBase {
 
     goalX = new TrapezoidProfile.State(goal.getX(), 0);
     goalY = new TrapezoidProfile.State(goal.getY(), 0);
+
     goalRot = new TrapezoidProfile.State(goal.getAngle(), 0);
   }
 
@@ -90,6 +92,11 @@ public class GoToCommand extends CommandBase {
     setpointX = new TrapezoidProfile.State(currentPos.getX(), currentVec.getStr());
     setpointY = new TrapezoidProfile.State(currentPos.getY(), currentVec.getFwd());
     setpointRot = new TrapezoidProfile.State(currentPos.getAngle(), currentVec.getRcw());
+
+    double angle = currentPos.getAngle();
+    double angleNew = goalRot.position;
+
+    goalRot.position = Angles.flipAround(angle, angleNew);
 
     profileX = new TrapezoidProfile(constraints, goalX, setpointX);
     profileY = new TrapezoidProfile(constraints, goalY, setpointY);
@@ -146,18 +153,30 @@ public class GoToCommand extends CommandBase {
     return xDone && yDone && rotDone;
   }
 
-  public void setTolerence(double mov, double rot) {
+  public GoToCommand setTolerence(double mov, double rot) {
     movTol = mov;
     rotTol = rot;
+
+    return this;
   }
 
-  // public void endPos(double x, double y, double rot) {
+  public GoToCommand endPos(double x, double y, double rot) {
+    goalX.position = x;
+    goalY.position = y;
+    goalRot.position = rot;
 
-  // }
+    initialize();
 
-  public void endVel(double xVel, double yVel, double rotVel) {
+    return this;
+  }
+
+  public GoToCommand endVel(double xVel, double yVel, double rotVel) {
     goalX.velocity = xVel;
     goalY.velocity = yVel;
     goalRot.velocity = rotVel;
+
+    initialize();
+
+    return this;
   }
 }

@@ -41,6 +41,10 @@ public class SwerveModule {
     driveMotor.setRPM(speed);
   }
 
+  public void stop() {
+    driveMotor.setRPM(0);
+  }
+
   public WheelVector get() {
     WheelVector out = new WheelVector(0, 0);
     double speed = driveMotor.getRPM() / velocityRatio;
