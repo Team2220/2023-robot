@@ -87,28 +87,9 @@ public class RobotContainer {
   private void configureButtonBindings() {
     // new Button(m_controller::getAButton).whenPressed(m_swerve::zeroGyro);
 
-    // Arm Position
-
-    new Trigger(() -> m_secondaryController.getButton(frc.twilight.Controller.Button.UP))
-        .whileTrue(new ArmPosition(90, 0, m_arm));
-
-    new Trigger(() -> m_secondaryController.getButton(frc.twilight.Controller.Button.DOWN))
-        .whileTrue(new ArmPosition(-90, 0, m_arm));
-
-    new Trigger(() -> m_secondaryController.getButton(frc.twilight.Controller.Button.RIGHT))
-        .whileTrue(new ArmPosition(0, 0, m_arm));
-
-    new Trigger(() -> m_secondaryController.getButton(frc.twilight.Controller.Button.X))
-        .whileTrue(new ArmPosition(0, 90, m_arm));
-
-    new Trigger(() -> m_secondaryController.getButton(frc.twilight.Controller.Button.Y))
-        .whileTrue(new ArmPosition(0, 0, m_arm));
-
-    new Trigger(() -> m_secondaryController.getButton(frc.twilight.Controller.Button.B))
-        .whileTrue(new ArmPosition(0, -90, m_arm));
 
     // Intake Buttons
-    new Trigger(() -> m_controller.getButton(frc.twilight.Controller.Button.UP))
+    new Trigger(() -> m_controller.getButton(frc.twilight.Controller.Button.UP)) 
         .whileTrue(new IntakePercentOutput(0.1, m_intake));
     new Trigger(() -> m_controller.getButton(frc.twilight.Controller.Button.DOWN))
         .whileTrue(new IntakePercentOutput(-0.1, m_intake));
@@ -162,10 +143,6 @@ public class RobotContainer {
     new Trigger(() -> (Math.abs(m_secondaryController.getRightY()) > 0.1))
         .whileTrue(
             new RunCommand(() -> m_arm.setWristPercentOutput(m_secondaryController.getRightY())));
-
-    new Trigger(() -> (m_controller.getButton(frc.twilight.Controller.Button.BACK)))
-        .whileTrue(new RunCommand(() -> m_arm.zeroWrist()))
-        .whileTrue(new RunCommand(() -> m_arm.zeroShoulder()));
 
     new Trigger(() -> m_controller.getButtonPressed(Controller.Button.START))
         .onTrue(new ResetGyro(m_swerve));

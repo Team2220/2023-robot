@@ -1,6 +1,7 @@
 package frc.robot.subsystems;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.StatorCurrentLimitConfiguration;
@@ -12,7 +13,9 @@ import com.ctre.phoenix.motorcontrol.can.TalonFXConfiguration;
 import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.RobotController;
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -28,8 +31,6 @@ public class Arm extends SubsystemBase {
   private TalonFX shoulder = new TalonFX(ArmConfig.SHOULDER_TALONFX);
 
   ShuffleboardTab arm = Shuffleboard.getTab("arm");
-  GenericEntry shoulderSB = arm.add("shoulder angle", 0).getEntry();
-  GenericEntry wristSB = arm.add("wrist angle", 0).getEntry();
 
   private final boolean tunableDoubleEnabled = true;
 
@@ -262,17 +263,43 @@ public class Arm extends SubsystemBase {
   }
 
   public void setUpTestCommands() {
+    // Arm States
+    ShuffleboardLayout stateLayout = Shuffleboard.getTab("arm")
+    .getLayout("States", BuiltInLayouts.kList)
+    .withSize(2, 3)
+    .withProperties(Map.of("Label position", "HIDDEN"));
+    
     for (ArmStates state : ArmStates.values()) {
-      arm.add(state.name(), new SetArmState(state, this));
+      stateLayout.add(state.name(), new SetArmState(state, this));
     }
-    arm.add("ZeroShoulder", new InstantCommand(() -> zeroShoulder()));
-    arm.add("ZeroWrist", new InstantCommand(() -> zeroWrist()));
+
+    // Test Positions
+    ShuffleboardLayout testPositionLayout = Shuffleboard.getTab("arm")
+    .getLayout("Test Positions", BuiltInLayouts.kList)
+    .withSize(2,3)
+    .withProperties(Map.of("Label position", "HIDDEN"));
+
+    testPositionLayout.add("ZeroShoulder", new InstantCommand(() -> zeroShoulder()).withName("ZeroShoulder"));
+    testPositionLayout.add("ZeroWrist", new InstantCommand(() -> zeroWrist()).withName("ZeroWrist"));
+    testPositionLayout.add("Wrist=90", new InstantCommand(() -> setWristAngle(90)).withName("Wrist=90"));
+    testPositionLayout.add("Wrist=0", new InstantCommand(() -> setWristAngle(0)).withName("Wrist=0"));
+    testPositionLayout.add("Wrist=-90", new InstantCommand(() -> setWristAngle(-90)).withName("Wrist=-90"));
+    testPositionLayout.add("Shoulder=0", new InstantCommand(() -> setShoulderAngle(0)).withName("Shoulder=0"));
+    testPositionLayout.add("Shoulder=90", new InstantCommand(() -> setShoulderAngle(90)).withName("Shoulder=90"));
+    testPositionLayout.add("Shoulder=-90", new InstantCommand(() -> setShoulderAngle(-90)).withName("Shoulder=-90"));
+    
+    // Everything else
+    ShuffleboardLayout angLayout = Shuffleboard.getTab("arm")
+    .getLayout("Angles", BuiltInLayouts.kGrid)
+    .withSize(2, 3)
+    .withProperties(Map.of("Label position", "TOP"));
+
+    angLayout.addDouble("shoulder angle", this::getShoulderPosition);
+    angLayout.addDouble("wrist angle", this::getWristPosition);
   }
 
   @Override
   public void periodic() {
-    shoulderSB.setDouble(getShoulderPosition());
-    wristSB.setDouble(getWristPosition());
     if (!RobotController.isSysActive()) {
       double currentWristPosition = wrist.getSelectedSensorPosition();
       double currentShoulderPosition = shoulder.getSelectedSensorPosition();
