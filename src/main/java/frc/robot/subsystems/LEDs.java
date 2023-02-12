@@ -17,7 +17,6 @@ import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
-import frc.robot.commands.Arm.SetArmState;
 import frc.robot.commands.Leds.SetLedsStates;
 
 public class LEDs extends SubsystemBase {
@@ -66,9 +65,10 @@ public class LEDs extends SubsystemBase {
         }
         break;
 
-      case DRIVER_STATION_DISCONNECTED: {
-        setBLue();
-      }
+      case DRIVER_STATION_DISCONNECTED:
+        {
+          setBLue();
+        }
         break;
 
       case RAINBOW_ANIMATION:
@@ -76,9 +76,10 @@ public class LEDs extends SubsystemBase {
           setLEDRainAnimationFast();
         }
         break;
-      case STROBE_ANIMATION: {
-        setLEDStrobeAnimation(98, 56, 50, 0, .5, 164, 0);
-      }
+      case STROBE_ANIMATION:
+        {
+          setLEDStrobeAnimation(98, 56, 50, 0, .5, 164, 0);
+        }
         break;
 
       case BROWNOUT:
@@ -194,8 +195,8 @@ public class LEDs extends SubsystemBase {
 
   private void setBLue() {
 
-  SingleFadeAnimation singleFadeAnimation = new SingleFadeAnimation(0, 0, 100, 0,.5, 164);
-  candle.animate(singleFadeAnimation);
+    SingleFadeAnimation singleFadeAnimation = new SingleFadeAnimation(0, 0, 100, 0, .5, 164);
+    candle.animate(singleFadeAnimation);
   }
 
   private void setLEDRainAnimationFast() {
@@ -227,23 +228,24 @@ public class LEDs extends SubsystemBase {
 
   public void setUpTestCommands() {
     // Arm States
-    ShuffleboardLayout stateLayout = Shuffleboard.getTab("leds")
-        .getLayout("States", BuiltInLayouts.kList)
-        .withSize(2, 3)
-        .withProperties(Map.of("Label position", "HIDDEN"));
+    ShuffleboardLayout stateLayout =
+        Shuffleboard.getTab("leds")
+            .getLayout("States", BuiltInLayouts.kList)
+            .withSize(2, 3)
+            .withProperties(Map.of("Label position", "HIDDEN"));
 
     for (DesieredState state : DesieredState.values()) {
       stateLayout.add(state.name(), new SetLedsStates(state, this));
     }
 
     // Everything else
-    ShuffleboardLayout angLayout = Shuffleboard.getTab("leds")
-        .getLayout("Angles", BuiltInLayouts.kGrid)
-        .withSize(2, 3)
-        .withProperties(Map.of("Label position", "TOP"));
+    ShuffleboardLayout angLayout =
+        Shuffleboard.getTab("leds")
+            .getLayout("Angles", BuiltInLayouts.kGrid)
+            .withSize(2, 3)
+            .withProperties(Map.of("Label position", "TOP"));
 
     angLayout.addString("DesieredStatew", () -> this.desieredState.name());
     angLayout.addString("SystemState", () -> this.systemState.name());
   }
-
 }

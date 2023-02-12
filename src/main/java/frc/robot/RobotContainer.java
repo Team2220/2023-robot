@@ -97,7 +97,7 @@ public class RobotContainer {
         .whileTrue(new ArmPosition(45, 45, m_arm));
     new Trigger(() -> m_controller.getButton(frc.twilight.Controller.Button.LEFT))
         .whileTrue(new SetLedsStates(DesieredState.FULL_LEDS, m_leds));
-        
+
     // Arm Buttons
     // Wrist
     new Trigger(() -> m_controller.getButton(frc.twilight.Controller.Button.A))

@@ -7,15 +7,15 @@ import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import frc.robot.Constants.LimelightConfig;
 
 public class DriverTab {
-    ShuffleboardTab tab = Shuffleboard.getTab("driver");
+  ShuffleboardTab tab = Shuffleboard.getTab("driver");
 
-    public DriverTab() {
-        HttpCamera leftCamera = new HttpCamera(LimelightConfig.LEFT_NAME, LimelightConfig.LEFT_URL);
-        CameraServer.getVideo(leftCamera);
-        tab.add(leftCamera);
+  public DriverTab() {
+    HttpCamera leftCamera = new HttpCamera(LimelightConfig.LEFT_NAME, LimelightConfig.LEFT_URL);
+    CameraServer.getVideo(leftCamera);
+    tab.add(leftCamera);
 
-        HttpCamera rightCamera = new HttpCamera(LimelightConfig.RIGHT_NAME, LimelightConfig.RIGHT_URL);
-        CameraServer.getVideo(rightCamera);
-        tab.add(rightCamera);
-    }
+    HttpCamera rightCamera = new HttpCamera(LimelightConfig.RIGHT_NAME, LimelightConfig.RIGHT_URL);
+    CameraServer.getVideo(rightCamera);
+    tab.add(rightCamera);
+  }
 }
