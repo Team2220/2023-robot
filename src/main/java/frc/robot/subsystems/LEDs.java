@@ -14,7 +14,6 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
-import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.commands.Leds.SetLedsStates;
@@ -23,7 +22,6 @@ public class LEDs extends SubsystemBase {
   private CANdle candle = new CANdle(Constants.LEDS.CANDLE);
   private double m_lastDisconectTime = 0.0;
   private double m_lastBrownedOutTime = 0.0;
-  ShuffleboardTab leds = Shuffleboard.getTab("LEDs");
 
   public enum DesieredState {
     RAINBOW_ANIMATION,
