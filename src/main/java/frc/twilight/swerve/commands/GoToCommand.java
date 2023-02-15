@@ -64,6 +64,8 @@ public class GoToCommand extends CommandBase {
   private double movTol = 0.05;
   private double rotTol = 2.5;
 
+  private boolean stopAtEnd = true;
+
   /**
    * Creates a new GoToCommand.
    *
@@ -81,7 +83,7 @@ public class GoToCommand extends CommandBase {
   }
 
   public GoToCommand(Swerve subsystem, Pose2d goal) {
-    this(subsystem, new Position(goal.getX(), goal.getY(), goal.getRotation().getDegrees()));
+    this(subsystem, new Position(goal));
   }
 
   // Called when the command is initially scheduled.
@@ -136,15 +138,25 @@ public class GoToCommand extends CommandBase {
 
     m_subsystem.setDrive(new DriveVector(yVel, xVel, rotVel).maxVel());
 
-    xDone = Math.abs(currentPos.getX() - goalX.position) < movTol;
-    yDone = Math.abs(currentPos.getY() - goalY.position) < movTol;
-    rotDone = Math.abs(currentPos.getAngle() - goalRot.position) < rotTol;
+    if (movTol > 0) {
+      xDone = Math.abs(currentPos.getX() - goalX.position) < movTol;
+      yDone = Math.abs(currentPos.getY() - goalY.position) < movTol;
+    } else {
+      xDone = true;
+      yDone = true;
+    }
+
+    if (rotTol > 0)
+      rotDone = Math.abs(currentPos.getAngle() - goalRot.position) < rotTol;
+    else
+      rotDone = true;
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    m_subsystem.setDrive(new DriveVector(0, 0, 0));
+    if (stopAtEnd)
+      m_subsystem.setDrive(new DriveVector(0, 0, 0));
   }
 
   // Returns true when the command should end.
@@ -176,6 +188,12 @@ public class GoToCommand extends CommandBase {
     goalRot.velocity = rotVel;
 
     initialize();
+
+    return this;
+  }
+
+  public GoToCommand stopAtEnd(boolean stop) {
+    stopAtEnd = stop;
 
     return this;
   }
