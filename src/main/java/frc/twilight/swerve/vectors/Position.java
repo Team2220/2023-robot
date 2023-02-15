@@ -1,5 +1,7 @@
 package frc.twilight.swerve.vectors;
 
+import edu.wpi.first.math.geometry.Pose2d;
+
 public class Position {
   private double x;
   private double y;
@@ -9,6 +11,10 @@ public class Position {
     this.x = x;
     this.y = y;
     this.angle = angle;
+  }
+
+  public Position(Pose2d pose) {
+    this(pose.getX(), pose.getY(), pose.getRotation().getDegrees());
   }
 
   public double getX() {
