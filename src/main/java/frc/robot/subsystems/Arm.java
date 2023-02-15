@@ -20,6 +20,8 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ArmConfig;
 import frc.robot.commands.Arm.SetArmState;
+import frc.twilight.Controller;
+import frc.twilight.Controller.RumbleVariables;
 import frc.twilight.tunables.TunableDouble;
 
 public class Arm extends SubsystemBase {
@@ -51,6 +53,8 @@ public class Arm extends SubsystemBase {
 
   private double lastWristAngle = 0;
   private double lastShoulderAngle = 0;
+
+  private Controller controller;
 
   /** Config Objects for motor controllers */
   TalonFXConfiguration wristConfig = new TalonFXConfiguration();
@@ -90,7 +94,8 @@ public class Arm extends SubsystemBase {
     }
   }
 
-  public Arm() {
+  public Arm(Controller x) {
+    controller = x;
     /* Motion Magic Configurations */
     wristConfig.motionAcceleration = degreesPerSecondToEncoderTicks(10, ArmConfig.WRIST_GEAR_RATIO);
     wristConfig.motionCruiseVelocity =
@@ -229,21 +234,41 @@ public class Arm extends SubsystemBase {
   }
 
   public void setWristPercentOutput(double value) {
+    if(getWristPosition() <= (ArmConfig.WRIST_FORWARD_LIMIT)){
+      if(getWristPosition() <= (ArmConfig.WRIST_REVERSE_LIMIT)){
+        controller.runRumble(RumbleVariables.medium);
+      }
+    }
     wrist.set(TalonFXControlMode.PercentOutput, value);
   }
 
   public void setShoulderPercentOutput(double value) {
+    if(getShoulderPosition() <= (ArmConfig.SHOULDER_FORWARD_LIMIT)){
+      if(getShoulderPosition()>= (ArmConfig.SHOULDER_REVERSE_LIMIT)){
+        controller.runRumble(RumbleVariables.medium);
+      }
+    }
     shoulder.set(TalonFXControlMode.PercentOutput, value);
   }
 
   public void setWristAngle(double angle) {
+    lastWristAngle = angle;
     double posValue = anglesToWristSensorPosition(angle);
     wrist.set(TalonFXControlMode.Position, posValue);
   }
 
   public void setShoulderAngle(double angle) {
+    lastShoulderAngle = angle;
     double posValue = anglesToShoulderSensorPosition(angle);
     shoulder.set(TalonFXControlMode.Position, posValue);
+  }
+
+  public void changeShoulderAngle(double amount) {
+    setShoulderAngle(lastShoulderAngle + amount);
+  }
+
+  public void changeWristAngle(double amount) {
+    setWristAngle(lastWristAngle + amount);
   }
 
   public double getShoulderPosition() {
@@ -258,9 +283,9 @@ public class Arm extends SubsystemBase {
     // Arm States
     ShuffleboardLayout stateLayout =
         Shuffleboard.getTab("arm")
-            .getLayout("States", BuiltInLayouts.kList)
-            .withSize(2, 3)
-            .withProperties(Map.of("Label position", "HIDDEN"));
+        .getLayout("States", BuiltInLayouts.kList)
+        .withSize(2, 3)
+        .withProperties(Map.of("Label position", "HIDDEN"));
 
     for (ArmStates state : ArmStates.values()) {
       stateLayout.add(state.name(), new SetArmState(state, this));
@@ -269,9 +294,9 @@ public class Arm extends SubsystemBase {
     // Test Positions
     ShuffleboardLayout testPositionLayout =
         Shuffleboard.getTab("arm")
-            .getLayout("Test Positions", BuiltInLayouts.kList)
-            .withSize(2, 3)
-            .withProperties(Map.of("Label position", "HIDDEN"));
+        .getLayout("Test Positions", BuiltInLayouts.kList)
+        .withSize(2, 3)
+        .withProperties(Map.of("Label position", "HIDDEN"));
 
     testPositionLayout.add(
         "ZeroShoulder", new InstantCommand(() -> zeroShoulder()).withName("ZeroShoulder"));
@@ -293,9 +318,9 @@ public class Arm extends SubsystemBase {
     // Everything else
     ShuffleboardLayout angLayout =
         Shuffleboard.getTab("arm")
-            .getLayout("Angles", BuiltInLayouts.kGrid)
-            .withSize(2, 3)
-            .withProperties(Map.of("Label position", "TOP"));
+        .getLayout("Angles", BuiltInLayouts.kGrid)
+        .withSize(2, 3)
+        .withProperties(Map.of("Label position", "TOP"));
 
     angLayout.addDouble("shoulder angle", this::getShoulderPosition);
     angLayout.addDouble("wrist angle", this::getWristPosition);
