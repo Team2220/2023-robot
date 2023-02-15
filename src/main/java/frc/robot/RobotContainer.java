@@ -101,9 +101,9 @@ public class RobotContainer {
 
     // Arm & Wrist Joystcks
     new Trigger(() -> (Math.abs(m_secondaryController.getLeftY()) > 0.1))
-    .whileTrue(new ShoulderPercentOutput(m_secondaryController :: getLeftY, m_arm));
+        .whileTrue(new ShoulderPercentOutput(m_secondaryController::getLeftY, m_arm));
     new Trigger(() -> (Math.abs(m_secondaryController.getRightY()) > 0.1))
-    .whileTrue(new WristPercentOutput(m_secondaryController :: getRightY, m_arm));
+        .whileTrue(new WristPercentOutput(m_secondaryController::getRightY, m_arm));
 
     // Wrist
     new Trigger(() -> m_controller.getButton(frc.twilight.Controller.Button.A))
@@ -132,7 +132,6 @@ public class RobotContainer {
 
     new Trigger(() -> m_controller.getButtonPressed(Controller.Button.START))
         .onTrue(new ResetGyro(m_swerve));
-
   }
 
   public Command getTeleopCommand() {
