@@ -105,23 +105,11 @@ public class RobotContainer {
     new Trigger(() -> m_controller.getButton(frc.twilight.Controller.Button.B))
         .whileTrue(new WristPercentOutput(-0.5, m_arm));
 
-    new Trigger(
-            () ->
-                !(m_controller.getButton(frc.twilight.Controller.Button.A)
-                    || m_controller.getButton(frc.twilight.Controller.Button.B)))
-        .whileTrue(new WristPercentOutput(0, m_arm));
-
     // Shoulder
     new Trigger(() -> m_controller.getButton(frc.twilight.Controller.Button.X))
         .whileTrue(new ShoulderPercentOutput(0.75, m_arm));
     new Trigger(() -> m_controller.getButton(frc.twilight.Controller.Button.Y))
         .whileTrue(new ShoulderPercentOutput(-0.75, m_arm));
-
-    // new Trigger(
-    //         () ->
-    //             !(m_controller.getButton(frc.twilight.Controller.Button.X)
-    //                 || m_controller.getButton(frc.twilight.Controller.Button.Y)))
-    //     .whileTrue(new ShoulderPercentOutput(0, m_arm));
 
     // ✧･ﾟ: *✧･ﾟ:*Rumble*:･ﾟ✧*:･ﾟ✧ babey
     new Trigger(() -> m_controller.getButton(frc.twilight.Controller.Button.LB))
@@ -135,14 +123,6 @@ public class RobotContainer {
     new Trigger(() -> (m_controller.getButton(frc.twilight.Controller.Button.RB)))
         .onTrue(new InstantCommand(() -> m_arm.overrideSoftLimits(false)))
         .onFalse(new InstantCommand(() -> m_arm.overrideSoftLimits(true)));
-
-    new Trigger(() -> (Math.abs(m_secondaryController.getLeftY()) > 0.1))
-        .whileTrue(
-            new RunCommand(() -> m_arm.setShoulderPercentOutput(m_secondaryController.getLeftY())));
-
-    new Trigger(() -> (Math.abs(m_secondaryController.getRightY()) > 0.1))
-        .whileTrue(
-            new RunCommand(() -> m_arm.setWristPercentOutput(m_secondaryController.getRightY())));
 
     new Trigger(() -> m_controller.getButtonPressed(Controller.Button.START))
         .onTrue(new ResetGyro(m_swerve));

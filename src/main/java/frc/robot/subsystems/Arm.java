@@ -237,23 +237,13 @@ public class Arm extends SubsystemBase {
   }
 
   public void setWristAngle(double angle) {
-    lastWristAngle = angle;
     double posValue = anglesToWristSensorPosition(angle);
     wrist.set(TalonFXControlMode.Position, posValue);
   }
 
   public void setShoulderAngle(double angle) {
-    lastShoulderAngle = angle;
     double posValue = anglesToShoulderSensorPosition(angle);
     shoulder.set(TalonFXControlMode.Position, posValue);
-  }
-
-  public void changeShoulderAngle(double amount) {
-    setShoulderAngle(lastShoulderAngle + amount);
-  }
-
-  public void changeWristAngle(double amount) {
-    setWristAngle(lastWristAngle + amount);
   }
 
   public double getShoulderPosition() {
