@@ -98,18 +98,23 @@ public class RobotContainer {
     new Trigger(() -> m_controller.getButton(frc.twilight.Controller.Button.LEFT))
         .whileTrue(new SetLedsStates(DesieredState.FULL_LEDS, m_leds));
 
-    // Arm Buttons
+    // Arm & Wrist Joystcks
+    new Trigger(() -> (Math.abs(m_secondaryController.getLeftY()) > 0.1))
+    .whileTrue(new ShoulderPercentOutput(m_secondaryController :: getLeftY, m_arm));
+    new Trigger(() -> (Math.abs(m_secondaryController.getRightY()) > 0.1))
+    .whileTrue(new WristPercentOutput(m_secondaryController :: getRightY, m_arm));
+
     // Wrist
     new Trigger(() -> m_controller.getButton(frc.twilight.Controller.Button.A))
-        .whileTrue(new WristPercentOutput(0.5, m_arm));
+        .whileTrue(new WristPercentOutput(() -> 0.5, m_arm));
     new Trigger(() -> m_controller.getButton(frc.twilight.Controller.Button.B))
-        .whileTrue(new WristPercentOutput(-0.5, m_arm));
+        .whileTrue(new WristPercentOutput(() -> -0.5, m_arm));
 
     // Shoulder
     new Trigger(() -> m_controller.getButton(frc.twilight.Controller.Button.X))
-        .whileTrue(new ShoulderPercentOutput(0.75, m_arm));
+        .whileTrue(new ShoulderPercentOutput(() -> 0.75, m_arm));
     new Trigger(() -> m_controller.getButton(frc.twilight.Controller.Button.Y))
-        .whileTrue(new ShoulderPercentOutput(-0.75, m_arm));
+        .whileTrue(new ShoulderPercentOutput(() -> -0.75, m_arm));
 
     // ✧･ﾟ: *✧･ﾟ:*Rumble*:･ﾟ✧*:･ﾟ✧ babey
     new Trigger(() -> m_controller.getButton(frc.twilight.Controller.Button.LB))
@@ -127,10 +132,6 @@ public class RobotContainer {
     new Trigger(() -> m_controller.getButtonPressed(Controller.Button.START))
         .onTrue(new ResetGyro(m_swerve));
 
-    // Override limits
-    new Trigger(() -> (m_controller.getButton(frc.twilight.Controller.Button.RB)))
-        .onTrue(new InstantCommand(() -> m_arm.overrideSoftLimits(false)))
-        .onFalse(new InstantCommand(() -> m_arm.overrideSoftLimits(true)));
   }
 
   public Command getTeleopCommand() {
