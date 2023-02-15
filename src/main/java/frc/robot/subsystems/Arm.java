@@ -234,8 +234,8 @@ public class Arm extends SubsystemBase {
   }
 
   public void setWristPercentOutput(double value) {
-    if (getWristPosition() <= (ArmConfig.WRIST_FORWARD_LIMIT)) {
-      if (getWristPosition() <= (ArmConfig.WRIST_REVERSE_LIMIT)) {
+    if (getWristPosition()*360 >= (ArmConfig.WRIST_FORWARD_LIMIT)) {
+      if (getWristPosition()*360 <= (ArmConfig.WRIST_REVERSE_LIMIT)) {
         controller.runRumble(RumbleVariables.medium);
       }
     }
@@ -243,8 +243,8 @@ public class Arm extends SubsystemBase {
   }
 
   public void setShoulderPercentOutput(double value) {
-    if (getShoulderPosition() <= (ArmConfig.SHOULDER_FORWARD_LIMIT)) {
-      if (getShoulderPosition() >= (ArmConfig.SHOULDER_REVERSE_LIMIT)) {
+    if (getShoulderPosition()*360 >= (ArmConfig.SHOULDER_FORWARD_LIMIT)) {
+      if (getShoulderPosition()*360 <= (ArmConfig.SHOULDER_REVERSE_LIMIT)) {
         controller.runRumble(RumbleVariables.medium);
       }
     }
