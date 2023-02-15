@@ -146,17 +146,14 @@ public class GoToCommand extends CommandBase {
       yDone = true;
     }
 
-    if (rotTol > 0)
-      rotDone = Math.abs(currentPos.getAngle() - goalRot.position) < rotTol;
-    else
-      rotDone = true;
+    if (rotTol > 0) rotDone = Math.abs(currentPos.getAngle() - goalRot.position) < rotTol;
+    else rotDone = true;
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    if (stopAtEnd)
-      m_subsystem.setDrive(new DriveVector(0, 0, 0));
+    if (stopAtEnd) m_subsystem.setDrive(new DriveVector(0, 0, 0));
   }
 
   // Returns true when the command should end.
