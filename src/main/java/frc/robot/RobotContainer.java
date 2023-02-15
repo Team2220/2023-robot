@@ -67,7 +67,7 @@ public class RobotContainer {
     // Record both DS control and joystick data
     DriverStation.startDataLog(DataLogManager.getLog());
 
-    m_arm = new Arm();
+    m_arm = new Arm(m_controller);
     m_intake = new Intake();
     m_leds = new LEDs();
     m_LimeLight = new Limelight("limelight");
