@@ -61,6 +61,7 @@ public class RobotContainer {
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
+    DriverStation.silenceJoystickConnectionWarning(true);
     // Starts recording to data log
     DataLogManager.start();
     // Record both DS control and joystick data
