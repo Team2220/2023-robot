@@ -1,13 +1,15 @@
 package frc.robot.commands.Arm;
 
+import java.util.function.DoubleSupplier;
+
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Arm;
 
 public class ShoulderPercentOutput extends CommandBase {
   private final Arm m_arm;
-  private final double speed;
+  private final DoubleSupplier speed;
 
-  public ShoulderPercentOutput(double speed, Arm arm) {
+  public ShoulderPercentOutput(DoubleSupplier speed, Arm arm) {
     m_arm = arm;
     addRequirements(arm);
     this.speed = speed;
@@ -15,7 +17,7 @@ public class ShoulderPercentOutput extends CommandBase {
 
   @Override
   public void execute() {
-    m_arm.setShoulderPercentOutput(speed);
+    m_arm.setShoulderPercentOutput(speed.getAsDouble());
   }
 
   @Override
