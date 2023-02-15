@@ -234,8 +234,8 @@ public class Arm extends SubsystemBase {
   }
 
   public void setWristPercentOutput(double value) {
-    if(getWristPosition() <= (ArmConfig.WRIST_FORWARD_LIMIT)){
-      if(getWristPosition() <= (ArmConfig.WRIST_REVERSE_LIMIT)){
+    if (getWristPosition() <= (ArmConfig.WRIST_FORWARD_LIMIT)) {
+      if (getWristPosition() <= (ArmConfig.WRIST_REVERSE_LIMIT)) {
         controller.runRumble(RumbleVariables.medium);
       }
     }
@@ -243,8 +243,8 @@ public class Arm extends SubsystemBase {
   }
 
   public void setShoulderPercentOutput(double value) {
-    if(getShoulderPosition() <= (ArmConfig.SHOULDER_FORWARD_LIMIT)){
-      if(getShoulderPosition()>= (ArmConfig.SHOULDER_REVERSE_LIMIT)){
+    if (getShoulderPosition() <= (ArmConfig.SHOULDER_FORWARD_LIMIT)) {
+      if (getShoulderPosition() >= (ArmConfig.SHOULDER_REVERSE_LIMIT)) {
         controller.runRumble(RumbleVariables.medium);
       }
     }
@@ -283,9 +283,9 @@ public class Arm extends SubsystemBase {
     // Arm States
     ShuffleboardLayout stateLayout =
         Shuffleboard.getTab("arm")
-        .getLayout("States", BuiltInLayouts.kList)
-        .withSize(2, 3)
-        .withProperties(Map.of("Label position", "HIDDEN"));
+            .getLayout("States", BuiltInLayouts.kList)
+            .withSize(2, 3)
+            .withProperties(Map.of("Label position", "HIDDEN"));
 
     for (ArmStates state : ArmStates.values()) {
       stateLayout.add(state.name(), new SetArmState(state, this));
@@ -294,9 +294,9 @@ public class Arm extends SubsystemBase {
     // Test Positions
     ShuffleboardLayout testPositionLayout =
         Shuffleboard.getTab("arm")
-        .getLayout("Test Positions", BuiltInLayouts.kList)
-        .withSize(2, 3)
-        .withProperties(Map.of("Label position", "HIDDEN"));
+            .getLayout("Test Positions", BuiltInLayouts.kList)
+            .withSize(2, 3)
+            .withProperties(Map.of("Label position", "HIDDEN"));
 
     testPositionLayout.add(
         "ZeroShoulder", new InstantCommand(() -> zeroShoulder()).withName("ZeroShoulder"));
@@ -318,9 +318,9 @@ public class Arm extends SubsystemBase {
     // Everything else
     ShuffleboardLayout angLayout =
         Shuffleboard.getTab("arm")
-        .getLayout("Angles", BuiltInLayouts.kGrid)
-        .withSize(2, 3)
-        .withProperties(Map.of("Label position", "TOP"));
+            .getLayout("Angles", BuiltInLayouts.kGrid)
+            .withSize(2, 3)
+            .withProperties(Map.of("Label position", "TOP"));
 
     angLayout.addDouble("shoulder angle", this::getShoulderPosition);
     angLayout.addDouble("wrist angle", this::getWristPosition);
