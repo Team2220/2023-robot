@@ -15,28 +15,6 @@ public class Autonomous2 extends SequentialCommandGroup {
     addCommands(
         new InstantCommand( // set starting position
             () ->
-                swerve.setPose2d(
-                    new Pose2d(
-                        FieldConstants.Community.chargingStationCorners[0],
-                        Rotation2d.fromDegrees(90)))));
-    addCommands(
-        new GoToCommand( // move away from charging station
-            swerve, new Position(1, 1, 0)));
-    addCommands( // crossing line
-        new GoToCommand(swerve, new Position(4, 0, 0)));
-    // picking cube fucntion goes here verify arm code works
-    addCommands( // carrying cube
-        new GoToCommand(swerve, new Position(4, 4, 0)));
-    addCommands( // returning
-        new GoToCommand(swerve, new Position(1, 4, 0)));
-    // left
-    addCommands(
-        new GoToCommand( // move away from charging station
-            swerve, new Position(4, 4, 0)));
-    // picking cube fucntion goes here verify arm code works
-    addCommands( // carrying cube
-        new GoToCommand(swerve, new Position(4, 1, 0)));
-    addCommands( // returning
-        new GoToCommand(swerve, new Position(1, 1, 0))); 
+                swerve.setOdo(1, 1, 0)));
   }
 }
