@@ -11,6 +11,7 @@ import frc.twilight.swerve.vectors.Position;
 
 public class Autonomous2 extends SequentialCommandGroup {
   public Autonomous2(Swerve swerve) {
+    // right
     addCommands(
         new InstantCommand( // set starting position
             () ->
@@ -20,13 +21,22 @@ public class Autonomous2 extends SequentialCommandGroup {
                         Rotation2d.fromDegrees(90)))));
     addCommands(
         new GoToCommand( // move away from charging station
-            swerve, new Position(2, 0, 0)));
+            swerve, new Position(1, 1, 0)));
     addCommands( // crossing line
         new GoToCommand(swerve, new Position(4, 0, 0)));
     // picking cube fucntion goes here verify arm code works
     addCommands( // carrying cube
         new GoToCommand(swerve, new Position(4, 4, 0)));
     addCommands( // returning
-        new GoToCommand(swerve, new Position(1, 1, 0)));
+        new GoToCommand(swerve, new Position(1, 4, 0)));
+    // left
+    addCommands(
+        new GoToCommand( // move away from charging station
+            swerve, new Position(4, 4, 0)));
+    // picking cube fucntion goes here verify arm code works
+    addCommands( // carrying cube
+        new GoToCommand(swerve, new Position(4, 1, 0)));
+    addCommands( // returning
+        new GoToCommand(swerve, new Position(1, 1, 0))); 
   }
 }
