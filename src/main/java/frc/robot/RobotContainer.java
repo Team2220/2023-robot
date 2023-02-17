@@ -49,12 +49,8 @@ public class RobotContainer {
   private final Controller m_controller = new Controller(0);
   private final Controller m_secondaryController = new Controller(1);
 
-  private final ControllerDrive m_controllerDrive =
-      new ControllerDrive(
-          m_swerve,
-          () -> m_controller.getLeftX(),
-          () -> m_controller.getLeftY(),
-          () -> m_controller.getRightX());
+  
+  
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -68,13 +64,18 @@ public class RobotContainer {
     m_intake = new Intake();
     m_leds = new LEDs();
     m_LimeLight = new Limelight("limelight");
-
+    autoChooser.setDefaultOption("Drive",    new ControllerDrive(
+        m_swerve,
+        () -> m_controller.getLeftX(),
+        () -> m_controller.getLeftY(),
+        () -> m_controller.getRightX()));
     // Configure the button bindings
     configureButtonBindings();
     // auto stuff
     autoChooser.setDefaultOption("Do Nothing", new InstantCommand());
     autoChooser.addOption("mobility", new Mobility(m_swerve));
     SmartDashboard.putData(autoChooser);
+  
   }
 
   /**
@@ -122,9 +123,6 @@ public class RobotContainer {
         .whileTrue(new IntakePercentOutput(-.75, m_intake));
   }
 
-  public Command getTeleopCommand() {
-    return m_controllerDrive;
-  }
 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
@@ -133,6 +131,6 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
-    return autoChooser.getSelected();
+    return autoChooser.getSelected();sss
   }
 }
