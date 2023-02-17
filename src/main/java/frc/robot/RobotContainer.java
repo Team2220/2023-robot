@@ -14,22 +14,20 @@ import frc.robot.auto.Mobility;
 import frc.robot.auto.leftTwoCubeAuto;
 import frc.robot.auto.rightTwoCubeAuto;
 import frc.robot.commands.Arm.ArmPosition;
+import frc.robot.commands.Arm.SetArmState;
 import frc.robot.commands.Arm.ShoulderPercentOutput;
 import frc.robot.commands.Arm.WristPercentOutput;
 import frc.robot.commands.Intake.IntakePercentOutput;
-import frc.robot.commands.Leds.SetLedsStates;
 // import frc.robot.commands.Leds.RainbowLeds;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.LEDs;
-import frc.robot.subsystems.LEDs.DesieredState;
+import frc.robot.subsystems.Arm.ArmStates;
 import frc.twilight.swerve.subsystems.Swerve;
 import frc.twilight.Controller;
 import frc.twilight.Limelight;
-import frc.twilight.Controller.RumbleVariables;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.RunCommand;
 import frc.twilight.swerve.commands.ControllerDrive;
 import frc.twilight.swerve.commands.ResetGyro;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -54,12 +52,8 @@ public class RobotContainer {
   private final Controller m_controller = new Controller(0);
   private final Controller m_secondaryController = new Controller(1);
 
-  private final ControllerDrive m_controllerDrive =
-      new ControllerDrive(
-          m_swerve,
-          () -> m_controller.getLeftX(),
-          () -> m_controller.getLeftY(),
-          () -> m_controller.getRightX());
+  
+  
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -73,7 +67,11 @@ public class RobotContainer {
     m_intake = new Intake();
     m_leds = new LEDs();
     m_LimeLight = new Limelight("limelight");
-
+    autoChooser.setDefaultOption("Drive",    new ControllerDrive(
+        m_swerve,
+        () -> m_controller.getLeftX(),
+        () -> m_controller.getLeftY(),
+        () -> m_controller.getRightX()));
     // Configure the button bindings
     configureButtonBindings();
     // auto stuff
@@ -82,6 +80,7 @@ public class RobotContainer {
     autoChooser.addOption("rightTwoCubeAuto", new rightTwoCubeAuto(m_swerve, m_arm, m_intake));
     autoChooser.addOption("leftTwoCubeAuto", new leftTwoCubeAuto(m_swerve, m_arm, m_intake));
     SmartDashboard.putData(autoChooser);
+  
   }
 
   /**
@@ -91,56 +90,44 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    // new Button(m_controller::getAButton).whenPressed(m_swerve::zeroGyro);
-
-    // Intake Buttons
-    new Trigger(() -> m_controller.getButton(frc.twilight.Controller.Button.UP))
-        .whileTrue(new IntakePercentOutput(.75, m_intake));
-    new Trigger(() -> m_controller.getButton(frc.twilight.Controller.Button.DOWN))
-        .whileTrue(new IntakePercentOutput(-.75, m_intake));
-    new Trigger(() -> m_controller.getButton(frc.twilight.Controller.Button.RIGHT))
-        .whileTrue(new ArmPosition(45, 45, m_arm));
-    new Trigger(() -> m_controller.getButton(frc.twilight.Controller.Button.LEFT))
-        .whileTrue(new SetLedsStates(DesieredState.FULL_LEDS, m_leds));
+    // driver contoller
+    new Trigger(() -> m_controller.getButtonPressed(Controller.Button.START))
+        .onTrue(new ResetGyro(m_swerve));
+    // manipulatror controller
 
     // Arm & Wrist Joystcks
     new Trigger(() -> (Math.abs(m_secondaryController.getLeftY()) > 0.1))
         .whileTrue(new ShoulderPercentOutput(m_secondaryController::getLeftY, m_arm));
     new Trigger(() -> (Math.abs(m_secondaryController.getRightY()) > 0.1))
         .whileTrue(new WristPercentOutput(m_secondaryController::getRightY, m_arm));
-
-    // Wrist
-    new Trigger(() -> m_controller.getButton(frc.twilight.Controller.Button.A))
-        .whileTrue(new WristPercentOutput(() -> 0.5, m_arm));
-    new Trigger(() -> m_controller.getButton(frc.twilight.Controller.Button.B))
-        .whileTrue(new WristPercentOutput(() -> -0.5, m_arm));
-
-    // Shoulder
-    new Trigger(() -> m_controller.getButton(frc.twilight.Controller.Button.X))
-        .whileTrue(new ShoulderPercentOutput(() -> 0.75, m_arm));
-    new Trigger(() -> m_controller.getButton(frc.twilight.Controller.Button.Y))
-        .whileTrue(new ShoulderPercentOutput(() -> -0.75, m_arm));
-
-    // ✧･ﾟ: *✧･ﾟ:*Rumble*:･ﾟ✧*:･ﾟ✧ babey
-    new Trigger(() -> m_controller.getButton(frc.twilight.Controller.Button.LB))
-        .whileTrue(new RunCommand(() -> m_controller.runRumble(RumbleVariables.high)));
-
-    // new Trigger(() ->
-    // (m_controller.getButton(frc.twilight.Controller.Button.START)))
-    // .whileTrue(new PlayMusic(m_swerve, m_arm, m_intake));
+    // Arm States
+    new Trigger(() -> (m_secondaryController.getButton(frc.twilight.Controller.Button.A)))
+        .onTrue(new SetArmState(ArmStates.MID_CUBE_NODE, m_arm));
+    new Trigger(() -> (m_secondaryController.getButton(frc.twilight.Controller.Button.X)))
+        .onTrue(new SetArmState(ArmStates.HIGH_CUBE_NODE, m_arm));
+    new Trigger(() -> (m_secondaryController.getButton(frc.twilight.Controller.Button.B)))
+        .onTrue(new SetArmState(ArmStates.MID_CONE_NODE, m_arm));
+    new Trigger(() -> (m_secondaryController.getButton(frc.twilight.Controller.Button.Y)))
+        .onTrue(new SetArmState(ArmStates.HIGH_CONE_NODE, m_arm));
+    new Trigger(() -> (m_secondaryController.getButton(frc.twilight.Controller.Button.RB)))
+        .onTrue(new SetArmState(ArmStates.INTAKE, m_arm));
 
     // Override limits
-    new Trigger(() -> (m_controller.getButton(frc.twilight.Controller.Button.RB)))
-        .onTrue(new InstantCommand(() -> m_arm.overrideSoftLimits(false)))
-        .onFalse(new InstantCommand(() -> m_arm.overrideSoftLimits(true)));
+    new Trigger(() -> (m_secondaryController.getButton(frc.twilight.Controller.Button.LS)))
+        .onTrue(new InstantCommand(() -> m_arm.overrideShoulderSoftLimits(false)))
+        .onFalse(new InstantCommand(() -> m_arm.overrideShoulderSoftLimits(true)));
 
-    new Trigger(() -> m_controller.getButtonPressed(Controller.Button.START))
-        .onTrue(new ResetGyro(m_swerve));
+    new Trigger(() -> (m_secondaryController.getButton(frc.twilight.Controller.Button.RS)))
+        .onTrue(new InstantCommand(() -> m_arm.overrideWristSoftLimits(false)))
+        .onFalse(new InstantCommand(() -> m_arm.overrideWristSoftLimits(true)));
+
+    // Intake Buttons
+    new Trigger(() -> m_secondaryController.getButton(frc.twilight.Controller.Button.UP))
+        .whileTrue(new IntakePercentOutput(.75, m_intake));
+    new Trigger(() -> m_secondaryController.getButton(frc.twilight.Controller.Button.DOWN))
+        .whileTrue(new IntakePercentOutput(-.75, m_intake));
   }
 
-  public Command getTeleopCommand() {
-    return m_controllerDrive;
-  }
 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.

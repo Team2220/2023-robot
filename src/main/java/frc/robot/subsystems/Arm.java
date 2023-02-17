@@ -165,10 +165,13 @@ public class Arm extends SubsystemBase {
     setUpTestCommands();
   }
 
-  public void overrideSoftLimits(boolean enabled) {
+  public void overrideWristSoftLimits(boolean enabled) {
+    System.out.println("overrideSoftLimits " + enabled);
+    wrist.overrideSoftLimitsEnable(enabled);
+  }
+  public void overrideShoulderSoftLimits(boolean enabled) {
     System.out.println("overrideSoftLimits " + enabled);
     shoulder.overrideSoftLimitsEnable(enabled);
-    wrist.overrideSoftLimitsEnable(enabled);
   }
 
   public double anglesToWristSensorPosition(double angle) {
