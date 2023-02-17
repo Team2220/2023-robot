@@ -11,7 +11,10 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.auto.Mobility;
+import frc.robot.auto.leftTwoCubeAuto;
+import frc.robot.auto.rightTwoCubeAuto;
 import frc.robot.commands.Arm.ArmPosition;
+import frc.robot.commands.Arm.SetArmState;
 import frc.robot.commands.Arm.ShoulderPercentOutput;
 import frc.robot.commands.Arm.WristPercentOutput;
 import frc.robot.commands.Intake.IntakePercentOutput;
@@ -133,6 +136,6 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
-    return autoChooser.getSelected();sss
+    return autoChooser.getSelected();
   }
 }
