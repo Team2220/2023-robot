@@ -11,6 +11,8 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.auto.Mobility;
+import frc.robot.auto.leftTwoCubeAuto;
+import frc.robot.auto.rightTwoCubeAuto;
 import frc.robot.commands.Arm.ArmPosition;
 import frc.robot.commands.Arm.ShoulderPercentOutput;
 import frc.robot.commands.Arm.WristPercentOutput;
@@ -77,6 +79,8 @@ public class RobotContainer {
     // auto stuff
     autoChooser.setDefaultOption("Do Nothing", new InstantCommand());
     autoChooser.addOption("mobility", new Mobility(m_swerve));
+    autoChooser.addOption("rightTwoCubeAuto", new rightTwoCubeAuto(m_swerve, m_arm, m_intake));
+    autoChooser.addOption("leftTwoCubeAuto", new leftTwoCubeAuto(m_swerve, m_arm, m_intake));
     SmartDashboard.putData(autoChooser);
   }
 
