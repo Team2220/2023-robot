@@ -18,7 +18,7 @@ public class Gyro {
   }
 
   public double getAngle() {
-    return ahrs.getAngle();
+    return -ahrs.getAngle();
   }
 
   public double getAngleSpeed() {
@@ -39,7 +39,7 @@ public class Gyro {
 
   public void setPosition(double offset) {
     ahrs.reset();
-    ahrs.setAngleAdjustment(offset);
+    ahrs.setAngleAdjustment(-offset);
   }
 
   public void zeroSensor() {
