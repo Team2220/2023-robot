@@ -20,7 +20,7 @@ public class Mobility extends SequentialCommandGroup {
         new GoToCommand(
             swerve,
             new Pose2d(
-                FieldConstants.Community.chargingStationCorners[2], Rotation2d.fromDegrees(180))));
+                FieldConstants.Community.chargingStationCorners[2], Rotation2d.fromDegrees(0))));
 
     addCommands(
         new GoToCommand(
@@ -31,7 +31,7 @@ public class Mobility extends SequentialCommandGroup {
         new GoToCommand(
             swerve,
             new Pose2d(
-                FieldConstants.Community.chargingStationCorners[1], Rotation2d.fromDegrees(360))));
+                FieldConstants.Community.chargingStationCorners[1], Rotation2d.fromDegrees(180))));
     addCommands(
         new GoToCommand(
             swerve,
