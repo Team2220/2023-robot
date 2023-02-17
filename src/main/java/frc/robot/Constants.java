@@ -17,6 +17,7 @@ import edu.wpi.first.math.util.Units;
 public final class Constants {
   public static final double ROBOT_SIZE = Units.inchesToMeters(36);
   public static final double BUMPER_THICKNESS = Units.inchesToMeters(2);
+
   public static final class LEDS {
     public static final int CANDLE = 1;
   }

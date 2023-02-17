@@ -13,7 +13,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.auto.Mobility;
 import frc.robot.auto.leftTwoCubeAuto;
 import frc.robot.auto.rightTwoCubeAuto;
-import frc.robot.commands.Arm.ArmPosition;
 import frc.robot.commands.Arm.SetArmState;
 import frc.robot.commands.Arm.ShoulderPercentOutput;
 import frc.robot.commands.Arm.WristPercentOutput;
@@ -52,9 +51,6 @@ public class RobotContainer {
   private final Controller m_controller = new Controller(0);
   private final Controller m_secondaryController = new Controller(1);
 
-  
-  
-
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     DriverStation.silenceJoystickConnectionWarning(true);
@@ -67,11 +63,13 @@ public class RobotContainer {
     m_intake = new Intake();
     m_leds = new LEDs();
     m_LimeLight = new Limelight("limelight");
-    autoChooser.setDefaultOption("Drive",    new ControllerDrive(
-        m_swerve,
-        () -> m_controller.getLeftX(),
-        () -> m_controller.getLeftY(),
-        () -> m_controller.getRightX()));
+    autoChooser.setDefaultOption(
+        "Drive",
+        new ControllerDrive(
+            m_swerve,
+            () -> m_controller.getLeftX(),
+            () -> m_controller.getLeftY(),
+            () -> m_controller.getRightX()));
     // Configure the button bindings
     configureButtonBindings();
     // auto stuff
@@ -80,7 +78,6 @@ public class RobotContainer {
     autoChooser.addOption("rightTwoCubeAuto", new rightTwoCubeAuto(m_swerve, m_arm, m_intake));
     autoChooser.addOption("leftTwoCubeAuto", new leftTwoCubeAuto(m_swerve, m_arm, m_intake));
     SmartDashboard.putData(autoChooser);
-  
   }
 
   /**
@@ -127,7 +124,6 @@ public class RobotContainer {
     new Trigger(() -> m_secondaryController.getButton(frc.twilight.Controller.Button.DOWN))
         .whileTrue(new IntakePercentOutput(-.75, m_intake));
   }
-
 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.

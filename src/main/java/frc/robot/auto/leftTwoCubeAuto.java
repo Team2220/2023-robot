@@ -13,8 +13,7 @@ import frc.twilight.swerve.vectors.Position;
 
 public class leftTwoCubeAuto extends SequentialCommandGroup {
   public leftTwoCubeAuto(Swerve swerve, Arm arm, Intake intake) {
-    addCommands(
-        new InstantCommand(() -> swerve.setOdo(3, .5, 0))); // set starting position
+    addCommands(new InstantCommand(() -> swerve.setOdo(3, .5, 0))); // set starting position
     addCommands( // score starting cube
         new SetArmState(ArmStates.INTAKE, arm),
         new IntakePercentOutput(-.5, intake).withTimeout(1));

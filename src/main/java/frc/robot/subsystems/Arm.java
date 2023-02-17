@@ -169,6 +169,7 @@ public class Arm extends SubsystemBase {
     System.out.println("overrideSoftLimits " + enabled);
     wrist.overrideSoftLimitsEnable(enabled);
   }
+
   public void overrideShoulderSoftLimits(boolean enabled) {
     System.out.println("overrideSoftLimits " + enabled);
     shoulder.overrideSoftLimitsEnable(enabled);
