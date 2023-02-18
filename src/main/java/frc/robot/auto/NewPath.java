@@ -1,8 +1,5 @@
 // Half of robot: 16.291382
 
-
-
-
 package frc.robot.auto;
 
 import org.littletonrobotics.frc2023.FieldConstants;
@@ -27,8 +24,8 @@ public class NewPath extends SequentialCommandGroup {
         new GoToCommand(
             swerve,
             new Pose2d(
-                FieldConstants.Community.chargingStationCorners[2].plus(new Translation2d(0.4138011028, 0)), Rotation2d.fromDegrees(0))));
-
-  } 
+                FieldConstants.Community.chargingStationCorners[2].plus(
+                    new Translation2d(0.4138011028, 0)),
+                Rotation2d.fromDegrees(0))));
+  }
 }
-
