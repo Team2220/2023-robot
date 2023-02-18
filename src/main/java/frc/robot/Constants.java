@@ -49,7 +49,7 @@ public final class Constants {
     public static final double TALONFX_ENCODER_TICKS = 2048;
     public static final double WRIST_FORWARD_LIMIT = 135.0;
     public static final double WRIST_REVERSE_LIMIT = -135.0;
-    public static final double SHOULDER_FORWARD_LIMIT = 100.0;
-    public static final double SHOULDER_REVERSE_LIMIT = -145.0;
+    public static final double SHOULDER_FORWARD_LIMIT = 145.0; // Away from battery 
+    public static final double SHOULDER_REVERSE_LIMIT = 25.0; // Towards battery
   }
 }
