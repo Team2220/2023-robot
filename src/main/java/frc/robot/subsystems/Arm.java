@@ -77,7 +77,6 @@ public class Arm extends SubsystemBase {
       wrist.config_kD(0, wristD.getValue());
       oldWristD = wristD.getValue();
     }
-
     if (shoulderP.getValue() != oldShoulderP) {
       shoulder.config_kP(0, shoulderP.getValue());
       oldShoulderP = shoulderP.getValue();
@@ -122,7 +121,7 @@ public class Arm extends SubsystemBase {
     wrist.configSupplyCurrentLimit(supplyConfig);
 
     StatorCurrentLimitConfiguration config = new StatorCurrentLimitConfiguration();
-    config.currentLimit = 3;
+    config.currentLimit = 33;
     config.enable = true;
     shoulder.configStatorCurrentLimit(config);
     wrist.configStatorCurrentLimit(config);
@@ -169,6 +168,7 @@ public class Arm extends SubsystemBase {
     System.out.println("overrideSoftLimits " + enabled);
     wrist.overrideSoftLimitsEnable(enabled);
   }
+
   public void overrideShoulderSoftLimits(boolean enabled) {
     System.out.println("overrideSoftLimits " + enabled);
     shoulder.overrideSoftLimitsEnable(enabled);
@@ -279,6 +279,7 @@ public class Arm extends SubsystemBase {
   }
 
   public double getWristPosition() {
+    System.out.println(wristEncoder.getAbsolutePosition());
     return wristEncoder.getAbsolutePosition() - ArmConfig.WRIST_ENCODER_OFFSET;
   }
 

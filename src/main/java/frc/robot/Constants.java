@@ -4,6 +4,8 @@
 
 package frc.robot;
 
+import edu.wpi.first.math.util.Units;
+
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
  * constants. This class should not be used for any other purpose. All constants should be declared
@@ -13,6 +15,9 @@ package frc.robot;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
+  public static final double ROBOT_SIZE = Units.inchesToMeters(36);
+  public static final double BUMPER_THICKNESS = Units.inchesToMeters(2);
+
   public static final class LEDS {
     public static final int CANDLE = 1;
   }
@@ -36,7 +41,7 @@ public final class Constants {
     public static final boolean WRIST_INVERTED = false;
     public static final int WRIST_DUTYENCODER = 0;
     public static final int SHOULDER_DUTYENCODER = 9;
-    public static final double WRIST_ENCODER_OFFSET = 0.17849760446244012;
+    public static final double WRIST_ENCODER_OFFSET = 0.7032648175816204;
     public static final double SHOULDER_ENCODER_OFFSET = 0.0;
     public static final double SHOULDER_GEAR_RATIO =
         (5.0 / 1.0) * (5.0 / 1.0) * (4.0 / 1.0) * (58.0 / 15.0);

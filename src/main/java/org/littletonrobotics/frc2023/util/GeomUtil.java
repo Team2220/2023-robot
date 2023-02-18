@@ -123,4 +123,7 @@ public class GeomUtil {
   public static Pose3d transform3dToPose3d(Transform3d transform) {
     return new Pose3d(transform.getTranslation(), transform.getRotation());
   }
+  /*public static Pose2d offsetRoboCenter(Pose2d pose) {
+    pose.tra
+  }*/
 }
