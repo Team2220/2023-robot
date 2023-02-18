@@ -6,6 +6,7 @@ package frc.twilight.swerve.commands;
 
 import frc.twilight.swerve.config.GeneralConfig;
 import frc.twilight.swerve.config.PIDconfig;
+import frc.twilight.swerve.devices.Gyro;
 import frc.twilight.swerve.subsystems.Swerve;
 import frc.twilight.swerve.vectors.DriveVector;
 
@@ -18,6 +19,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 public class SnapDrive extends CommandBase {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   private final Swerve m_subsystem;
+  private final Gyro m_gyro = new Gyro();
 
   public DoubleSupplier fwd;
   public DoubleSupplier str;
@@ -55,7 +57,7 @@ public class SnapDrive extends CommandBase {
         new DriveVector(
                 fwd.getAsDouble() * GeneralConfig.DT_MAX_VEL.getValue(),
                 str.getAsDouble() * GeneralConfig.DT_MAX_VEL.getValue(),
-                rotpid.calculate(m_subsystem.getOdo().getAngle(), rot))
+                rotpid.calculate(m_gyro.getAngle(), rot))
             .maxVel()
             .maxAccel());
   }
