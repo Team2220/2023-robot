@@ -7,34 +7,34 @@ import frc.twilight.swerve.subsystems.Swerve;
 import frc.twilight.tunables.TunableDouble;
 
 public class Balancing extends CommandBase {
-    private PIDController pid = new PIDController(0, 0, 0);
-    private Swerve swerve;
-    private Gyro gyro = new Gyro();
+  private PIDController pid = new PIDController(0, 0, 0);
+  private Swerve swerve;
+  private Gyro gyro = new Gyro();
 
-    private TunableDouble p = new TunableDouble("P", 0, true, "Balancing");
-    private TunableDouble i = new TunableDouble("I", 0, true, "Balancing");
-    private TunableDouble d = new TunableDouble("D", 0, true, "Balancing");
+  private TunableDouble p = new TunableDouble("P", 0, true, "Balancing");
+  private TunableDouble i = new TunableDouble("I", 0, true, "Balancing");
+  private TunableDouble d = new TunableDouble("D", 0, true, "Balancing");
 
-    public Balancing(Swerve swerve) {
-        this.swerve = swerve;
-        this.addRequirements(swerve);
-    }
+  public Balancing(Swerve swerve) {
+    this.swerve = swerve;
+    this.addRequirements(swerve);
+  }
 
-    @Override
-    public void initialize() {
-        swerve.setDrive(0, 0, 0);
-    }
+  @Override
+  public void initialize() {
+    swerve.setDrive(0, 0, 0);
+  }
 
-    @Override 
-    public void execute() {
-        pid.setPID(p.getValue(), i.getValue(), d.getValue());
-        double out = gyro.getYRot();
-        out = pid.calculate(out, 0);
-        swerve.setDrive(0, out, 0);
-    }
+  @Override
+  public void execute() {
+    pid.setPID(p.getValue(), i.getValue(), d.getValue());
+    double out = gyro.getYRot();
+    out = pid.calculate(out, 0);
+    swerve.setDrive(0, out, 0);
+  }
 
-    @Override
-    public void end(boolean interupted) {
-        swerve.setDrive(0, 0, 0);
-    }
+  @Override
+  public void end(boolean interupted) {
+    swerve.setDrive(0, 0, 0);
+  }
 }
