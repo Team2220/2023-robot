@@ -39,6 +39,7 @@ public class LEDs extends SubsystemBase {
     DRIVER_STATION_DISCONNECTED,
     BROWNOUT,
     OFF,
+    NOTHING_IN_AUTO,
   }
 
   private SystemState systemState = SystemState.OFF;
@@ -88,6 +89,12 @@ public class LEDs extends SubsystemBase {
       case OFF:
         {
           setOffLEDs();
+        }
+        break;
+
+        case NOTHING_IN_AUTO:
+        {
+
         }
         break;
     }
