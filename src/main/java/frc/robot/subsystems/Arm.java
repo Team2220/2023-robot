@@ -99,10 +99,13 @@ public class Arm extends SubsystemBase {
     controller = x;
     /* Motion Magic Configurations */
     wristConfig.motionAcceleration = degreesPerSecondToEncoderTicks(10, ArmConfig.WRIST_GEAR_RATIO);
-    wristConfig.motionCruiseVelocity = degreesPerSecondToEncoderTicks(10, ArmConfig.WRIST_GEAR_RATIO);
+    wristConfig.motionCruiseVelocity =
+        degreesPerSecondToEncoderTicks(10, ArmConfig.WRIST_GEAR_RATIO);
 
-    shoulderConfig.motionCruiseVelocity = degreesPerSecondToEncoderTicks(10, ArmConfig.SHOULDER_GEAR_RATIO);
-    shoulderConfig.motionAcceleration = degreesPerSecondToEncoderTicks(10, ArmConfig.SHOULDER_GEAR_RATIO);
+    shoulderConfig.motionCruiseVelocity =
+        degreesPerSecondToEncoderTicks(10, ArmConfig.SHOULDER_GEAR_RATIO);
+    shoulderConfig.motionAcceleration =
+        degreesPerSecondToEncoderTicks(10, ArmConfig.SHOULDER_GEAR_RATIO);
 
     wrist.configAllSettings(wristConfig);
     shoulder.configAllSettings(shoulderConfig);
@@ -158,12 +161,14 @@ public class Arm extends SubsystemBase {
   }
 
   private void setShoulderFromAbsEncoder() {
-    double shoulderOffset = getShoulderPosition() * (ArmConfig.SHOULDER_GEAR_RATIO) * (ArmConfig.TALONFX_ENCODER_TICKS);
+    double shoulderOffset =
+        getShoulderPosition() * (ArmConfig.SHOULDER_GEAR_RATIO) * (ArmConfig.TALONFX_ENCODER_TICKS);
     shoulder.setSelectedSensorPosition(shoulderOffset);
   }
 
   private void setWristFromAbsEncoder() {
-    double wristOffset = getWristPosition() * (ArmConfig.WRIST_GEAR_RATIO) * (ArmConfig.TALONFX_ENCODER_TICKS);
+    double wristOffset =
+        getWristPosition() * (ArmConfig.WRIST_GEAR_RATIO) * (ArmConfig.TALONFX_ENCODER_TICKS);
     wrist.setSelectedSensorPosition(wristOffset);
   }
 
@@ -319,19 +324,22 @@ public class Arm extends SubsystemBase {
         "ZeroShoulder",
         new InstantCommand(() -> shoulder.setSelectedSensorPosition(0)).withName("ZeroShoulder"));
     testPositionLayout.add(
-        "ZeroWrist", new InstantCommand(() -> wrist.setSelectedSensorPosition(0)).withName("ZeroWrist"));
-   
-        testPositionLayout.add(
+        "ZeroWrist",
+        new InstantCommand(() -> wrist.setSelectedSensorPosition(0)).withName("ZeroWrist"));
+
+    testPositionLayout.add(
         "setShoulderFromEncoder",
         new InstantCommand(() -> setShoulderFromAbsEncoder()).withName("setShoulderFromEncoder"));
     testPositionLayout.add(
-        "setWristFromEncoder", new InstantCommand(() -> setWristFromAbsEncoder()).withName("setWristFromEncoder"));
-   
-        testPositionLayout.add(
+        "setWristFromEncoder",
+        new InstantCommand(() -> setWristFromAbsEncoder()).withName("setWristFromEncoder"));
+
+    testPositionLayout.add(
         "ReferenceShoulder",
         new InstantCommand(() -> setShoulderToReferenceAngle()).withName("ReferenceShoulder"));
     testPositionLayout.add(
-        "RefernceWrist", new InstantCommand(() -> setWristToReferenceAngle()).withName("RefernceWrist"));
+        "RefernceWrist",
+        new InstantCommand(() -> setWristToReferenceAngle()).withName("RefernceWrist"));
     testPositionLayout.add(
         "Wrist=90", new InstantCommand(() -> setWristAngle(90)).withName("Wrist=90"));
     testPositionLayout.add(
@@ -357,8 +365,8 @@ public class Arm extends SubsystemBase {
     angLayout.addDouble("shoulder abs encoder", this::getShoulderPosition);
     angLayout.addDouble("wrist abs encoder", this::getWristPosition);
 
-    angLayout.addDouble("shoulder abs angle", ()-> this.getShoulderPosition()*360);
-    angLayout.addDouble("wrist abs angle", ()-> this.getWristPosition()*360);
+    angLayout.addDouble("shoulder abs angle", () -> this.getShoulderPosition() * 360);
+    angLayout.addDouble("wrist abs angle", () -> this.getWristPosition() * 360);
 
     angLayout.addDouble(
         "shoulder angle", () -> ticksToShoulderAngle(shoulder.getSelectedSensorPosition()));
