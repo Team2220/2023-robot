@@ -215,9 +215,10 @@ public class Arm extends SubsystemBase {
     HIGH_CUBE_NODE,
     MID_CONE_NODE,
     HIGH_CONE_NODE,
-    LOADING_STATION_PICKUP,
     TRANSIT,
     // Starting: Shoulder = 171 , Wrist = 150
+    LOADING_STATION_CONE,
+    LOADING_STATION_CUBE,
   }
 
   /** arm states */
@@ -238,11 +239,14 @@ public class Arm extends SubsystemBase {
       case HIGH_CONE_NODE:
         setPosition(70, -20);
         break;
-      case LOADING_STATION_PICKUP:
-        setPosition(lastShoulderAngle, lastWristAngle);
-        break;
       case TRANSIT:
         setPosition(171, 150);
+        break;
+      case LOADING_STATION_CUBE:
+        setPosition(74, -32);
+        break;
+      case LOADING_STATION_CONE:
+        setPosition(65, -45);
         break;
     }
   }

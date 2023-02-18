@@ -131,9 +131,11 @@ public class RobotContainer {
     new Trigger(() -> (m_secondaryController.getButton(frc.twilight.Controller.Button.RB)))
         .onTrue(new SetArmState(ArmStates.INTAKE, m_arm));
     new Trigger(() -> (m_secondaryController.getButton(frc.twilight.Controller.Button.UP)))
-        .onTrue(new SetArmState(ArmStates.LOADING_STATION_PICKUP, m_arm));
+        .onTrue(new SetArmState(ArmStates.LOADING_STATION_CONE, m_arm));
     new Trigger(() -> (m_secondaryController.getButton(frc.twilight.Controller.Button.DOWN)))
         .onTrue(new SetArmState(ArmStates.TRANSIT, m_arm));
+  new Trigger(() -> (m_secondaryController.getButton(frc.twilight.Controller.Button.LEFT)))
+        .onTrue(new SetArmState(ArmStates.LOADING_STATION_CUBE, m_arm));
 
     // Override limits
     new Trigger(() -> (m_secondaryController.getButton(frc.twilight.Controller.Button.LS)))
