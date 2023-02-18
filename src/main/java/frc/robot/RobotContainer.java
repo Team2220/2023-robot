@@ -70,8 +70,7 @@ public class RobotContainer {
             () -> m_controller.getRightX()));
     m_arm.setDefaultCommand(
         new ArmPercentOutput(
-            m_secondaryController::getRightY, 
-            m_secondaryController::getLeftY, m_arm));
+            m_secondaryController::getRightY, m_secondaryController::getLeftY, m_arm));
     // Configure the button bindings
     configureButtonBindings();
     // auto stuff
@@ -106,7 +105,6 @@ public class RobotContainer {
         .onTrue(new SetArmState(ArmStates.HIGH_CONE_NODE, m_arm));
     new Trigger(() -> (m_secondaryController.getButton(frc.twilight.Controller.Button.RB)))
         .onTrue(new SetArmState(ArmStates.INTAKE, m_arm));
-    
 
     // Override limits
     new Trigger(() -> (m_secondaryController.getButton(frc.twilight.Controller.Button.LS)))

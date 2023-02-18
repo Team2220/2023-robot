@@ -341,7 +341,8 @@ public class Arm extends SubsystemBase {
 
     angLayout.addDouble("shoulder abs encoder", this::getShoulderPosition);
     angLayout.addDouble("wrist abs encoder", this::getWristPosition);
-    angLayout.addDouble("shoulder angle", () -> ticksToShoulderAngle(shoulder.getSelectedSensorPosition()));
+    angLayout.addDouble(
+        "shoulder angle", () -> ticksToShoulderAngle(shoulder.getSelectedSensorPosition()));
     angLayout.addDouble("wrist angle", () -> ticksToWristAngle(wrist.getSelectedSensorPosition()));
   }
 
