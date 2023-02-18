@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.auto.Mobility;
+import frc.robot.auto.TestPath;
 import frc.robot.auto.leftTwoCubeAuto;
 import frc.robot.auto.rightTwoCubeAuto;
 import frc.robot.commands.Arm.SetArmState;
@@ -75,6 +76,7 @@ public class RobotContainer {
     autoChooser.addOption(new Mobility(m_swerve));
     autoChooser.addOption(new rightTwoCubeAuto(m_swerve, m_arm, m_intake));
     autoChooser.addOption(new leftTwoCubeAuto(m_swerve, m_arm, m_intake));
+    autoChooser.addOption(new TestPath(m_swerve));
     SmartDashboard.putData(autoChooser);
   }
 
@@ -117,9 +119,9 @@ public class RobotContainer {
         .onFalse(new InstantCommand(() -> m_arm.overrideWristSoftLimits(true)));
 
     // Intake Buttons
-    new Trigger(() -> m_secondaryController.getButton(frc.twilight.Controller.Button.UP))
+    new Trigger(() -> m_secondaryController.getButton(frc.twilight.Controller.Button.LB))
         .whileTrue(new IntakePercentOutput(.75, m_intake));
-    new Trigger(() -> m_secondaryController.getButton(frc.twilight.Controller.Button.DOWN))
+    new Trigger(() -> m_secondaryController.getButton(frc.twilight.Controller.Button.RB))
         .whileTrue(new IntakePercentOutput(-.75, m_intake));
   }
 

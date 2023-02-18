@@ -18,6 +18,7 @@ import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 import frc.robot.Constants.ArmConfig;
 import frc.robot.commands.Arm.SetArmState;
 import frc.twilight.Controller;
@@ -229,11 +230,11 @@ public class Arm extends SubsystemBase {
   }
 
   public void zeroShoulder() {
-    shoulder.setSelectedSensorPosition(0);
+    shoulder.setSelectedSensorPosition(anglesToShoulderSensorPosition(Constants.ArmConfig.SHOULDER_REF));
   }
 
   public void zeroWrist() {
-    wrist.setSelectedSensorPosition(0);
+    wrist.setSelectedSensorPosition(anglesToWristSensorPosition(Constants.ArmConfig.WRIST_REF));
   }
 
   public void setWristPercentOutput(double value) {
