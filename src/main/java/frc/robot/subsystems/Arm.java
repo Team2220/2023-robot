@@ -339,8 +339,7 @@ public class Arm extends SubsystemBase {
     } else if ((shoulder.getSelectedSensorPosition() >= shoulderForwardLimit)
         || (shoulder.getSelectedSensorPosition() <= shoulderReverseLimit)) {
       controller.runRumble(RumbleVariables.medium);
-    }
-    else{
+    } else {
       controller.runRumble(RumbleVariables.off);
     }
 
