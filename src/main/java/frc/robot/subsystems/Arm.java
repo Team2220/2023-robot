@@ -339,6 +339,9 @@ controller.runRumble(RumbleVariables.medium);
     else if((shoulder.getSelectedSensorPosition() >= shoulderForwardLimit)|| (shoulder.getSelectedSensorPosition() <= shoulderReverseLimit)){
       controller.runRumble(RumbleVariables.medium);
     }
+    else{
+      controller.runRumble(RumbleVariables.off);
+    }
 
     updatePID();
   }
