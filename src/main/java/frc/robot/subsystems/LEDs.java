@@ -92,9 +92,8 @@ public class LEDs extends SubsystemBase {
         }
         break;
 
-        case NOTHING_IN_AUTO:
+      case NOTHING_IN_AUTO:
         {
-
         }
         break;
     }
