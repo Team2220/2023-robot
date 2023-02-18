@@ -141,8 +141,6 @@ public class Arm extends SubsystemBase {
     double wristOffset =
         getWristPosition() * (ArmConfig.WRIST_GEAR_RATIO) * (ArmConfig.TALONFX_ENCODER_TICKS);
     wrist.setSelectedSensorPosition(wristOffset);
-    System.out.println("wristOffset = " + wristOffset);
-    System.out.println("wristPosition = " + getWristPosition());
 
     double shoulderOffset =
         getShoulderPosition() * (ArmConfig.SHOULDER_GEAR_RATIO) * (ArmConfig.TALONFX_ENCODER_TICKS);
@@ -250,13 +248,14 @@ public class Arm extends SubsystemBase {
     setWristAngle(wristAng);
   }
 
-  public void zeroShoulder() {
+  public void setShoulderToReferenceAngle() {
     shoulder.setSelectedSensorPosition(
         anglesToShoulderSensorPosition(Constants.ArmConfig.SHOULDER_REF));
   }
 
-  public void zeroWrist() {
-    wrist.setSelectedSensorPosition(anglesToWristSensorPosition(Constants.ArmConfig.WRIST_REF));
+  public void setWristToReferenceAngle() {
+    wrist.setSelectedSensorPosition(
+      anglesToWristSensorPosition(Constants.ArmConfig.WRIST_REF));
   }
 
   public void setWristPercentOutput(double value) {
@@ -316,9 +315,9 @@ public class Arm extends SubsystemBase {
             .withProperties(Map.of("Label position", "HIDDEN"));
 
     testPositionLayout.add(
-        "ZeroShoulder", new InstantCommand(() -> zeroShoulder()).withName("ZeroShoulder"));
+        "ZeroShoulder", new InstantCommand(() -> setShoulderToReferenceAngle()).withName("ZeroShoulder"));
     testPositionLayout.add(
-        "ZeroWrist", new InstantCommand(() -> zeroWrist()).withName("ZeroWrist"));
+        "ZeroWrist", new InstantCommand(() -> setWristToReferenceAngle()).withName("ZeroWrist"));
     testPositionLayout.add(
         "Wrist=90", new InstantCommand(() -> setWristAngle(90)).withName("Wrist=90"));
     testPositionLayout.add(

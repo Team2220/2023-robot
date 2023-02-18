@@ -51,8 +51,8 @@ public final class Constants {
     public static final double WRIST_REVERSE_LIMIT = -135.0;
     public static final double SHOULDER_FORWARD_LIMIT = 145.0; // Away from battery
     public static final double SHOULDER_REVERSE_LIMIT = 25.0; // Towards battery
-
-    public static final double SHOULDER_REF = 0;
-    public static final double WRIST_REF = 0;
+    // Stowed position
+    public static final double SHOULDER_REF = 171;
+    public static final double WRIST_REF = 150;
   }
 }
