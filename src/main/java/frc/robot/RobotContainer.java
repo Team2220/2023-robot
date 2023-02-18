@@ -85,6 +85,7 @@ public class RobotContainer {
     autoChooser.addOption(new leftTwoCubeAuto(m_swerve, m_arm, m_intake));
     autoChooser.addOption(new TestPath(m_swerve));
     SmartDashboard.putData(autoChooser);
+    
   }
 
   /**
@@ -94,15 +95,20 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    // driver contoller
+    // Driver contoller
     new Trigger(() -> m_controller.getButtonPressed(Controller.Button.START))
         .onTrue(new ResetGyro(m_swerve));
-    // manipulatror controller
+    new Trigger(() -> m_controller.getButtonPressed(Controller.Button.BACK))
+        .onTrue(new InstantCommand(() -> DataLogManager.log("Driver Error")));
+    // Manipulatror controller
     new Trigger(() -> m_secondaryController.getButtonPressed(Controller.Button.BACK))
-        .onTrue(new InstantCommand(() -> m_arm.setShoulderToReferenceAngle()));
+        .onTrue(new InstantCommand(() -> DataLogManager.log("Manipulator Error")));
 
     new Trigger(() -> m_secondaryController.getButtonPressed(Controller.Button.START))
-        .onTrue(new InstantCommand(() -> m_arm.setWristToReferenceAngle()));
+        .onTrue(new InstantCommand(() -> {
+            m_arm.setWristToReferenceAngle(); 
+            m_arm.setShoulderToReferenceAngle();
+        }));
     new Trigger(
             () -> {
               boolean left = Math.abs(m_secondaryController.getLeftY()) > 0.1;
