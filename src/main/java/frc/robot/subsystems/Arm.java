@@ -189,6 +189,18 @@ public class Arm extends SubsystemBase {
     return posValue;
   }
 
+  public double ticksToWristAngle(double ticks) {
+    double value = ticks / ArmConfig.TALONFX_ENCODER_TICKS / ArmConfig.WRIST_GEAR_RATIO;
+    value *= 360;
+    return value;
+  }
+
+  public double ticksToShoulderAngle(double ticks) {
+    double value = ticks / ArmConfig.TALONFX_ENCODER_TICKS / ArmConfig.SHOULDER_GEAR_RATIO;
+    value *= 360;
+    return value;
+  }
+
   /** Arm enum for arm stataes */
   public enum ArmStates {
     INTAKE,
@@ -196,25 +208,34 @@ public class Arm extends SubsystemBase {
     HIGH_CUBE_NODE,
     MID_CONE_NODE,
     HIGH_CONE_NODE,
+    LOADING_STATION_PICKUP,
+    TRANSIT,
+    // Starting: Shoulder = 171 , Wrist = 150
   }
 
   /** arm states */
   public void setArmState(ArmStates newState) {
     switch (newState) {
       case INTAKE:
-        setPosition(135, -45);
+        setPosition(160, 52);
         break;
       case MID_CUBE_NODE:
-        setPosition(90, 0);
+        setPosition(60, -90);
         break;
       case HIGH_CUBE_NODE:
-        setPosition(40, 55);
+        setPosition(70, -40);
         break;
       case MID_CONE_NODE:
-        setPosition(85, 0);
+        setPosition(60, -85);
         break;
       case HIGH_CONE_NODE:
-        setPosition(15, 55);
+        setPosition(70, -20);
+        break;
+      case LOADING_STATION_PICKUP:
+        setPosition(lastShoulderAngle, lastWristAngle);
+        break;
+      case TRANSIT:
+        setPosition(171, 150);
         break;
     }
   }
@@ -318,8 +339,10 @@ public class Arm extends SubsystemBase {
             .withSize(2, 3)
             .withProperties(Map.of("Label position", "TOP"));
 
-    angLayout.addDouble("shoulder angle", this::getShoulderPosition);
-    angLayout.addDouble("wrist angle", this::getWristPosition);
+    angLayout.addDouble("shoulder abs encoder", this::getShoulderPosition);
+    angLayout.addDouble("wrist abs encoder", this::getWristPosition);
+    angLayout.addDouble("shoulder angle", () -> ticksToShoulderAngle(shoulder.getSelectedSensorPosition()));
+    angLayout.addDouble("wrist angle", () -> ticksToWristAngle(wrist.getSelectedSensorPosition()));
   }
 
   @Override
