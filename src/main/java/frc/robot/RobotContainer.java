@@ -66,10 +66,10 @@ public class RobotContainer {
     autoChooser.setDefaultOption(
         "Drive",
         new ControllerDrive(
-            m_swerve,
-            () -> m_controller.getLeftX(),
-            () -> m_controller.getLeftY(),
-            () -> m_controller.getRightX()));
+        m_swerve,
+        () -> m_controller.getLeftX(),
+        () -> m_controller.getLeftY(),
+        () -> m_controller.getRightX()));
     // Configure the button bindings
     configureButtonBindings();
     // auto stuff
@@ -124,6 +124,7 @@ public class RobotContainer {
     new Trigger(() -> m_secondaryController.getButton(frc.twilight.Controller.Button.DOWN))
         .whileTrue(new IntakePercentOutput(-.75, m_intake));
   }
+
 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
