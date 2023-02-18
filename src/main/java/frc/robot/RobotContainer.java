@@ -58,26 +58,25 @@ public class RobotContainer {
     // Record both DS control and joystick data
     DriverStation.startDataLog(DataLogManager.getLog());
 
-        m_arm = new Arm(m_controller);
-        m_intake = new Intake();
-        m_leds = new LEDs();
-        m_LimeLight = new Limelight("limelight");
-        m_swerve.setDefaultCommand(
-               
-                new ControllerDrive(
-                        m_swerve,
-                        () -> m_controller.getLeftX(),
-                        () -> m_controller.getLeftY(),
-                        () -> m_controller.getRightX()));
-        // Configure the button bindings
-        configureButtonBindings();
-        // auto stuff
-        autoChooser.setDefaultOption( new InstantCommand().withName("Do nothing"));
-        autoChooser.addOption(new Mobility(m_swerve));
-        autoChooser.addOption(new rightTwoCubeAuto(m_swerve, m_arm, m_intake));
-        autoChooser.addOption(new leftTwoCubeAuto(m_swerve, m_arm, m_intake));
-        SmartDashboard.putData(autoChooser);
-    }
+    m_arm = new Arm(m_controller);
+    m_intake = new Intake();
+    m_leds = new LEDs();
+    m_LimeLight = new Limelight("limelight");
+    m_swerve.setDefaultCommand(
+        new ControllerDrive(
+            m_swerve,
+            () -> m_controller.getLeftX(),
+            () -> m_controller.getLeftY(),
+            () -> m_controller.getRightX()));
+    // Configure the button bindings
+    configureButtonBindings();
+    // auto stuff
+    autoChooser.setDefaultOption(new InstantCommand().withName("Do nothing"));
+    autoChooser.addOption(new Mobility(m_swerve));
+    autoChooser.addOption(new rightTwoCubeAuto(m_swerve, m_arm, m_intake));
+    autoChooser.addOption(new leftTwoCubeAuto(m_swerve, m_arm, m_intake));
+    SmartDashboard.putData(autoChooser);
+  }
 
   /**
    * Use this method to define your button->command mappings. Buttons can be created by
