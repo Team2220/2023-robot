@@ -10,6 +10,7 @@ import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.motorcontrol.can.TalonFXConfiguration;
 
+import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
@@ -167,12 +168,12 @@ public class Arm extends SubsystemBase {
   }
 
   public void overrideWristSoftLimits(boolean enabled) {
-    System.out.println("overrideSoftLimits " + enabled);
+    DataLogManager.log("overrideWristSoftLimits " + enabled);
     wrist.overrideSoftLimitsEnable(enabled);
   }
 
   public void overrideShoulderSoftLimits(boolean enabled) {
-    System.out.println("overrideSoftLimits " + enabled);
+    DataLogManager.log("overrideSholderSoftLimits " + enabled);
     shoulder.overrideSoftLimitsEnable(enabled);
   }
 
@@ -301,7 +302,7 @@ public class Arm extends SubsystemBase {
     // Arm States
     ShuffleboardLayout stateLayout = Shuffleboard.getTab("arm")
         .getLayout("States", BuiltInLayouts.kList)
-        .withSize(2, 3)
+        .withSize(2, 4)
         .withProperties(Map.of("Label position", "HIDDEN"));
 
     for (ArmStates state : ArmStates.values()) {
@@ -311,7 +312,7 @@ public class Arm extends SubsystemBase {
     // Test Positions
     ShuffleboardLayout testPositionLayout = Shuffleboard.getTab("arm")
         .getLayout("Test Positions", BuiltInLayouts.kList)
-        .withSize(2, 3)
+        .withSize(2, 4)
         .withProperties(Map.of("Label position", "HIDDEN"));
 
     testPositionLayout.add(
@@ -347,7 +348,7 @@ public class Arm extends SubsystemBase {
     // Everything else
     ShuffleboardLayout angLayout = Shuffleboard.getTab("arm")
         .getLayout("Angles", BuiltInLayouts.kGrid)
-        .withSize(2, 3)
+        .withSize(3, 4)
         .withProperties(Map.of("Label position", "TOP"));
 
     angLayout.addDouble("shoulder raw abs encoder", shoulderEncoder::getAbsolutePosition);
