@@ -49,4 +49,8 @@ public class Gyro {
     time = System.currentTimeMillis() / 1000.0;
     prevPos = 0;
   }
+
+  public double getYRot() {
+    return ahrs.getPitch();
+  }
 }
