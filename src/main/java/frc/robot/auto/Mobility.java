@@ -22,7 +22,6 @@ public class Mobility extends SequentialCommandGroup {
             swerve,
             new Pose2d(
                 FieldConstants.Community.chargingStationCorners[2], Rotation2d.fromDegrees(0))));
-
     addCommands(
         new GoToCommand(
             swerve,
