@@ -68,8 +68,8 @@ public class RobotContainer {
         m_intake = new Intake();
         m_leds = new LEDs();
         m_LimeLight = new Limelight("limelight");
-        autoChooser.setDefaultOption(
-                "Drive",
+        m_swerve.setDefaultCommand(
+               
                 new ControllerDrive(
                         m_swerve,
                         () -> m_controller.getLeftX(),
