@@ -41,10 +41,10 @@ public final class Constants {
     public static final boolean WRIST_INVERTED = false;
     public static final int WRIST_DUTYENCODER = 0;
     public static final int SHOULDER_DUTYENCODER = 9;
-    public static final double WRIST_ENCODER_OFFSET = 0.17849760446244012;
+    public static final double WRIST_ENCODER_OFFSET = 0.7032648175816204;
     public static final double SHOULDER_ENCODER_OFFSET = 0.0;
     public static final double SHOULDER_GEAR_RATIO =
-        (5.0 / 1.0) * (5.0 / 1.0) * (4.0 / 1.0) * (54.0 / 15.0);
+        (5.0 / 1.0) * (5.0 / 1.0) * (4.0 / 1.0) * (58.0 / 15.0);
     public static final double WRIST_GEAR_RATIO = (5.0 / 1.0) * (5.0 / 1.0) * (5.0 / 1.0);
     public static final double TALONFX_ENCODER_TICKS = 2048;
     public static final double WRIST_FORWARD_LIMIT = 135.0;
