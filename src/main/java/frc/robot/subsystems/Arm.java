@@ -269,7 +269,7 @@ public class Arm extends SubsystemBase {
   }
 
   public double getWristPosition() {
-  
+
     return wristEncoder.getAbsolutePosition() - ArmConfig.WRIST_ENCODER_OFFSET;
   }
 
