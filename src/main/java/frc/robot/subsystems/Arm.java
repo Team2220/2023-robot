@@ -230,7 +230,8 @@ public class Arm extends SubsystemBase {
   }
 
   public void zeroShoulder() {
-    shoulder.setSelectedSensorPosition(anglesToShoulderSensorPosition(Constants.ArmConfig.SHOULDER_REF));
+    shoulder.setSelectedSensorPosition(
+        anglesToShoulderSensorPosition(Constants.ArmConfig.SHOULDER_REF));
   }
 
   public void zeroWrist() {
