@@ -237,20 +237,10 @@ public class Arm extends SubsystemBase {
   }
 
   public void setWristPercentOutput(double value) {
-    if (getWristPosition() * 360 >= (ArmConfig.WRIST_FORWARD_LIMIT)) {
-      if (getWristPosition() * 360 <= (ArmConfig.WRIST_REVERSE_LIMIT)) {
-        controller.runRumble(RumbleVariables.medium);
-      }
-    }
     wrist.set(TalonFXControlMode.PercentOutput, value);
   }
 
   public void setShoulderPercentOutput(double value) {
-    if (getShoulderPosition() * 360 >= (ArmConfig.SHOULDER_FORWARD_LIMIT)) {
-      if (getShoulderPosition() * 360 <= (ArmConfig.SHOULDER_REVERSE_LIMIT)) {
-        controller.runRumble(RumbleVariables.medium);
-      }
-    }
     shoulder.set(TalonFXControlMode.PercentOutput, value);
   }
 
@@ -339,6 +329,15 @@ public class Arm extends SubsystemBase {
       wrist.set(TalonFXControlMode.Position, currentWristPosition);
       shoulder.set(TalonFXControlMode.Position, currentShoulderPosition);
     }
+    if ((getWristPosition() * 360 >= (ArmConfig.WRIST_FORWARD_LIMIT))
+        || (getWristPosition() * 360 <= (ArmConfig.WRIST_REVERSE_LIMIT))) {
+      controller.runRumble(RumbleVariables.medium);
+    }
+    if ((getShoulderPosition() * 360 >= (ArmConfig.SHOULDER_FORWARD_LIMIT))
+        || (getShoulderPosition() * 360 <= (ArmConfig.SHOULDER_REVERSE_LIMIT))) {
+      controller.runRumble(RumbleVariables.medium);
+    }
+
     updatePID();
   }
 
