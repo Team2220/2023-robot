@@ -73,8 +73,9 @@ public class RobotContainer {
             m_secondaryController::getRightY, m_secondaryController::getLeftY, m_arm));
     m_intake.setDefaultCommand(
         new IntakePercentOutput(
-            m_secondaryController::getLeftTrigger, 
-            m_secondaryController::getRightTrigger, m_intake));
+            m_secondaryController::getLeftTrigger,
+            m_secondaryController::getRightTrigger,
+            m_intake));
     // Configure the button bindings
     configureButtonBindings();
     // auto stuff
@@ -109,9 +110,9 @@ public class RobotContainer {
         .onTrue(new SetArmState(ArmStates.HIGH_CONE_NODE, m_arm));
     new Trigger(() -> (m_secondaryController.getButton(frc.twilight.Controller.Button.RB)))
         .onTrue(new SetArmState(ArmStates.INTAKE, m_arm));
-     new Trigger(() -> (m_secondaryController.getButton(frc.twilight.Controller.Button.UP)))
+    new Trigger(() -> (m_secondaryController.getButton(frc.twilight.Controller.Button.UP)))
         .onTrue(new SetArmState(ArmStates.LOADING_STATION_PICKUP, m_arm));
-     new Trigger(() -> (m_secondaryController.getButton(frc.twilight.Controller.Button.DOWN)))
+    new Trigger(() -> (m_secondaryController.getButton(frc.twilight.Controller.Button.DOWN)))
         .onTrue(new SetArmState(ArmStates.TRANSIT, m_arm));
 
     // Override limits

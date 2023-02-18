@@ -2,7 +2,6 @@ package frc.robot.commands.Intake;
 
 import java.util.function.DoubleSupplier;
 
-import edu.wpi.first.networktables.DoubleSubscriber;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Intake;
 
@@ -11,7 +10,8 @@ public class IntakePercentOutput extends CommandBase {
   private final DoubleSupplier intakeSpeed;
   private final DoubleSupplier outakeSpeed;
 
-  public IntakePercentOutput(DoubleSupplier intakeSpeed, DoubleSupplier outakeSpeed, Intake intake) {
+  public IntakePercentOutput(
+      DoubleSupplier intakeSpeed, DoubleSupplier outakeSpeed, Intake intake) {
     m_intake = intake;
     addRequirements(intake);
     this.intakeSpeed = intakeSpeed;
