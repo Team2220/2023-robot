@@ -8,8 +8,8 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.twilight.swerve.commands.GoToCommand;
 import frc.twilight.swerve.subsystems.Swerve;
 
-public class Mobility extends SequentialCommandGroup {
-  public Mobility(Swerve swerve) {
+public class Square extends SequentialCommandGroup {
+  public Square(Swerve swerve) {
     addCommands(
         new InstantCommand(
             () ->
