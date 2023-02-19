@@ -14,6 +14,10 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.auto.Mobility;
+import frc.robot.auto.NewPath;
+import frc.robot.auto.TestPath;
+// import frc.robot.auto.leftTwoCubeAuto;
+// import frc.robot.auto.rightTwoCubeAuto;
 import frc.robot.auto.UpperScore1MoveOutCommBlueAuto;
 import frc.robot.auto.UpperScore1MoveOutCommRedAuto;
 import frc.robot.auto.UpperScore2BalAutoBlue;
@@ -68,27 +72,37 @@ public class RobotContainer {
         // Record both DS control and joystick data
         DriverStation.startDataLog(DataLogManager.getLog());
 
-    m_arm = new Arm(m_controller);
-    m_intake = new Intake();
-    m_leds = new LEDs();
-    m_LimeLight = new Limelight("limelight");
-    autoChooser.setDefaultOption(
-        "Drive",
-        new ControllerDrive(
-            m_swerve,
-            () -> m_controller.getLeftX(),
-            () -> m_controller.getLeftY(),
-            () -> m_controller.getRightX()));
-    // Configure the button bindings
-    configureButtonBindings();
-    // auto stuff
-    autoChooser.setDefaultOption(new InstantCommand().withName("Do nothing"));
-    autoChooser.addOption(new Mobility(m_swerve));
-    autoChooser.addOption(new UpperScore1MoveOutCommBlueAuto(m_swerve, m_arm, m_intake));
-    autoChooser.addOption(new UpperScore1MoveOutCommRedAuto(m_swerve, m_arm, m_intake));
-    autoChooser.addOption(new UpperScore2BalAutoBlue(m_swerve, m_arm, m_intake));
-    SmartDashboard.putData(autoChooser);
-  }
+        m_arm = new Arm(m_controller);
+        m_intake = new Intake();
+        m_leds = new LEDs();
+        m_LimeLight = new Limelight("limelight");
+        m_swerve.setDefaultCommand(
+                new ControllerDrive(
+                        m_swerve,
+                        () -> m_controller.getLeftX(),
+                        () -> m_controller.getLeftY(),
+                        () -> m_controller.getRightX()));
+        m_arm.setDefaultCommand(
+                new ArmPercentOutput(
+                        m_secondaryController::getRightY, m_secondaryController::getLeftY, m_arm));
+        m_intake.setDefaultCommand(
+                new IntakePercentOutput(
+                        m_secondaryController::getLeftTrigger,
+                        m_secondaryController::getRightTrigger,
+                        m_intake));
+        // Configure the button bindings
+        configureButtonBindings();
+        // auto stuff
+        autoChooser.setDefaultOption(new InstantCommand().withName("Do nothing"));
+        autoChooser.addOption(new Mobility(m_swerve));
+        // autoChooser.addOption(new rightTwoCubeAuto(m_swerve, m_arm, m_intake));
+        // autoChooser.addOption(new leftTwoCubeAuto(m_swerve, m_arm, m_intake));
+        autoChooser.addOption(new TestPath(m_swerve));
+        autoChooser.addOption(new NewPath(m_swerve));
+
+        SmartDashboard.putData(autoChooser.getSendableChooser());
+
+    }
 
     /**
      * Use this method to define your button->command mappings. Buttons can be

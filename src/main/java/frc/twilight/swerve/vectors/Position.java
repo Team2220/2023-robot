@@ -14,7 +14,8 @@ public class Position {
   }
 
   public Position(Pose2d pose) {
-    this(pose.getX(), pose.getY(), pose.getRotation().getDegrees());
+    //switched x and y
+    this(-pose.getY(), pose.getX(), pose.getRotation().getDegrees());
   }
 
   public double getX() {

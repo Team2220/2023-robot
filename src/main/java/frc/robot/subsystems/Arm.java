@@ -386,19 +386,19 @@ public class Arm extends SubsystemBase {
       wrist.set(TalonFXControlMode.Position, currentWristPosition);
       shoulder.set(TalonFXControlMode.Position, currentShoulderPosition);
     }
-    double shoulderForwardLimit = anglesToShoulderSensorPosition(ArmConfig.SHOULDER_FORWARD_LIMIT);
-    double shoulderReverseLimit = anglesToShoulderSensorPosition(ArmConfig.SHOULDER_REVERSE_LIMIT);
-    double wristForwardLimit = anglesToWristSensorPosition(ArmConfig.WRIST_FORWARD_LIMIT);
-    double wristReverseLimit = anglesToWristSensorPosition(ArmConfig.WRIST_REVERSE_LIMIT);
-    if ((wrist.getSelectedSensorPosition() >= wristForwardLimit)
-        || (wrist.getSelectedSensorPosition() <= wristReverseLimit)) {
-      controller.runRumble(RumbleVariables.medium);
-    } else if ((shoulder.getSelectedSensorPosition() >= shoulderForwardLimit)
-        || (shoulder.getSelectedSensorPosition() <= shoulderReverseLimit)) {
-      controller.runRumble(RumbleVariables.medium);
-    } else {
-      controller.runRumble(RumbleVariables.off);
-    }
+    // double shoulderForwardLimit = anglesToShoulderSensorPosition(ArmConfig.SHOULDER_FORWARD_LIMIT);
+    // double shoulderReverseLimit = anglesToShoulderSensorPosition(ArmConfig.SHOULDER_REVERSE_LIMIT);
+    // double wristForwardLimit = anglesToWristSensorPosition(ArmConfig.WRIST_FORWARD_LIMIT);
+    // double wristReverseLimit = anglesToWristSensorPosition(ArmConfig.WRIST_REVERSE_LIMIT);
+    // if ((wrist.getSelectedSensorPosition() >= wristForwardLimit)
+    //     || (wrist.getSelectedSensorPosition() <= wristReverseLimit)) {
+    //   controller.runRumble(RumbleVariables.medium);
+    // } else if ((shoulder.getSelectedSensorPosition() >= shoulderForwardLimit)
+    //     || (shoulder.getSelectedSensorPosition() <= shoulderReverseLimit)) {
+    //   controller.runRumble(RumbleVariables.medium);
+    // } else {
+    //   controller.runRumble(RumbleVariables.off);
+    // }
 
     updatePID();
   }
