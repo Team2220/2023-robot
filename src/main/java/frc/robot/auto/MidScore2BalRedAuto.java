@@ -19,23 +19,23 @@ public class MidScore2BalRedAuto extends SequentialCommandGroup {
     addCommands(new InstantCommand(() -> swerve.setOdo(.5, 1.5, 0))); // set starting position
     addCommands( // score starting game piece
         new SetArmState(ArmStates.INTAKE, arm),
-        new IntakePercentOutput(-.5, intake).withTimeout(1));
+        new IntakePercentOutput(()->-.5, null, intake));
     addCommands( // score game piece 1
         new SetArmState(ArmStates.INTAKE, arm),
         new GoToCommand(swerve, new Position(4, 4, 0)),
-        new IntakePercentOutput(.5, intake),
+        new IntakePercentOutput(()->.5, null, intake).withTimeout(1),
         new GoToCommand(swerve, new Position(.5, 3, 0)),
         new SetArmState(ArmStates.HIGH_CUBE_NODE, arm),
         new SetArmState(ArmStates.INTAKE, arm),
-        new IntakePercentOutput(-.5, intake).withTimeout(1));
+        new IntakePercentOutput(()->-.5, null, intake).withTimeout(1));
     addCommands( // score game piece 2
         new SetArmState(ArmStates.INTAKE, arm),
         new GoToCommand(swerve, new Position(4, 2.5, 0)),
-        new IntakePercentOutput(.5, intake),
+        new IntakePercentOutput(()->.5, null, intake).withTimeout(1),
         new GoToCommand(swerve, new Position(.5, 2.5, 0)),
         new SetArmState(ArmStates.HIGH_CUBE_NODE, arm),
         new SetArmState(ArmStates.INTAKE, arm),
-        new IntakePercentOutput(-.5, intake).withTimeout(1));
+        new IntakePercentOutput(()->-.5, null, intake).withTimeout(1));
     addCommands( // balance
         new GoToCommand(swerve, new Position(2, 2, 0)), 
         new Balancing(swerve));
