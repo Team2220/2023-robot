@@ -121,7 +121,7 @@ public class RobotContainer {
         new Trigger(() -> m_controller.getButtonPressed(Controller.Button.START))
                 .onTrue(new ResetGyro(m_swerve));
         new Trigger(() -> m_controller.getButtonPressed(Controller.Button.BACK))
-                .onTrue(new InstantCommand(() -> DataLogManager.log("Driver Error")));
+                .onTrue(new InstantCommand(() -> DataLogManager.log("Driver Problem")));
 
         new Trigger(() -> m_controller.getButtonPressed(Controller.Button.UP))
                 .onTrue(new SnapDrive(m_swerve, () -> m_controller.getLeftX(), () -> m_controller.getLeftY(), 0));
@@ -134,7 +134,7 @@ public class RobotContainer {
 
         // Manipulatror controller
         new Trigger(() -> m_secondaryController.getButtonPressed(Controller.Button.BACK))
-                .onTrue(new InstantCommand(() -> DataLogManager.log("Manipulator Error")));
+                .onTrue(new InstantCommand(() -> DataLogManager.log("Manipulator Problem")));
 
         new Trigger(() -> m_secondaryController.getButtonPressed(Controller.Button.START))
                 .onTrue(new InstantCommand(() -> {
