@@ -101,7 +101,7 @@ public class RobotContainer {
         // autoChooser.addOption(new rightTwoCubeAuto(m_swerve, m_arm, m_intake));
         // autoChooser.addOption(new leftTwoCubeAuto(m_swerve, m_arm, m_intake));
         autoChooser.addOption(new TestPath(m_swerve));
-        autoChooser.addOption(new BlueCornerMobility(m_swerve));
+        autoChooser.addOption(new BlueCornerMobility(m_swerve, m_intake));
         autoChooser.addOption(new RedCornerMobility(m_swerve));
 
         SmartDashboard.putData(autoChooser.getSendableChooser());
