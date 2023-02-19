@@ -62,6 +62,12 @@ public class RobotContainer {
     private final Controller m_controller = new Controller(0);
     private final Controller m_secondaryController = new Controller(1);
 
+    private final ControllerDrive m_ControllerDrive = new ControllerDrive(
+                        m_swerve,
+                        () -> m_controller.getLeftX(),
+                        () -> m_controller.getLeftY(),
+                        () -> m_controller.getRightX());
+
     /**
      * The container for the robot. Contains subsystems, OI devices, and commands.
      */
@@ -76,12 +82,7 @@ public class RobotContainer {
         m_intake = new Intake();
         m_leds = new LEDs();
         m_LimeLight = new Limelight("limelight");
-        m_swerve.setDefaultCommand(
-                new ControllerDrive(
-                        m_swerve,
-                        () -> m_controller.getLeftX(),
-                        () -> m_controller.getLeftY(),
-                        () -> m_controller.getRightX()));
+        m_swerve.setDefaultCommand(m_ControllerDrive);
         m_arm.setDefaultCommand(
                 new ArmPercentOutput(
                         m_secondaryController::getRightY, m_secondaryController::getLeftY, m_arm));
@@ -150,12 +151,9 @@ public class RobotContainer {
         new Trigger(
                 () -> {
                     boolean rightX = Math.abs(m_controller.getRightX()) > 0.1;
-                    return rightX;
-                }).whileTrue(new ControllerDrive(
-                        m_swerve,
-                        () -> m_controller.getLeftX(),
-                        () -> m_controller.getLeftY(),
-                        () -> m_controller.getRightX()));
+                    boolean enabled = m_ControllerDrive.isScheduled();
+                    return rightX && !enabled;
+                }).whileTrue(m_ControllerDrive);
         // Arm States
         new Trigger(() -> (m_secondaryController.getButton(frc.twilight.Controller.Button.A)))
                 .onTrue(new SetArmState(ArmStates.MID_CUBE_NODE, m_arm));

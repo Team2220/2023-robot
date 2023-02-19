@@ -25,7 +25,7 @@ public class SnapDrive extends CommandBase {
   public DoubleSupplier str;
   public double rot;
 
-  PIDController rotpid = new PIDController(PIDconfig.DT_AUTO_ROT_P.getValue(), PIDconfig.DT_AUTO_ROT_I.getValue(), PIDconfig.DT_AUTO_ROT_D.getValue());
+  private PIDController rotpid = new PIDController(PIDconfig.DT_AUTO_ROT_P.getValue(), PIDconfig.DT_AUTO_ROT_I.getValue(), PIDconfig.DT_AUTO_ROT_D.getValue());
 
   /**
    * Creates a new GoToCommand.
@@ -65,7 +65,7 @@ public class SnapDrive extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    m_subsystem.setDrive(0, 0, 0);
+    // m_subsystem.setDrive(0, 0, 0);
   }
 
   // Returns true when the command should end.
