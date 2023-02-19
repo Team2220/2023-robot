@@ -22,6 +22,11 @@
       "/Shuffleboard/arm/Test Positions/Wrist=90": "Command",
       "/Shuffleboard/arm/Test Positions/ZeroShoulder": "Command",
       "/Shuffleboard/arm/Test Positions/ZeroWrist": "Command",
+      "/Shuffleboard/leds/States/FULL_LEDS": "Command",
+      "/Shuffleboard/leds/States/OFF": "Command",
+      "/Shuffleboard/leds/States/RAINBOW_ANIMATION": "Command",
+      "/Shuffleboard/leds/States/STROBE_ANIMATION": "Command",
+      "/SmartDashboard/Field": "Field2d",
       "/SmartDashboard/SendableChooser[0]": "String Chooser"
     }
   }
