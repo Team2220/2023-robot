@@ -13,8 +13,10 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.auto.Mobility;
-import frc.robot.auto.NewPath;
+import frc.robot.auto.Square;
+import frc.robot.auto.BlueCornerMobility;
+import frc.robot.auto.RedCornerMobility;
+import frc.robot.auto.BlueCornerMobility;
 import frc.robot.auto.TestPath;
 // import frc.robot.auto.leftTwoCubeAuto;
 // import frc.robot.auto.rightTwoCubeAuto;
@@ -94,11 +96,12 @@ public class RobotContainer {
         configureButtonBindings();
         // auto stuff
         autoChooser.setDefaultOption(new InstantCommand().withName("Do nothing"));
-        autoChooser.addOption(new Mobility(m_swerve));
+        autoChooser.addOption(new Square(m_swerve));
         // autoChooser.addOption(new rightTwoCubeAuto(m_swerve, m_arm, m_intake));
         // autoChooser.addOption(new leftTwoCubeAuto(m_swerve, m_arm, m_intake));
         autoChooser.addOption(new TestPath(m_swerve));
-        autoChooser.addOption(new NewPath(m_swerve));
+        autoChooser.addOption(new BlueCornerMobility(m_swerve));
+        autoChooser.addOption(new RedCornerMobility(m_swerve));
 
         SmartDashboard.putData(autoChooser.getSendableChooser());
 
