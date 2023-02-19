@@ -4,6 +4,10 @@
 
 package frc.robot;
 
+import org.littletonrobotics.frc2023.util.GeomUtil;
+
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.GenericHID;
@@ -12,8 +16,11 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.auto.Mobility;
 import frc.robot.auto.NewPath;
 import frc.robot.auto.TestPath;
-import frc.robot.auto.leftTwoCubeAuto;
-import frc.robot.auto.rightTwoCubeAuto;
+// import frc.robot.auto.leftTwoCubeAuto;
+// import frc.robot.auto.rightTwoCubeAuto;
+import frc.robot.auto.UpperScore1MoveOutCommBlueAuto;
+import frc.robot.auto.UpperScore1MoveOutCommRedAuto;
+import frc.robot.auto.UpperScore2BalAutoBlue;
 import frc.robot.commands.Arm.SetArmState;
 import frc.robot.commands.Arm.ArmPercentOutput;
 import frc.robot.commands.Intake.IntakePercentOutput;
@@ -88,8 +95,8 @@ public class RobotContainer {
         // auto stuff
         autoChooser.setDefaultOption(new InstantCommand().withName("Do nothing"));
         autoChooser.addOption(new Mobility(m_swerve));
-        autoChooser.addOption(new rightTwoCubeAuto(m_swerve, m_arm, m_intake));
-        autoChooser.addOption(new leftTwoCubeAuto(m_swerve, m_arm, m_intake));
+        // autoChooser.addOption(new rightTwoCubeAuto(m_swerve, m_arm, m_intake));
+        // autoChooser.addOption(new leftTwoCubeAuto(m_swerve, m_arm, m_intake));
         autoChooser.addOption(new TestPath(m_swerve));
         autoChooser.addOption(new NewPath(m_swerve));
 
