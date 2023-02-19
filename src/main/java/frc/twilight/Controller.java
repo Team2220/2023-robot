@@ -28,6 +28,14 @@ public class Controller {
     controller = new XboxController(port);
   }
 
+  public double getLeftTrigger() {
+    return deadband(controller.getLeftTriggerAxis(), deadzone);
+  }
+
+  public double getRightTrigger() {
+    return deadband(controller.getRightTriggerAxis(), deadzone);
+  }
+
   /**
    * Gets the left X-axis joystick value.
    *

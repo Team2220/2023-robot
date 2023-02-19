@@ -19,7 +19,7 @@ public class Swerve extends SubsystemBase {
   public Swerve() {}
 
   public void setDrive(double x, double y, double rot) {
-    swerve.setDrive(new DriveVector(y, x, rot));
+    swerve.setDrive(new DriveVector(y, x, rot).maxVel());
   }
 
   public void setDrive(DriveVector vector) {
