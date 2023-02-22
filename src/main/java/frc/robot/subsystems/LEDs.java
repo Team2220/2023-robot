@@ -92,7 +92,7 @@ public class LEDs extends SubsystemBase {
         }
         break;
 
-      case NOTHING_IN_AUTO:
+        case NOTHING_IN_AUTO:
         {
         }
         break;
@@ -186,6 +186,11 @@ public class LEDs extends SubsystemBase {
       case STROBE_ANIMATION:
         {
           switchDesieredState();
+        }
+        break;
+        case NOTHING_IN_AUTO:
+        {
+
         }
         break;
     }
