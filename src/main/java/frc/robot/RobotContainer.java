@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.auto.MidScore1BalBlueAuto;
 import frc.robot.auto.Mobility;
 import frc.robot.auto.NewPath;
 import frc.robot.auto.TestPath;
@@ -99,7 +100,7 @@ public class RobotContainer {
         // autoChooser.addOption(new leftTwoCubeAuto(m_swerve, m_arm, m_intake));
         autoChooser.addOption(new TestPath(m_swerve));
         autoChooser.addOption(new NewPath(m_swerve));
-
+        autoChooser.addOption(new MidScore1BalBlueAuto(m_swerve, m_arm, m_intake));
         SmartDashboard.putData(autoChooser.getSendableChooser());
 
     }
