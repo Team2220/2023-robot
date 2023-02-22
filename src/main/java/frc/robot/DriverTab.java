@@ -12,10 +12,10 @@ public class DriverTab {
   public DriverTab() {
     HttpCamera leftCamera = new HttpCamera(LimelightConfig.LEFT_NAME, LimelightConfig.LEFT_URL);
     CameraServer.getVideo(leftCamera);
-    tab.add(leftCamera);
+    tab.add(leftCamera).withPosition(1, 1).withSize(1, 1);
 
     HttpCamera rightCamera = new HttpCamera(LimelightConfig.RIGHT_NAME, LimelightConfig.RIGHT_URL);
     CameraServer.getVideo(rightCamera);
-    tab.add(rightCamera);
+    tab.add(rightCamera).withPosition(2, 2).withSize(2, 2);
   }
 }
