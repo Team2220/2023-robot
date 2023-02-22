@@ -19,7 +19,7 @@ public class Swerve extends SubsystemBase {
   public Swerve() {}
 
   public void setDrive(double x, double y, double rot) {
-    swerve.setDrive(new DriveVector(y, x, rot));
+    swerve.setDrive(new DriveVector(y, x, rot).maxVel());
   }
 
   public void setDrive(DriveVector vector) {
@@ -44,7 +44,9 @@ public class Swerve extends SubsystemBase {
   }
 
   public void setPose2d(Pose2d pose2d) {
-    setOdo(pose2d.getX(), pose2d.getY(), pose2d.getRotation().getDegrees());
+    Position position = new Position(pose2d);// converting x to y vise versa
+
+    setOdo(position.getX(), position.getY(), position.getAngle());
   }
 
   public Position getOdo() {

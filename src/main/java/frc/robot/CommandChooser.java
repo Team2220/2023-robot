@@ -5,7 +5,7 @@ import edu.wpi.first.networktables.NTSendableBuilder;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
 
-public class CommandChooser implements AutoCloseable, NTSendable {
+public class CommandChooser  {
 
   private final SendableChooser<Command> autoChooser = new SendableChooser<>();
 
@@ -20,14 +20,7 @@ public class CommandChooser implements AutoCloseable, NTSendable {
   public Command getSelected() {
     return autoChooser.getSelected();
   }
-
-  @Override
-  public void close() throws Exception {
-    autoChooser.close();
-  }
-
-  @Override
-  public void initSendable(NTSendableBuilder builder) {
-    autoChooser.initSendable(builder);
+  public SendableChooser<Command> getSendableChooser(){
+    return autoChooser;
   }
 }

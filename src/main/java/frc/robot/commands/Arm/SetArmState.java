@@ -23,4 +23,9 @@ public class SetArmState extends CommandBase {
   public String getName() {
     return "Set " + armState.name();
   }
+
+  // @Override
+  // public boolean isFinished() {
+  //  return true;
+  // }
 }

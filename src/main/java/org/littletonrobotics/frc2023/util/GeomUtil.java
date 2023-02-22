@@ -123,7 +123,12 @@ public class GeomUtil {
   public static Pose3d transform3dToPose3d(Transform3d transform) {
     return new Pose3d(transform.getTranslation(), transform.getRotation());
   }
-  /*public static Pose2d offsetRoboCenter(Pose2d pose) {
-    pose.tra
-  }*/
+  // not fully working
+  public static Pose2d offsetRoboCenter(Pose2d pose, double offset) {
+    var sin = pose.getRotation().getSin();
+    var cos = pose.getRotation().getCos(); 
+    var y = sin * offset;
+    var x = cos * offset;
+    return pose.plus(new Transform2d(new Translation2d(x, y), new Rotation2d(0)));
+  }
 }
