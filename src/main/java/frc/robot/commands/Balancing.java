@@ -11,9 +11,9 @@ public class Balancing extends CommandBase {
   private Swerve swerve;
   private Gyro gyro = new Gyro();
 
-  private TunableDouble p = new TunableDouble("P", 0, true, "Balancing");
-  private TunableDouble i = new TunableDouble("I", 0, true, "Balancing");
-  private TunableDouble d = new TunableDouble("D", 0, true, "Balancing");
+  private static TunableDouble p = new TunableDouble("P", 0, true, "Balancing");
+  private static TunableDouble i = new TunableDouble("I", 0, true, "Balancing");
+  private static TunableDouble d = new TunableDouble("D", 0, true, "Balancing");
 
   public Balancing(Swerve swerve) {
     this.swerve = swerve;
