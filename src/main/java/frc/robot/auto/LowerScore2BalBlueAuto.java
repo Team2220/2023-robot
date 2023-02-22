@@ -18,16 +18,16 @@ public class LowerScore2BalBlueAuto extends SequentialCommandGroup {
   public LowerScore2BalBlueAuto(Swerve swerve, Arm arm, Intake intake) {
     addCommands(new InstantCommand(() -> swerve.setOdo(.5, 3, 0))); // set starting position
     addCommands( // score starting cube
-        new SetArmState(ArmStates.INTAKE, arm),
-        new IntakePercentOutput(() -> -.5, null, intake).withTimeout(1));
+        new SetArmState(ArmStates.INTAKE, arm));
+        // new IntakePercentOutput(() -> 0, outakeSpeed: .5, intake).withTimeout(1));
     addCommands( // score cube one
         new SetArmState(ArmStates.INTAKE, arm),
         new GoToCommand(swerve, new Position(4, 4, 0)),
         new IntakePercentOutput(()->.5, null, intake).withTimeout(1),
         new GoToCommand(swerve, new Position(.5, 3, 0)),
         new SetArmState(ArmStates.HIGH_CUBE_NODE, arm),
-        new SetArmState(ArmStates.INTAKE, arm),
-        new IntakePercentOutput(() -> -.5, null, intake).withTimeout(1));
+        new SetArmState(ArmStates.INTAKE, arm));
+        // new IntakePercentOutput(() -> -.5, null, intake).withTimeout(1));
     addCommands( // score cube two
         new SetArmState(ArmStates.INTAKE, arm),
         new GoToCommand(swerve, new Position(4, 3.5, 0)),
