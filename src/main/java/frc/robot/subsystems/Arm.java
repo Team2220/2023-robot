@@ -375,6 +375,15 @@ public class Arm extends SubsystemBase {
     angLayout.addDouble(
         "shoulder angle", () -> ticksToShoulderAngle(shoulder.getSelectedSensorPosition()));
     angLayout.addDouble("wrist angle", () -> ticksToWristAngle(wrist.getSelectedSensorPosition()));
+ 
+    // ShuffleboardLayout dynamicLimits = Shuffleboard.getTab("arm")
+    // .getLayout("Dynamic Limits", BuiltInLayouts.kGrid)
+    // .withSize(2, 3)
+    // .withProperties(Map.of("Label position", "TOP"));
+    
+
+    // dynamicLimits.addDouble(getName(), null);
+
   }
 
   @Override

@@ -16,6 +16,10 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.auto.MidScore1BalBlueAuto;
 import frc.robot.auto.Mobility;
 import frc.robot.auto.NewPath;
+import frc.robot.auto.Square;
+import frc.robot.auto.BlueCornerMobility;
+import frc.robot.auto.RedCornerMobility;
+import frc.robot.auto.BlueCornerMobility;
 import frc.robot.auto.TestPath;
 // import frc.robot.auto.leftTwoCubeAuto;
 // import frc.robot.auto.rightTwoCubeAuto;
@@ -63,6 +67,12 @@ public class RobotContainer {
     private final Controller m_controller = new Controller(0);
     private final Controller m_secondaryController = new Controller(1);
 
+    private final ControllerDrive m_ControllerDrive = new ControllerDrive(
+                        m_swerve,
+                        () -> m_controller.getLeftX(),
+                        () -> m_controller.getLeftY(),
+                        () -> m_controller.getRightX());
+
     /**
      * The container for the robot. Contains subsystems, OI devices, and commands.
      */
@@ -77,12 +87,7 @@ public class RobotContainer {
         m_intake = new Intake();
         m_leds = new LEDs();
         m_LimeLight = new Limelight("limelight");
-        m_swerve.setDefaultCommand(
-                new ControllerDrive(
-                        m_swerve,
-                        () -> m_controller.getLeftX(),
-                        () -> m_controller.getLeftY(),
-                        () -> m_controller.getRightX()));
+        m_swerve.setDefaultCommand(m_ControllerDrive);
         m_arm.setDefaultCommand(
                 new ArmPercentOutput(
                         m_secondaryController::getRightY, m_secondaryController::getLeftY, m_arm));
@@ -95,12 +100,15 @@ public class RobotContainer {
         configureButtonBindings();
         // auto stuff
         autoChooser.setDefaultOption(new InstantCommand().withName("Do nothing"));
-        autoChooser.addOption(new Mobility(m_swerve));
+        autoChooser.addOption(new Square(m_swerve));
         // autoChooser.addOption(new rightTwoCubeAuto(m_swerve, m_arm, m_intake));
         // autoChooser.addOption(new leftTwoCubeAuto(m_swerve, m_arm, m_intake));
         autoChooser.addOption(new TestPath(m_swerve));
         autoChooser.addOption(new NewPath(m_swerve));
         autoChooser.addOption(new MidScore1BalBlueAuto(m_swerve, m_arm, m_intake));
+        autoChooser.addOption(new BlueCornerMobility(m_swerve, m_intake));
+        autoChooser.addOption(new RedCornerMobility(m_swerve));
+
         SmartDashboard.putData(autoChooser.getSendableChooser());
 
     }
@@ -118,7 +126,7 @@ public class RobotContainer {
         new Trigger(() -> m_controller.getButtonPressed(Controller.Button.START))
                 .onTrue(new ResetGyro(m_swerve));
         new Trigger(() -> m_controller.getButtonPressed(Controller.Button.BACK))
-                .onTrue(new InstantCommand(() -> DataLogManager.log("Driver Error")));
+                .onTrue(new InstantCommand(() -> DataLogManager.log("Driver Problem")));
 
         new Trigger(() -> m_controller.getButtonPressed(Controller.Button.UP))
                 .onTrue(new SnapDrive(m_swerve, () -> m_controller.getLeftX(), () -> m_controller.getLeftY(), 0));
@@ -131,7 +139,7 @@ public class RobotContainer {
 
         // Manipulatror controller
         new Trigger(() -> m_secondaryController.getButtonPressed(Controller.Button.BACK))
-                .onTrue(new InstantCommand(() -> DataLogManager.log("Manipulator Error")));
+                .onTrue(new InstantCommand(() -> DataLogManager.log("Manipulator Problem")));
 
         new Trigger(() -> m_secondaryController.getButtonPressed(Controller.Button.START))
                 .onTrue(new InstantCommand(() -> {
@@ -151,12 +159,9 @@ public class RobotContainer {
         new Trigger(
                 () -> {
                     boolean rightX = Math.abs(m_controller.getRightX()) > 0.1;
-                    return rightX;
-                }).whileTrue(new ControllerDrive(
-                        m_swerve,
-                        () -> m_controller.getLeftX(),
-                        () -> m_controller.getLeftY(),
-                        () -> m_controller.getRightX()));
+                    boolean enabled = m_ControllerDrive.isScheduled();
+                    return rightX && !enabled;
+                }).whileTrue(m_ControllerDrive);
         // Arm States
         new Trigger(() -> (m_secondaryController.getButton(frc.twilight.Controller.Button.A)))
                 .onTrue(new SetArmState(ArmStates.MID_CUBE_NODE, m_arm));
