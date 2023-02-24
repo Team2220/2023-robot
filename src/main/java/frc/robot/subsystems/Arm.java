@@ -299,12 +299,12 @@ public class Arm extends SubsystemBase {
   }
 
   public double getShoulderPosition() {
-    return shoulderEncoder.getAbsolutePosition() - ArmConfig.SHOULDER_ENCODER_OFFSET;
+    return remap(shoulderEncoder.getAbsolutePosition(), ArmConfig.SHOULDER_REMAP_LIMIT) - ArmConfig.SHOULDER_ENCODER_OFFSET;
   }
 
   public double getWristPosition() {
 
-    return wristEncoder.getAbsolutePosition() - ArmConfig.WRIST_ENCODER_OFFSET;
+    return remap(wristEncoder.getAbsolutePosition(), ArmConfig.WRIST_REMAP_LIMIT) - ArmConfig.WRIST_ENCODER_OFFSET;
   }
 
   public void setUpTestCommands() {
@@ -376,6 +376,9 @@ public class Arm extends SubsystemBase {
         "shoulder angle", () -> ticksToShoulderAngle(shoulder.getSelectedSensorPosition()));
     angLayout.addDouble("wrist angle", () -> ticksToWristAngle(wrist.getSelectedSensorPosition()));
  
+    angLayout.addDouble("wrist remap", () -> remap(wristEncoder.getAbsolutePosition(), ArmConfig.WRIST_REMAP_LIMIT));
+    angLayout.addDouble("shoulder remap", () -> remap(shoulderEncoder.getAbsolutePosition(), ArmConfig.SHOULDER_REMAP_LIMIT));
+
     // ShuffleboardLayout dynamicLimits = Shuffleboard.getTab("arm")
     // .getLayout("Dynamic Limits", BuiltInLayouts.kGrid)
     // .withSize(2, 3)
