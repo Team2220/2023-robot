@@ -386,6 +386,14 @@ public class Arm extends SubsystemBase {
 
   }
 
+  public double remap(double value, double limit) {
+    if (value >= 0 && value <= limit) {
+      return value + 1;
+    } else {
+      return value;
+    }
+  }
+
   @Override
   public void periodic() {
     if (!RobotController.isSysActive()) {
