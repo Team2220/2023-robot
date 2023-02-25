@@ -376,6 +376,7 @@ public class Arm extends SubsystemBase {
         "shoulder angle", () -> ticksToShoulderAngle(shoulder.getSelectedSensorPosition()));
     angLayout.addDouble("wrist angle", () -> ticksToWristAngle(wrist.getSelectedSensorPosition()));
  
+    // Angles using remap()   
     angLayout.addDouble("wrist remap", () -> remap(wristEncoder.getAbsolutePosition(), ArmConfig.WRIST_REMAP_LIMIT));
     angLayout.addDouble("shoulder remap", () -> remap(shoulderEncoder.getAbsolutePosition(), ArmConfig.SHOULDER_REMAP_LIMIT));
 
