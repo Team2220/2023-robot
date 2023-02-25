@@ -372,13 +372,15 @@ public class Arm extends SubsystemBase {
     angLayout.addDouble("shoulder abs angle", () -> this.getShoulderPosition() * 360);
     angLayout.addDouble("wrist abs angle", () -> this.getWristPosition() * 360);
 
-    angLayout.addDouble(
-        "shoulder angle", () -> ticksToShoulderAngle(shoulder.getSelectedSensorPosition()));
+    angLayout.addDouble("shoulder angle", () -> ticksToShoulderAngle(shoulder.getSelectedSensorPosition()));
     angLayout.addDouble("wrist angle", () -> ticksToWristAngle(wrist.getSelectedSensorPosition()));
  
     // Angles using remap()   
     angLayout.addDouble("wrist remap", () -> remap(wristEncoder.getAbsolutePosition(), ArmConfig.WRIST_REMAP_LIMIT));
     angLayout.addDouble("shoulder remap", () -> remap(shoulderEncoder.getAbsolutePosition(), ArmConfig.SHOULDER_REMAP_LIMIT));
+
+    angLayout.addBoolean("wrist is connected", () -> wristEncoder.isConnected());
+    angLayout.addBoolean("shoulder is connected", () -> shoulderEncoder.isConnected());
 
     // ShuffleboardLayout dynamicLimits = Shuffleboard.getTab("arm")
     // .getLayout("Dynamic Limits", BuiltInLayouts.kGrid)
