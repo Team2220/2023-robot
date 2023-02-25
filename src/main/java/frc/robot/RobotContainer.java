@@ -159,8 +159,8 @@ public class RobotContainer {
                                 })
                                 .whileTrue(
                                                 new ArmPercentOutput(
-                                                                m_secondaryController::getRightY,
-                                                                m_secondaryController::getLeftY, m_arm));
+                                                                m_secondaryController::getLeftX,
+                                                                () -> -m_secondaryController.getRightY(), m_arm));
 
                 new Trigger(
                                 () -> {
