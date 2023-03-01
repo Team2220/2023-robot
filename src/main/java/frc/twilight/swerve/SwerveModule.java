@@ -2,15 +2,16 @@ package frc.twilight.swerve;
 
 import frc.twilight.helpfulThings.Angles;
 import frc.twilight.swerve.config.ModuleConfig;
+import frc.twilight.swerve.devices.CANencoder;
 import frc.twilight.swerve.devices.DriveMotor;
-import frc.twilight.swerve.devices.PWMencoder;
+import frc.twilight.swerve.devices.EncoderBase;
 import frc.twilight.swerve.devices.SteerMotor;
 import frc.twilight.swerve.vectors.WheelVector;
 
 public class SwerveModule {
   private final SteerMotor steerMotor;
   private final DriveMotor driveMotor;
-  public final PWMencoder steerEncoder;
+  public final EncoderBase steerEncoder;
 
   private final double steerOffset;
 
@@ -24,7 +25,7 @@ public class SwerveModule {
       int driveMotorCanID, int steerMotorCanID, int steerEncoderAnalogPort, double steerOffset) {
     steerMotor = new SteerMotor(steerMotorCanID);
     driveMotor = new DriveMotor(driveMotorCanID);
-    steerEncoder = new PWMencoder(steerEncoderAnalogPort);
+    steerEncoder = new CANencoder(steerEncoderAnalogPort);
 
     this.steerOffset = Angles.offsetAngle(steerEncoder.getPosition(), steerOffset);
 

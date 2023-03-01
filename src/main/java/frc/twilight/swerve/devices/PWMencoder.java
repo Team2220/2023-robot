@@ -2,7 +2,7 @@ package frc.twilight.swerve.devices;
 
 import edu.wpi.first.wpilibj.AnalogInput;
 
-public class PWMencoder {
+public class PWMencoder implements EncoderBase {
   private final AnalogInput encoder;
   private final int oversampling = 4; // Set to 1 to disable oversampling
 
