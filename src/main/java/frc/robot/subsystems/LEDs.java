@@ -8,6 +8,7 @@ import com.ctre.phoenix.led.RainbowAnimation;
 import com.ctre.phoenix.led.SingleFadeAnimation;
 import com.ctre.phoenix.led.StrobeAnimation;
 
+import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.Timer;
@@ -55,6 +56,7 @@ public class LEDs extends SubsystemBase {
 
       return;
     }
+    DataLogManager.log("Setting LEDs from " + this.systemState + " to " + newsystemState);
     this.systemState = newsystemState;
     setOffLEDs();
     switch (newsystemState) {
@@ -66,7 +68,7 @@ public class LEDs extends SubsystemBase {
 
       case DRIVER_STATION_DISCONNECTED:
         {
-          setBLue();
+          setBlue();
         }
         break;
 
@@ -202,7 +204,7 @@ public class LEDs extends SubsystemBase {
   // candle.animate(rainbowAnim);
   // }
 
-  private void setBLue() {
+  private void setBlue() {
 
     SingleFadeAnimation singleFadeAnimation = new SingleFadeAnimation(0, 0, 100, 0, .5, 164);
     candle.animate(singleFadeAnimation);

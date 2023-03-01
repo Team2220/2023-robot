@@ -13,6 +13,7 @@ import frc.twilight.swerve.vectors.DriveVector;
 import java.util.function.DoubleSupplier;
 
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
 /** An example command that uses an example subsystem. */
@@ -45,6 +46,7 @@ public class SnapDrive extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    DataLogManager.log("Snapping to " + rot);
     DriveVector.resetAccel();
   }
 

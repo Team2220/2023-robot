@@ -223,6 +223,7 @@ public class Arm extends SubsystemBase {
 
   /** arm states */
   public void setArmState(ArmStates newState) {
+    DataLogManager.log("Setting arm state to " + newState.name());
     switch (newState) {
       case INTAKE:
         setPosition(160, 52);
