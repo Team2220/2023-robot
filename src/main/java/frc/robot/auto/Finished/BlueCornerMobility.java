@@ -23,8 +23,7 @@ public class BlueCornerMobility extends SequentialCommandGroup {
                                                                                 Rotation2d.fromDegrees(180)))));
 
                 addCommands(
-                        new AutoIntake(-.5, intake).withTimeout(2)
-                );                                                                
+                                new AutoIntake(-.5, intake).withTimeout(2));
 
                 addCommands(
                                 new GoToCommand(
