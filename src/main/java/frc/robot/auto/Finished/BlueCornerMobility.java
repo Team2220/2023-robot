@@ -1,6 +1,6 @@
 // Half of robot: 16.291382
 
-package frc.robot.auto;
+package frc.robot.auto.Finished;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;

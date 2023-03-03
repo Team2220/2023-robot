@@ -1,4 +1,4 @@
-package frc.robot.auto;
+package frc.robot.commands;
 
 import org.littletonrobotics.frc2023.FieldConstants;
 import edu.wpi.first.math.geometry.Pose2d;
