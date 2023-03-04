@@ -40,7 +40,7 @@ public final class Constants {
     public static final boolean SHOULDER_INVERTED = false;
     public static final boolean WRIST_INVERTED = true;
     public static final int WRIST_DUTYENCODER = 0;
-    public static final int SHOULDER_DUTYENCODER = 9;
+    public static final int SHOULDER_DUTYENCODER = 1;
     public static final double WRIST_ENCODER_OFFSET = 0.7011000175275;
     public static final double SHOULDER_ENCODER_OFFSET = 0.0;
     public static final double SHOULDER_GEAR_RATIO =

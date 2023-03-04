@@ -123,8 +123,9 @@ public class Arm extends SubsystemBase {
     shoulder.configStatorCurrentLimit(config);
     wrist.configStatorCurrentLimit(config);
 
-    shoulder.setNeutralMode(NeutralMode.Brake);
-    wrist.setNeutralMode(NeutralMode.Brake);
+    // TODO Fix to break
+    shoulder.setNeutralMode(NeutralMode.Coast);
+    wrist.setNeutralMode(NeutralMode.Coast);
 
     wrist.config_kP(0, wristP.getValue());
     wrist.config_kI(0, wristI.getValue());

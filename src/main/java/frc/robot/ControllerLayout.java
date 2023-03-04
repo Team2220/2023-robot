@@ -5,8 +5,10 @@ import java.util.Map;
 import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.Arm.SetArmState;
 import frc.robot.subsystems.Arm.ArmStates;
+import frc.twilight.Controller;
 import frc.twilight.Controller.Button;
 import frc.twilight.swerve.commands.ResetGyro;
 
@@ -67,4 +69,16 @@ public class ControllerLayout {
         Map.entry(Button.LEFT, (new SetArmState(ArmStates.LOADING_STATION_CUBE, RobotContainer.m_arm))),
         Map.entry(Button.RIGHT, null)
     );
+
+    public static void mapDriverController(Controller x) {
+        for (Button i : DRIVER.keySet()) {
+            new Trigger(() -> x.getButton(i)).onTrue(DRIVER.get(i));
+        }
+    }
+
+    public static void mapManipulatorController(Controller x) {
+        for (Button i : MANIPULATOR.keySet()) {
+            new Trigger(() -> x.getButton(i)).onTrue(MANIPULATOR.get(i));
+        }
+    }
 }

@@ -9,7 +9,6 @@ import frc.twilight.tunables.TunableDouble;
 public class Balancing extends CommandBase {
   private PIDController pid = new PIDController(0, 0, 0);
   private Swerve swerve;
-  private Gyro gyro = new Gyro();
 
   private static TunableDouble p = new TunableDouble("P", 0, true, "Balancing");
   private static TunableDouble i = new TunableDouble("I", 0, true, "Balancing");
@@ -28,7 +27,7 @@ public class Balancing extends CommandBase {
   @Override
   public void execute() {
     pid.setPID(p.getValue(), i.getValue(), d.getValue());
-    double out = gyro.getYRot();
+    double out = Gyro.getYRot();
     out = pid.calculate(out, 0);
     swerve.setDrive(0, out, 0);
   }

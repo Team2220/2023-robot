@@ -146,7 +146,11 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    
+    // Map Driver Controller Buttons
+    ControllerLayout.mapDriverController(m_controller);
+
+    // Map Manipulator Controller Buttons
+    ControllerLayout.mapManipulatorController(m_secondaryController);
 
     // Manipulatror controller
     new Trigger(() -> m_secondaryController.getButtonPressed(Controller.Button.BACK))
