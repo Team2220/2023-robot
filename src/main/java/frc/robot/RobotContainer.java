@@ -43,24 +43,24 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 public class RobotContainer {
     // The robot's subsystems and commands are defined here...
 
-    private final Swerve m_swerve = new Swerve();
-    private final Arm m_arm;
-    private final Intake m_intake;
+    public final Swerve m_swerve = new Swerve();
+    public final Arm m_arm = new Arm();
+    public final Intake m_intake = new Intake();;
 
         @SuppressWarnings("unused")
-    private final LEDs m_leds;
+    public final LEDs m_leds = new LEDs();
 
         @SuppressWarnings("unused")
-    private final Limelight m_LimeLight;
+    public final Limelight m_limelight = new Limelight("limelight");
 
         @SuppressWarnings("unused")
-    private final DriverTab drivertab = new DriverTab();
-    private final CommandChooser autoChooser = new CommandChooser();
+    public final DriverTab drivertab = new DriverTab();
+    public final CommandChooser autoChooser = new CommandChooser();
 
-    private final Controller m_controller = new Controller(0);
-    private final Controller m_secondaryController = new Controller(1);
+    public final Controller m_controller = new Controller(0);
+    public final Controller m_secondaryController = new Controller(1);
 
-    private final ControllerDrive m_ControllerDrive = new ControllerDrive(
+    public final ControllerDrive m_ControllerDrive = new ControllerDrive(
                         m_swerve,
                         () -> m_controller.getLeftX(),
                         () -> m_controller.getLeftY(),
@@ -75,11 +75,7 @@ public class RobotContainer {
         DataLogManager.start();
         // Record both DS control and joystick data
         DriverStation.startDataLog(DataLogManager.getLog());
-        
-        m_arm = new Arm();
-        m_intake = new Intake();
-        m_leds = new LEDs();
-        m_LimeLight = new Limelight("limelight");
+
         m_swerve.setDefaultCommand(m_ControllerDrive);
         m_arm.setDefaultCommand(
                 new ArmPercentOutput(
