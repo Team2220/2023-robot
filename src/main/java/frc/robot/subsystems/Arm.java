@@ -222,28 +222,28 @@ public class Arm extends SubsystemBase {
     DataLogManager.log("Setting arm state to " + newState.name());
     switch (newState) {
       case INTAKE:
-        setPosition(160, 52);
+        setPosition(152, -41);
         break;
       case MID_CUBE_NODE:
-        setPosition(60, -90);
+        setPosition(60, 90);
         break;
       case HIGH_CUBE_NODE:
-        setPosition(70, -40);
+        setPosition(70, 40);
         break;
       case MID_CONE_NODE:
-        setPosition(60, -85);
+        setPosition(60, 85);
         break;
       case HIGH_CONE_NODE:
-        setPosition(70, -20);
+        setPosition(70, 20);
         break;
       case TRANSIT:
-        setPosition(171, 150);
+        setPosition(171, -150);
         break;
       case LOADING_STATION_CUBE:
-        setPosition(74, -32);
+        setPosition(74, 32);
         break;
       case LOADING_STATION_CONE:
-        setPosition(65, -45);
+        setPosition(65, 45);
         break;
     }
   }

@@ -38,11 +38,11 @@ public final class Constants {
     public static final int WRIST_TALONFX = 20;
     public static final int SHOULDER_TALONFX = 19;
     public static final boolean SHOULDER_INVERTED = false;
-    public static final boolean WRIST_INVERTED = true;
+    public static final boolean WRIST_INVERTED = false;
     public static final int WRIST_DUTYENCODER = 0;
     public static final int SHOULDER_DUTYENCODER = 1;
-    public static final double WRIST_ENCODER_OFFSET = 0.7011000175275;
-    public static final double SHOULDER_ENCODER_OFFSET = 0.0;
+    public static final double WRIST_ENCODER_OFFSET = 0.4262;
+    public static final double SHOULDER_ENCODER_OFFSET = 0.9632;
     public static final double SHOULDER_GEAR_RATIO =
         (5.0 / 1.0) * (5.0 / 1.0) * (4.0 / 1.0) * (58.0 / 15.0);
     public static final double WRIST_GEAR_RATIO = (5.0 / 1.0) * (5.0 / 1.0) * (5.0 / 1.0);
@@ -56,6 +56,6 @@ public final class Constants {
     public static final double WRIST_REF = 150;
 
     public static final double WRIST_REMAP_LIMIT = 0;
-    public static final double SHOULDER_REMAP_LIMIT = 0;
+    public static final double SHOULDER_REMAP_LIMIT = 0.5;
   }
 }
