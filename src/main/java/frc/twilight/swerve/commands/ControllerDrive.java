@@ -5,11 +5,14 @@
 package frc.twilight.swerve.commands;
 
 import frc.twilight.swerve.config.GeneralConfig;
+import frc.twilight.swerve.config.PIDconfig;
+import frc.twilight.swerve.devices.Gyro;
 import frc.twilight.swerve.subsystems.Swerve;
 import frc.twilight.swerve.vectors.DriveVector;
 
 import java.util.function.DoubleSupplier;
 
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
 /** An example command that uses an example subsystem. */
@@ -20,6 +23,11 @@ public class ControllerDrive extends CommandBase {
   public DoubleSupplier fwd;
   public DoubleSupplier str;
   public DoubleSupplier rot;
+
+  private boolean snapDrive = false;
+  private double snapRot = 0;
+  private PIDController rotpid = new PIDController(PIDconfig.DT_AUTO_ROT_P.getValue(), PIDconfig.DT_AUTO_ROT_I.getValue(), PIDconfig.DT_AUTO_ROT_D.getValue());
+  
 
   /**
    * Creates a new GoToCommand.
@@ -45,13 +53,28 @@ public class ControllerDrive extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    double rotation = rot.getAsDouble() * GeneralConfig.DT_MAX_ROT_VEL.getValue();
+    
+    if (snapDrive) {
+      rotation = rotpid.calculate(Gyro.getAngle(), snapRot);
+    }
+
     m_subsystem.setDrive(
         new DriveVector(
                 fwd.getAsDouble() * GeneralConfig.DT_MAX_VEL.getValue(),
                 str.getAsDouble() * GeneralConfig.DT_MAX_VEL.getValue(),
-                rot.getAsDouble() * GeneralConfig.DT_MAX_ROT_VEL.getValue())
+                rotation)
             .maxVel()
             .maxAccel());
+  }
+
+  public void snapDrive(double rot) {
+    snapRot = rot;
+    snapDrive = true;
+  }
+
+  public void stopSnap() {
+    snapDrive = false;
   }
 
   // Called once the command ends or is interrupted.

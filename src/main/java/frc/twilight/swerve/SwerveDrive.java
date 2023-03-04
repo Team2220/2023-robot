@@ -23,8 +23,6 @@ public class SwerveDrive {
   private final SwerveModule backLeft;
   private final SwerveModule backRight;
 
-  private final Gyro gyro = new Gyro();
-
   private PIDController gyroPID =
       new PIDController(
           PIDconfig.DT_GYRO_P.getValue(),
@@ -64,7 +62,7 @@ public class SwerveDrive {
 
     odoLastCheck = System.currentTimeMillis();
 
-    gyro.setPosition(GeneralConfig.DT_START_GYRO);
+    Gyro.setPosition(GeneralConfig.DT_START_GYRO);
 
     odoPosition =
         new Position(
@@ -115,10 +113,10 @@ public class SwerveDrive {
 
       SmartDashboard.putData("Field", field);
 
-      Shuffleboard.getTab("Swerve").addNumber("Gyro", () -> gyro.getAngle()).withPosition(6, 3);
+      Shuffleboard.getTab("Swerve").addNumber("Gyro", () -> Gyro.getAngle()).withPosition(6, 3);
 
       Shuffleboard.getTab("Swerve")
-          .addNumber("Gyro Rate", () -> gyro.getAngleSpeed())
+          .addNumber("Gyro Rate", () -> Gyro.getAngleSpeed())
           .withPosition(7, 3);
     }
   }
@@ -130,10 +128,10 @@ public class SwerveDrive {
 
     gyroPID.setSetpoint(vector.getRcw());
     vector.setRcw(
-        -gyroPID.calculate(gyro.getAngleSpeed())
+        -gyroPID.calculate(Gyro.getAngleSpeed())
             + PIDconfig.DT_GYRO_F.getValue() * vector.getRcw());
 
-    vector.zeroDirection(-gyro.getAngle());
+    vector.zeroDirection(-Gyro.getAngle());
 
     WheelVector[] wheelVectors = VectorFactory.wheelVectorsFromDriveVector(vector);
 
@@ -162,14 +160,14 @@ public class SwerveDrive {
     DriveVector out =
         VectorFactory.driveVectorFromWheelVectors(
             frontRight.get(), frontLeft.get(), backRight.get(), backLeft.get());
-    out.zeroDirection(-gyro.getAngle());
+    out.zeroDirection(-Gyro.getAngle());
 
     return out;
   }
 
   public void setOdo(double x, double y, double angle) {
     odoPosition = new Position(x, y, angle);
-    gyro.setPosition(angle);
+    Gyro.setPosition(angle);
   }
 
   public void updateOdo() {
@@ -181,7 +179,7 @@ public class SwerveDrive {
 
     double x = odoPosition.getX() + drive.getFwd() * dt;
     double y = odoPosition.getY() + drive.getStr() * dt;
-    double angle = gyro.getAngle();
+    double angle = Gyro.getAngle();
 
     odoPosition = new Position(x, y, angle);
 
@@ -193,7 +191,7 @@ public class SwerveDrive {
   }
 
   public void zeroGyro() {
-    gyro.zeroSensor();
+    Gyro.zeroSensor();
     setOdo(0, 0, 0);
   }
 }

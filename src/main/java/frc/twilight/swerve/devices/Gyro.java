@@ -3,25 +3,19 @@ package frc.twilight.swerve.devices;
 import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.wpilibj.SPI;
-import frc.twilight.swerve.config.GeneralConfig;
 
 public class Gyro {
-  private final AHRS ahrs;
+  private static final AHRS ahrs = new AHRS(SPI.Port.kMXP);
 
-  private double prevPos = 0;
-  private double prevSpeed = 0;
-  private double time = System.currentTimeMillis() / 1000.0;
+  private static double prevPos = 0;
+  private static double prevSpeed = 0;
+  private static double time = System.currentTimeMillis() / 1000.0;
 
-  public Gyro() {
-    ahrs = new AHRS(SPI.Port.kMXP);
-    setPosition(GeneralConfig.DT_START_GYRO);
-  }
-
-  public double getAngle() {
+  public static double getAngle() {
     return -ahrs.getAngle();
   }
 
-  public double getAngleSpeed() {
+  public static double getAngleSpeed() {
     double newTime = System.currentTimeMillis() / 1000.0;
 
     if ((newTime - time > 0.1)) {
@@ -37,12 +31,12 @@ public class Gyro {
     }
   }
 
-  public void setPosition(double offset) {
+  public static void setPosition(double offset) {
     ahrs.reset();
     ahrs.setAngleAdjustment(-offset);
   }
 
-  public void zeroSensor() {
+  public static void zeroSensor() {
     ahrs.reset();
     ahrs.setAngleAdjustment(0);
 
@@ -50,7 +44,7 @@ public class Gyro {
     prevPos = 0;
   }
 
-  public double getYRot() {
+  public static double getYRot() {
     return ahrs.getPitch();
   }
 }

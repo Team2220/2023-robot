@@ -23,12 +23,9 @@ import frc.robot.subsystems.LEDs;
 import frc.robot.subsystems.Arm.ArmStates;
 import frc.twilight.swerve.subsystems.Swerve;
 import frc.twilight.Controller;
-import frc.twilight.Limelight;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.twilight.swerve.commands.ControllerDrive;
-import frc.twilight.swerve.commands.ResetGyro;
-import frc.twilight.swerve.commands.SnapDrive;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 /**
@@ -41,151 +38,176 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
  * subsystems, commands, and button mappings) should be declared here.
  */
 public class RobotContainer {
-    // The robot's subsystems and commands are defined here...
+  // The robot's subsystems and commands are defined here...
 
-    public static final Swerve m_swerve = new Swerve();
-    public static final Arm m_arm = new Arm();
-    public static final Intake m_intake = new Intake();;
+  /*
+   * Swerve Subsystem
+   */
+  public static final Swerve m_swerve = new Swerve();
 
-        @SuppressWarnings("unused")
-    public static final LEDs m_leds = new LEDs();
+  /*
+   * Arm Subsystem
+   */
+  public static final Arm m_arm = new Arm();
 
-        @SuppressWarnings("unused")
-    public static final Limelight m_limelight = new Limelight("limelight");
+  /*
+   * Intake Subsystem
+   */
+  public static final Intake m_intake = new Intake();;
 
-        @SuppressWarnings("unused")
-    public static final DriverTab drivertab = new DriverTab();
-    public static final CommandChooser autoChooser = new CommandChooser();
+  /*
+   * LEDs not used rn
+   */
+  @SuppressWarnings("unused")
+  public static final LEDs m_leds = new LEDs();
 
-    public static final Controller m_controller = new Controller(0);
-    public static final Controller m_secondaryController = new Controller(1);
+  /*
+   * Drivertab?
+   */
+  @SuppressWarnings("unused")
+  public static final DriverTab drivertab = new DriverTab();
 
-    public final ControllerDrive m_ControllerDrive = new ControllerDrive(
-                        m_swerve,
-                        () -> m_controller.getLeftX(),
-                        () -> m_controller.getLeftY(),
-                        () -> m_controller.getRightX());
+  /*
+   * Autochooser
+   */
+  public static final CommandChooser autoChooser = new CommandChooser();
 
-    /**
-     * The container for the robot. Contains subsystems, OI devices, and commands.
-     */
-    public RobotContainer() {
-        DriverStation.silenceJoystickConnectionWarning(true);
-        // Starts recording to data log
-        DataLogManager.start();
-        // Record both DS control and joystick data
-        DriverStation.startDataLog(DataLogManager.getLog());
+  /*
+   * Driver Controller 
+   */
+  public static final Controller m_controller = new Controller(0);
 
-        m_swerve.setDefaultCommand(m_ControllerDrive);
-        m_arm.setDefaultCommand(
-                new ArmPercentOutput(
-                        m_secondaryController::getRightY, m_secondaryController::getLeftY, m_arm));
-        m_intake.setDefaultCommand(
-                new IntakePercentOutput(
-                        m_secondaryController::getLeftTrigger,
-                        m_secondaryController::getRightTrigger,
-                        m_intake));
-        // Configure the button bindings
-        configureButtonBindings();
-        // auto stuff
-        autoChooser.setDefaultOption(new InstantCommand().withName("Do nothing"));
-        autoChooser.addOption(new Square(m_swerve));
-        // autoChooser.addOption(new rightTwoCubeAuto(m_swerve, m_arm, m_intake));
-        // autoChooser.addOption(new leftTwoCubeAuto(m_swerve, m_arm, m_intake));
-        autoChooser.addOption(new TestPath(m_swerve));
-        // autoChooser.addOption(new NewPath(m_swerve));
-        autoChooser.addOption(new MidScore1BalBlueAuto(m_swerve, m_arm, m_intake));
-        autoChooser.addOption(new BlueCornerMobility(m_swerve, m_intake));
-        autoChooser.addOption(new RedCornerMobility(m_swerve));
+  /*
+   * Manipulator Controller
+   */
+  public static final Controller m_secondaryController = new Controller(1);
 
-        SmartDashboard.putData(autoChooser.getSendableChooser());
+  /*
+   * Default Drive Command
+   */
+  public static final ControllerDrive m_ControllerDrive = new ControllerDrive(
+      m_swerve,
+      () -> m_controller.getLeftX(),
+      () -> m_controller.getLeftY(),
+      () -> m_controller.getRightX());
 
-    }
+  /**
+   * The container for the robot. Contains subsystems, OI devices, and commands.
+   */
+  public RobotContainer() {
+    // Stop logging for missing joysticks
+    DriverStation.silenceJoystickConnectionWarning(true);
 
-    /**
-     * Use this method to define your button->command mappings. Buttons can be
-     * created by
-     * instantiating a {@link GenericHID} or one of its subclasses ({@link
-     * edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then passing
-     * it to a {@link
-     * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
-     */
-    private void configureButtonBindings() {
-        // Driver contoller
-        new Trigger(() -> m_controller.getButtonPressed(Controller.Button.START))
-                .onTrue(new ResetGyro(m_swerve));
-        new Trigger(() -> m_controller.getButtonPressed(Controller.Button.BACK))
-                .onTrue(new InstantCommand(() -> DataLogManager.log("Driver Problem")));
+    // Starts recording to data log
+    DataLogManager.start();
 
-        new Trigger(() -> m_controller.getButtonPressed(Controller.Button.UP))
-                .onTrue(new SnapDrive(m_swerve, () -> m_controller.getLeftX(), () -> m_controller.getLeftY(), 0));
-        new Trigger(() -> m_controller.getButtonPressed(Controller.Button.LEFT))
-                .onTrue(new SnapDrive(m_swerve, () -> m_controller.getLeftX(), () -> m_controller.getLeftY(), 90));
-        new Trigger(() -> m_controller.getButtonPressed(Controller.Button.DOWN))
-                .onTrue(new SnapDrive(m_swerve, () -> m_controller.getLeftX(), () -> m_controller.getLeftY(), 180));
-        new Trigger(() -> m_controller.getButtonPressed(Controller.Button.RIGHT))
-                .onTrue(new SnapDrive(m_swerve, () -> m_controller.getLeftX(), () -> m_controller.getLeftY(), 270));
+    // Record both DS control and joystick data
+    DriverStation.startDataLog(DataLogManager.getLog());
 
-        // Manipulatror controller
-        new Trigger(() -> m_secondaryController.getButtonPressed(Controller.Button.BACK))
-                .onTrue(new InstantCommand(() -> DataLogManager.log("Manipulator Problem")));
+    // Sets the default command for the drivetrain
+    m_swerve.setDefaultCommand(m_ControllerDrive);
 
-        new Trigger(() -> m_secondaryController.getButtonPressed(Controller.Button.START))
-                .onTrue(new InstantCommand(() -> {
-                    m_arm.setWristToReferenceAngle();
-                    m_arm.setShoulderToReferenceAngle();
-                }));
-        new Trigger(
-                () -> {
-                    boolean left = Math.abs(m_secondaryController.getLeftY()) > 0.1;
-                    boolean right = Math.abs(m_secondaryController.getRightY()) > 0.1;
-                    return left || right;
-                })
-                .whileTrue(
-                        new ArmPercentOutput(
-                                m_secondaryController::getRightY, m_secondaryController::getLeftY, m_arm));
+    // Sets the default command for the arm
+    m_arm.setDefaultCommand(
+        new ArmPercentOutput(
+            m_secondaryController::getRightY, m_secondaryController::getLeftY, m_arm));
 
-        new Trigger(
-                () -> {
-                    boolean rightX = Math.abs(m_controller.getRightX()) > 0.1;
-                    boolean enabled = m_ControllerDrive.isScheduled();
-                    return rightX && !enabled;
-                }).whileTrue(m_ControllerDrive);
-        // Arm States
-        new Trigger(() -> (m_secondaryController.getButton(frc.twilight.Controller.Button.A)))
-                .onTrue(new SetArmState(ArmStates.MID_CUBE_NODE, m_arm));
-        new Trigger(() -> (m_secondaryController.getButton(frc.twilight.Controller.Button.X)))
-                .onTrue(new SetArmState(ArmStates.HIGH_CUBE_NODE, m_arm));
-        new Trigger(() -> (m_secondaryController.getButton(frc.twilight.Controller.Button.B)))
-                .onTrue(new SetArmState(ArmStates.MID_CONE_NODE, m_arm));
-        new Trigger(() -> (m_secondaryController.getButton(frc.twilight.Controller.Button.Y)))
-                .onTrue(new SetArmState(ArmStates.HIGH_CONE_NODE, m_arm));
-        new Trigger(() -> (m_secondaryController.getButton(frc.twilight.Controller.Button.RB)))
-                .onTrue(new SetArmState(ArmStates.INTAKE, m_arm));
-        new Trigger(() -> (m_secondaryController.getButton(frc.twilight.Controller.Button.UP)))
-                .onTrue(new SetArmState(ArmStates.LOADING_STATION_CONE, m_arm));
-        new Trigger(() -> (m_secondaryController.getButton(frc.twilight.Controller.Button.DOWN)))
-                .onTrue(new SetArmState(ArmStates.TRANSIT, m_arm));
-        new Trigger(() -> (m_secondaryController.getButton(frc.twilight.Controller.Button.LEFT)))
-                .onTrue(new SetArmState(ArmStates.LOADING_STATION_CUBE, m_arm));
+    // Sets the default command for the intake
+    m_intake.setDefaultCommand(
+        new IntakePercentOutput(
+            m_secondaryController::getLeftTrigger,
+            m_secondaryController::getRightTrigger,
+            m_intake));
 
-        // Override limits
-        new Trigger(() -> (m_secondaryController.getButton(frc.twilight.Controller.Button.LS)))
-                .onTrue(new InstantCommand(() -> m_arm.overrideShoulderSoftLimits(false)))
-                .onFalse(new InstantCommand(() -> m_arm.overrideShoulderSoftLimits(true)));
+    // Configure the button bindings
+    configureButtonBindings();
 
-        new Trigger(() -> (m_secondaryController.getButton(frc.twilight.Controller.Button.RS)))
-                .onTrue(new InstantCommand(() -> m_arm.overrideWristSoftLimits(false)))
-                .onFalse(new InstantCommand(() -> m_arm.overrideWristSoftLimits(true)));
-    }
+    // auto stuff
+    autoChooser.setDefaultOption(new InstantCommand().withName("Do nothing"));
+    autoChooser.addOption(new Square(m_swerve));
+    // autoChooser.addOption(new rightTwoCubeAuto(m_swerve, m_arm, m_intake));
+    // autoChooser.addOption(new leftTwoCubeAuto(m_swerve, m_arm, m_intake));
+    autoChooser.addOption(new TestPath(m_swerve));
+    // autoChooser.addOption(new NewPath(m_swerve));
+    autoChooser.addOption(new MidScore1BalBlueAuto(m_swerve, m_arm, m_intake));
+    autoChooser.addOption(new BlueCornerMobility(m_swerve, m_intake));
+    autoChooser.addOption(new RedCornerMobility(m_swerve));
 
-    /**
-     * Use this to pass the autonomous command to the main {@link Robot} class.
-     *
-     * @return the command to run in autonomous
-     */
-    public Command getAutonomousCommand() {
-        // An ExampleCommand will run in autonomous
-        return autoChooser.getSelected();
-    }
+    SmartDashboard.putData(autoChooser.getSendableChooser());
+
+  }
+
+  /**
+   * Use this method to define your button->command mappings. Buttons can be
+   * created by
+   * instantiating a {@link GenericHID} or one of its subclasses ({@link
+   * edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then passing
+   * it to a {@link
+   * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
+   */
+  private void configureButtonBindings() {
+    
+
+    // Manipulatror controller
+    new Trigger(() -> m_secondaryController.getButtonPressed(Controller.Button.BACK))
+        .onTrue(new InstantCommand(() -> DataLogManager.log("Manipulator Problem")));
+
+    new Trigger(() -> m_secondaryController.getButtonPressed(Controller.Button.START))
+        .onTrue(new InstantCommand(() -> {
+          m_arm.setWristToReferenceAngle();
+          m_arm.setShoulderToReferenceAngle();
+        }));
+    new Trigger(
+        () -> {
+          boolean left = Math.abs(m_secondaryController.getLeftY()) > 0.1;
+          boolean right = Math.abs(m_secondaryController.getRightY()) > 0.1;
+          return left || right;
+        })
+        .whileTrue(
+            new ArmPercentOutput(
+                m_secondaryController::getRightY, m_secondaryController::getLeftY, m_arm));
+
+    new Trigger(
+        () -> {
+          boolean rightX = Math.abs(m_controller.getRightX()) > 0.1;
+          boolean enabled = m_ControllerDrive.isScheduled();
+          return rightX && !enabled;
+        }).whileTrue(m_ControllerDrive);
+    // Arm States
+    new Trigger(() -> (m_secondaryController.getButton(frc.twilight.Controller.Button.A)))
+        .onTrue(new SetArmState(ArmStates.MID_CUBE_NODE, m_arm));
+    new Trigger(() -> (m_secondaryController.getButton(frc.twilight.Controller.Button.X)))
+        .onTrue(new SetArmState(ArmStates.HIGH_CUBE_NODE, m_arm));
+    new Trigger(() -> (m_secondaryController.getButton(frc.twilight.Controller.Button.B)))
+        .onTrue(new SetArmState(ArmStates.MID_CONE_NODE, m_arm));
+    new Trigger(() -> (m_secondaryController.getButton(frc.twilight.Controller.Button.Y)))
+        .onTrue(new SetArmState(ArmStates.HIGH_CONE_NODE, m_arm));
+    new Trigger(() -> (m_secondaryController.getButton(frc.twilight.Controller.Button.RB)))
+        .onTrue(new SetArmState(ArmStates.INTAKE, m_arm));
+    new Trigger(() -> (m_secondaryController.getButton(frc.twilight.Controller.Button.UP)))
+        .onTrue(new SetArmState(ArmStates.LOADING_STATION_CONE, m_arm));
+    new Trigger(() -> (m_secondaryController.getButton(frc.twilight.Controller.Button.DOWN)))
+        .onTrue(new SetArmState(ArmStates.TRANSIT, m_arm));
+    new Trigger(() -> (m_secondaryController.getButton(frc.twilight.Controller.Button.LEFT)))
+        .onTrue(new SetArmState(ArmStates.LOADING_STATION_CUBE, m_arm));
+
+    // Override limits
+    new Trigger(() -> (m_secondaryController.getButton(frc.twilight.Controller.Button.LS)))
+        .onTrue(new InstantCommand(() -> m_arm.overrideShoulderSoftLimits(false)))
+        .onFalse(new InstantCommand(() -> m_arm.overrideShoulderSoftLimits(true)));
+
+    new Trigger(() -> (m_secondaryController.getButton(frc.twilight.Controller.Button.RS)))
+        .onTrue(new InstantCommand(() -> m_arm.overrideWristSoftLimits(false)))
+        .onFalse(new InstantCommand(() -> m_arm.overrideWristSoftLimits(true)));
+  }
+
+  /**
+   * Use this to pass the autonomous command to the main {@link Robot} class.
+   *
+   * @return the command to run in autonomous
+   */
+  public Command getAutonomousCommand() {
+    // An ExampleCommand will run in autonomous
+    return autoChooser.getSelected();
+  }
 }
