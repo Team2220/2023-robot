@@ -199,6 +199,12 @@ public final class FieldConstants {
     public static final double separationY = Units.inchesToMeters(48.0);
     public static final Translation2d[] translations = new Translation2d[4];
 
+    // cube and cone locations in relation to the wall
+    public static final Translation2d FirstFromTheWall = translations[0];
+    public static final Translation2d SecondFromTheWall =  translations[1];
+    public static final Translation2d ThirdFromTheWall = translations[2];
+    public static final Translation2d FourthFromTheWall =  translations[3];
+
     static {
       for (int i = 0; i < translations.length; i++) {
         translations[i] = new Translation2d(positionX, firstY + (i * separationY));
