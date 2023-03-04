@@ -43,22 +43,22 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 public class RobotContainer {
     // The robot's subsystems and commands are defined here...
 
-    public final Swerve m_swerve = new Swerve();
-    public final Arm m_arm = new Arm();
-    public final Intake m_intake = new Intake();;
+    public static final Swerve m_swerve = new Swerve();
+    public static final Arm m_arm = new Arm();
+    public static final Intake m_intake = new Intake();;
 
         @SuppressWarnings("unused")
-    public final LEDs m_leds = new LEDs();
+    public static final LEDs m_leds = new LEDs();
 
         @SuppressWarnings("unused")
-    public final Limelight m_limelight = new Limelight("limelight");
+    public static final Limelight m_limelight = new Limelight("limelight");
 
         @SuppressWarnings("unused")
-    public final DriverTab drivertab = new DriverTab();
-    public final CommandChooser autoChooser = new CommandChooser();
+    public static final DriverTab drivertab = new DriverTab();
+    public static final CommandChooser autoChooser = new CommandChooser();
 
-    public final Controller m_controller = new Controller(0);
-    public final Controller m_secondaryController = new Controller(1);
+    public static final Controller m_controller = new Controller(0);
+    public static final Controller m_secondaryController = new Controller(1);
 
     public final ControllerDrive m_ControllerDrive = new ControllerDrive(
                         m_swerve,
