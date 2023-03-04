@@ -75,34 +75,8 @@ public class RobotContainer {
         DataLogManager.start();
         // Record both DS control and joystick data
         DriverStation.startDataLog(DataLogManager.getLog());
-
-                m_arm = new Arm();
-                m_intake = new Intake();
-                m_leds = new LEDs();
-                m_LimeLight = new Limelight("limelight");
-                m_swerve.setDefaultCommand(m_ControllerDrive);
-                m_arm.setDefaultCommand(
-                                new ArmPercentOutput(
-                                                m_secondaryController::getRightY, m_secondaryController::getLeftY,
-                                                m_arm));
-                m_intake.setDefaultCommand(
-                                new IntakePercentOutput(
-                                                m_secondaryController::getLeftTrigger,
-                                                m_secondaryController::getRightTrigger,
-                                                m_intake));
-                // Configure the button bindings
-                configureButtonBindings();
-                // auto stuff
-                autoChooser.setDefaultOption(new InstantCommand().withName("Do nothing"));
-                autoChooser.addOption(new Square(m_swerve));
-                // autoChooser.addOption(new rightTwoCubeAuto(m_swerve, m_arm, m_intake));
-                // autoChooser.addOption(new leftTwoCubeAuto(m_swerve, m_arm, m_intake));
-                autoChooser.addOption(new TestPath(m_swerve));
-                // autoChooser.addOption(new NewPath(m_swerve));
-                autoChooser.addOption(new MidScore1BalBlueAuto(m_swerve, m_arm, m_intake));
-                autoChooser.addOption(new BlueCornerMobility(m_swerve, m_intake));
-                autoChooser.addOption(new RedCornerMobility(m_swerve));
-        m_arm = new Arm(m_controller);
+        
+        m_arm = new Arm();
         m_intake = new Intake();
         m_leds = new LEDs();
         m_LimeLight = new Limelight("limelight");
