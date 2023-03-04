@@ -39,6 +39,7 @@ public class Square extends SequentialCommandGroup {
                 FieldConstants.Community.chargingStationCorners[0], Rotation2d.fromDegrees(360))));
     for (int i = 0; i < 4; i++) {
       System.out.println(FieldConstants.Community.chargingStationCorners[i]);
+      System.out.println(FieldConstants.StagingLocations.translations[i]);
     }
   }
 }

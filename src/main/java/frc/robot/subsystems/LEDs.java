@@ -60,43 +60,36 @@ public class LEDs extends SubsystemBase {
     this.systemState = newsystemState;
     setOffLEDs();
     switch (newsystemState) {
-      case FULL_LEDS:
-        {
-          setSolidColor();
-        }
+      case FULL_LEDS: {
+        setSolidColor();
+      }
         break;
 
-      case DRIVER_STATION_DISCONNECTED:
-        {
-          setBlue();
-        }
+      case DRIVER_STATION_DISCONNECTED: {
+        setBlue();
+      }
         break;
 
-      case RAINBOW_ANIMATION:
-        {
-          setLEDRainAnimationFast();
-        }
+      case RAINBOW_ANIMATION: {
+        setLEDRainAnimationFast();
+      }
         break;
-      case STROBE_ANIMATION:
-        {
-          setLEDStrobeAnimation(98, 56, 50, 0, .5, 164, 0);
-        }
+      case STROBE_ANIMATION: {
+        setLEDStrobeAnimation(98, 56, 50, 0, .5, 164, 0);
+      }
         break;
 
-      case BROWNOUT:
-        {
-          setBrown();
-        }
+      case BROWNOUT: {
+        setBrown();
+      }
         break;
-      case OFF:
-        {
-          setOffLEDs();
-        }
+      case OFF: {
+        setOffLEDs();
+      }
         break;
 
-        case NOTHING_IN_AUTO:
-        {
-        }
+      case NOTHING_IN_AUTO: {
+      }
         break;
     }
   }
@@ -111,27 +104,23 @@ public class LEDs extends SubsystemBase {
   private void switchDesieredState() {
 
     switch (desieredState) {
-      case RAINBOW_ANIMATION:
-        {
-          transitionSystemState(SystemState.RAINBOW_ANIMATION);
-        }
+      case RAINBOW_ANIMATION: {
+        transitionSystemState(SystemState.RAINBOW_ANIMATION);
+      }
         break;
-      case FULL_LEDS:
-        {
-          transitionSystemState(SystemState.FULL_LEDS);
-        }
+      case FULL_LEDS: {
+        transitionSystemState(SystemState.FULL_LEDS);
+      }
         break;
 
-      case OFF:
-        {
-          transitionSystemState(SystemState.OFF);
-        }
+      case OFF: {
+        transitionSystemState(SystemState.OFF);
+      }
         break;
 
-      case STROBE_ANIMATION:
-        {
-          transitionSystemState(SystemState.STROBE_ANIMATION);
-        }
+      case STROBE_ANIMATION: {
+        transitionSystemState(SystemState.STROBE_ANIMATION);
+      }
         break;
     }
   }
@@ -152,48 +141,41 @@ public class LEDs extends SubsystemBase {
     }
 
     switch (systemState) {
-      case DRIVER_STATION_DISCONNECTED:
-        {
-          if (Timer.getFPGATimestamp() > m_lastDisconectTime + 5) {
-            switchDesieredState();
-          }
-        }
-        break;
-
-      case BROWNOUT:
-        {
-          if (Timer.getFPGATimestamp() > m_lastBrownedOutTime + 5) {
-            switchDesieredState();
-          }
-        }
-        break;
-
-      case FULL_LEDS:
-        {
+      case DRIVER_STATION_DISCONNECTED: {
+        if (Timer.getFPGATimestamp() > m_lastDisconectTime + 5) {
           switchDesieredState();
         }
+      }
         break;
 
-      case OFF:
-        {
+      case BROWNOUT: {
+        if (Timer.getFPGATimestamp() > m_lastBrownedOutTime + 5) {
           switchDesieredState();
         }
+      }
         break;
 
-      case RAINBOW_ANIMATION:
-        {
-          switchDesieredState();
-        }
+      case FULL_LEDS: {
+        switchDesieredState();
+      }
         break;
-      case STROBE_ANIMATION:
-        {
-          switchDesieredState();
-        }
-        break;
-        case NOTHING_IN_AUTO:
-        {
 
-        }
+      case OFF: {
+        switchDesieredState();
+      }
+        break;
+
+      case RAINBOW_ANIMATION: {
+        switchDesieredState();
+      }
+        break;
+      case STROBE_ANIMATION: {
+        switchDesieredState();
+      }
+        break;
+      case NOTHING_IN_AUTO: {
+
+      }
         break;
     }
   }
@@ -239,22 +221,20 @@ public class LEDs extends SubsystemBase {
 
   public void setUpTestCommands() {
     // Arm States
-    ShuffleboardLayout stateLayout =
-        Shuffleboard.getTab("leds")
-            .getLayout("States", BuiltInLayouts.kList)
-            .withSize(2, 3)
-            .withProperties(Map.of("Label position", "HIDDEN"));
+    ShuffleboardLayout stateLayout = Shuffleboard.getTab("leds")
+        .getLayout("States", BuiltInLayouts.kList)
+        .withSize(2, 3)
+        .withProperties(Map.of("Label position", "HIDDEN"));
 
     for (DesieredState state : DesieredState.values()) {
       stateLayout.add(state.name(), new SetLedsStates(state, this));
     }
 
     // Everything else
-    ShuffleboardLayout angLayout =
-        Shuffleboard.getTab("leds")
-            .getLayout("Angles", BuiltInLayouts.kGrid)
-            .withSize(2, 3)
-            .withProperties(Map.of("Label position", "TOP"));
+    ShuffleboardLayout angLayout = Shuffleboard.getTab("leds")
+        .getLayout("Angles", BuiltInLayouts.kGrid)
+        .withSize(2, 3)
+        .withProperties(Map.of("Label position", "TOP"));
 
     angLayout.addString("DesieredStatew", () -> this.desieredState.name());
     angLayout.addString("SystemState", () -> this.systemState.name());
