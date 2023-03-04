@@ -23,6 +23,7 @@ public class LEDs extends SubsystemBase {
   private CANdle candle = new CANdle(Constants.LEDS.CANDLE);
   private double m_lastDisconectTime = 0.0;
   private double m_lastBrownedOutTime = 0.0;
+  private double m_startTime = 25.0;
 
   public enum DesieredState {
     RAINBOW_ANIMATION,
@@ -41,6 +42,7 @@ public class LEDs extends SubsystemBase {
     BROWNOUT,
     OFF,
     NOTHING_IN_AUTO,
+    TWENTY_SEC_LEFT,
   }
 
   private SystemState systemState = SystemState.OFF;
@@ -90,6 +92,12 @@ public class LEDs extends SubsystemBase {
 
       case NOTHING_IN_AUTO: {
       }
+        break;
+
+        case TWENTY_SEC_LEFT: {
+
+        setLeds20SecsLeft();
+        }
         break;
     }
   }
@@ -177,6 +185,13 @@ public class LEDs extends SubsystemBase {
 
       }
         break;
+
+      case TWENTY_SEC_LEFT: {
+        if (Timer.getFPGATimestamp() > m_startTime - 5) {
+          switchDesieredState();
+        }
+      }
+        break;
     }
   }
 
@@ -217,6 +232,12 @@ public class LEDs extends SubsystemBase {
       int r, int g, int b, int w, double speed, int numLed, int ledOffset) {
     StrobeAnimation strobeAnimation = new StrobeAnimation(r, g, b, w, speed, numLed, ledOffset);
     candle.animate(strobeAnimation);
+  }
+
+  private void setLeds20SecsLeft() {
+    StrobeAnimation timedStrobeAnimation = new StrobeAnimation(0, 0, 0, 0, m_lastBrownedOutTime, 0, 0);
+    candle.animate(timedStrobeAnimation);
+
   }
 
   public void setUpTestCommands() {
