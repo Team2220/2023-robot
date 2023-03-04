@@ -4,32 +4,19 @@
 
 package frc.robot;
 
-import org.littletonrobotics.frc2023.util.GeomUtil;
-
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.auto.inProgress.MidScore1BalBlueAuto;
-// import frc.robot.auto.Mobility;
-// import frc.robot.auto.NewPath;
 import frc.robot.commands.Square;
 import frc.robot.auto.Finished.BlueCornerMobility;
 import frc.robot.auto.Finished.RedCornerMobility;
-import frc.robot.auto.Finished.BlueCornerMobility;
 import frc.robot.auto.TestPath;
-// import frc.robot.auto.leftTwoCubeAuto;
-// import frc.robot.auto.rightTwoCubeAuto;
-import frc.robot.auto.inProgress.UpperScore1MoveOutCommBlueAuto;
-import frc.robot.auto.inProgress.UpperScore1MoveOutCommRedAuto;
-import frc.robot.auto.inProgress.UpperScore2BalAutoBlue;
 import frc.robot.commands.Arm.SetArmState;
 import frc.robot.commands.Arm.ArmPercentOutput;
 import frc.robot.commands.Intake.IntakePercentOutput;
-// import frc.robot.commands.Leds.RainbowLeds;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.LEDs;
@@ -59,8 +46,14 @@ public class RobotContainer {
         private final Swerve m_swerve = new Swerve();
         private final Arm m_arm;
         private final Intake m_intake;
+
+        @SuppressWarnings("unused")
         private final LEDs m_leds;
+
+        @SuppressWarnings("unused")
         private final Limelight m_LimeLight;
+
+        @SuppressWarnings("unused")
         private final DriverTab drivertab = new DriverTab();
         private final CommandChooser autoChooser = new CommandChooser();
 
@@ -83,7 +76,7 @@ public class RobotContainer {
                 // Record both DS control and joystick data
                 DriverStation.startDataLog(DataLogManager.getLog());
 
-                m_arm = new Arm(m_controller);
+                m_arm = new Arm();
                 m_intake = new Intake();
                 m_leds = new LEDs();
                 m_LimeLight = new Limelight("limelight");
