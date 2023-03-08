@@ -30,7 +30,7 @@ public final class Constants {
   }
 
   public static final class IntakeConfig {
-    public static final int INTAKE_TALONFX = 10; // TODO:REALNUMBER
+    public static final int INTAKE_TALONFX = 10;
     public static final boolean INTAKE_INVERTED = false;
   }
 
@@ -38,7 +38,7 @@ public final class Constants {
     public static final int WRIST_TALONFX = 20;
     public static final int SHOULDER_TALONFX = 19;
     public static final boolean SHOULDER_INVERTED = false;
-    public static final boolean WRIST_INVERTED = true;
+    public static final boolean WRIST_INVERTED = false;
     public static final int WRIST_DUTYENCODER = 0;
     public static final int SHOULDER_DUTYENCODER = 1;
     public static final double WRIST_ENCODER_OFFSET = 0.4262;
@@ -49,8 +49,8 @@ public final class Constants {
     public static final double TALONFX_ENCODER_TICKS = 2048;
     public static final double WRIST_FORWARD_LIMIT = 135.0;
     public static final double WRIST_REVERSE_LIMIT = -135.0;
-    public static final double SHOULDER_FORWARD_LIMIT = 171.0; // Away from battery
-    public static final double SHOULDER_REVERSE_LIMIT = 25.0; // Towards battery
+    public static final double SHOULDER_FORWARD_LIMIT = 165.0; // Away from battery
+    public static final double SHOULDER_REVERSE_LIMIT = -100.0; // Towards battery
     // Stowed position
     public static final double SHOULDER_REF = 171;
     public static final double WRIST_REF = 150;

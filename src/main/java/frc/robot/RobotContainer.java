@@ -109,9 +109,9 @@ public class RobotContainer {
     m_swerve.setDefaultCommand(m_ControllerDrive);
 
     // Sets the default command for the arm
- //   m_arm.setDefaultCommand(
-  //      new ArmPercentOutput(
-    //        m_secondaryController::getRightY, m_secondaryController::getLeftY, m_arm));
+//    m_arm.setDefaultCommand(
+//        new ArmPercentOutput(
+//            m_secondaryController::getRightY, m_secondaryController::getLeftY, m_arm));
 
     // Sets the default command for the intake
     m_intake.setDefaultCommand(
@@ -179,10 +179,11 @@ public class RobotContainer {
           return rightX && !enabled;
         }).whileTrue(m_ControllerDrive);
 
+
     // Arm States
     new Trigger(() -> (m_secondaryController.getButton(Button.RB)))
         .onTrue(new SetArmState(ArmStates.INTAKE, m_arm));
-    new Trigger(() -> (m_secondaryController.getButton(Button.DOWN)))
+    new Trigger(() -> (m_secondaryController.getButton(Button.UP)))
         .onTrue(new SetArmState(ArmStates.TRANSIT, m_arm));
     
     new Trigger(() -> (m_secondaryController.getButton(Button.X)))

@@ -123,7 +123,6 @@ public class Arm extends SubsystemBase {
     shoulder.configStatorCurrentLimit(config);
     wrist.configStatorCurrentLimit(config);
 
-    // TODO Fix to break
     shoulder.setNeutralMode(NeutralMode.Brake);
     wrist.setNeutralMode(NeutralMode.Brake);
 
@@ -277,7 +276,7 @@ public class Arm extends SubsystemBase {
 
   public void setWristAngle(double angle) {
     lastWristAngle = angle;
-    double posValue = anglesToWristSensorPosition(angle);
+    double posValue = anglesToWristSensorPosition(-angle);
     wrist.set(TalonFXControlMode.Position, posValue);
   }
 
