@@ -20,12 +20,11 @@ public class ArmPercentOutput extends CommandBase {
   @Override
   public void execute() {
     m_arm.setShoulderPercentOutput(-shoulderSpeed.getAsDouble());
-    m_arm.setWristPercentOutput(wristSpeed.getAsDouble());
+    m_arm.setWristPercentOutput(-wristSpeed.getAsDouble());
   }
 
   @Override
   public void end(boolean interrupted) {
-    m_arm.setShoulderPercentOutput(0);
-    m_arm.setWristPercentOutput(0);
+    m_arm.holdCurrentPosition();
   }
 }

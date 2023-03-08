@@ -112,7 +112,7 @@ public class Arm extends SubsystemBase {
     shoulder.setInverted(ArmConfig.SHOULDER_INVERTED);
 
     SupplyCurrentLimitConfiguration supplyConfig = new SupplyCurrentLimitConfiguration();
-    supplyConfig.currentLimit = 33;
+    supplyConfig.currentLimit = 20;
     supplyConfig.enable = true;
     shoulder.configSupplyCurrentLimit(supplyConfig);
     wrist.configSupplyCurrentLimit(supplyConfig);
@@ -124,8 +124,8 @@ public class Arm extends SubsystemBase {
     wrist.configStatorCurrentLimit(config);
 
     // TODO Fix to break
-    shoulder.setNeutralMode(NeutralMode.Coast);
-    wrist.setNeutralMode(NeutralMode.Coast);
+    shoulder.setNeutralMode(NeutralMode.Brake);
+    wrist.setNeutralMode(NeutralMode.Brake);
 
     wrist.config_kP(0, wristP.getValue());
     wrist.config_kI(0, wristI.getValue());
@@ -222,25 +222,25 @@ public class Arm extends SubsystemBase {
     DataLogManager.log("Setting arm state to " + newState.name());
     switch (newState) {
       case INTAKE:
-        setPosition(152, -41);
+        setPosition(152, 41);
         break;
       case MID_CUBE_NODE:
-        setPosition(60, 90);
+        setPosition(60, -90);
         break;
       case HIGH_CUBE_NODE:
-        setPosition(70, 40);
+        setPosition(70, -40);
         break;
       case MID_CONE_NODE:
-        setPosition(60, 85);
+        setPosition(60, -85);
         break;
       case HIGH_CONE_NODE:
-        setPosition(70, 20);
+        setPosition(70, -20);
         break;
       case TRANSIT:
-        setPosition(171, -150);
+        setPosition(171, 150);
         break;
       case SINGLE_LOADING_STATION:
-        setPosition(74, 32);
+        setPosition(171, 140);
         break;
       case DOUBLE_LOADING_STATION:
         setPosition(68, -43);
@@ -401,11 +401,7 @@ public class Arm extends SubsystemBase {
   @Override
   public void periodic() {
     if (!RobotController.isSysActive()) {
-      double currentWristPosition = wrist.getSelectedSensorPosition();
-      double currentShoulderPosition = shoulder.getSelectedSensorPosition();
-
-      wrist.set(TalonFXControlMode.Position, currentWristPosition);
-      shoulder.set(TalonFXControlMode.Position, currentShoulderPosition);
+      holdCurrentPosition();
     }
     // double shoulderForwardLimit = anglesToShoulderSensorPosition(ArmConfig.SHOULDER_FORWARD_LIMIT);
     // double shoulderReverseLimit = anglesToShoulderSensorPosition(ArmConfig.SHOULDER_REVERSE_LIMIT);
@@ -422,6 +418,14 @@ public class Arm extends SubsystemBase {
     // }
 
     updatePID();
+  }
+
+  public void holdCurrentPosition() {
+    double currentWristPosition = wrist.getSelectedSensorPosition();
+    double currentShoulderPosition = shoulder.getSelectedSensorPosition();
+
+    wrist.set(TalonFXControlMode.Position, currentWristPosition);
+    shoulder.set(TalonFXControlMode.Position, currentShoulderPosition);
   }
 
   public ArrayList<TalonFX> geTalonFXs() {

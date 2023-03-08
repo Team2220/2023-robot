@@ -38,7 +38,7 @@ public final class Constants {
     public static final int WRIST_TALONFX = 20;
     public static final int SHOULDER_TALONFX = 19;
     public static final boolean SHOULDER_INVERTED = false;
-    public static final boolean WRIST_INVERTED = false;
+    public static final boolean WRIST_INVERTED = true;
     public static final int WRIST_DUTYENCODER = 0;
     public static final int SHOULDER_DUTYENCODER = 1;
     public static final double WRIST_ENCODER_OFFSET = 0.4262;

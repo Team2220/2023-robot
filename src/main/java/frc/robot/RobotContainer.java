@@ -109,9 +109,9 @@ public class RobotContainer {
     m_swerve.setDefaultCommand(m_ControllerDrive);
 
     // Sets the default command for the arm
-    m_arm.setDefaultCommand(
-        new ArmPercentOutput(
-            m_secondaryController::getRightY, m_secondaryController::getLeftY, m_arm));
+ //   m_arm.setDefaultCommand(
+  //      new ArmPercentOutput(
+    //        m_secondaryController::getRightY, m_secondaryController::getLeftY, m_arm));
 
     // Sets the default command for the intake
     m_intake.setDefaultCommand(
@@ -178,7 +178,7 @@ public class RobotContainer {
           boolean enabled = m_ControllerDrive.isScheduled();
           return rightX && !enabled;
         }).whileTrue(m_ControllerDrive);
-        
+
     // Arm States
     new Trigger(() -> (m_secondaryController.getButton(Button.RB)))
         .onTrue(new SetArmState(ArmStates.INTAKE, m_arm));
@@ -200,7 +200,7 @@ public class RobotContainer {
 
     new Trigger(() -> (m_secondaryController.getButton(Button.A)))
         .and(() -> (!m_secondaryController.getButton(Button.DOWN)))
-        .whileTrue(new SetArmState(ArmStates.MID_CUBE_NODE, m_arm));
+        .whileTrue(new SetArmState(ArmStates.MID_CONE_NODE, m_arm));
     new Trigger(() -> (m_secondaryController.getButton(Button.A)))
         .and(() -> (m_secondaryController.getButton(Button.DOWN)))
         .whileTrue(new SetArmState(ArmStates.MID_CUBE_NODE, m_arm));
