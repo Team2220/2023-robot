@@ -27,6 +27,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.twilight.swerve.commands.ControllerDrive;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import static frc.twilight.Controller.Button;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -177,30 +178,39 @@ public class RobotContainer {
           boolean enabled = m_ControllerDrive.isScheduled();
           return rightX && !enabled;
         }).whileTrue(m_ControllerDrive);
+        
     // Arm States
-    new Trigger(() -> (m_secondaryController.getButton(frc.twilight.Controller.Button.A)))
-        .onTrue(new SetArmState(ArmStates.MID_CUBE_NODE, m_arm));
-    new Trigger(() -> (m_secondaryController.getButton(frc.twilight.Controller.Button.X)))
-        .onTrue(new SetArmState(ArmStates.HIGH_CUBE_NODE, m_arm));
-    new Trigger(() -> (m_secondaryController.getButton(frc.twilight.Controller.Button.B)))
-        .onTrue(new SetArmState(ArmStates.MID_CONE_NODE, m_arm));
-    new Trigger(() -> (m_secondaryController.getButton(frc.twilight.Controller.Button.Y)))
-        .onTrue(new SetArmState(ArmStates.HIGH_CONE_NODE, m_arm));
-    new Trigger(() -> (m_secondaryController.getButton(frc.twilight.Controller.Button.RB)))
+    new Trigger(() -> (m_secondaryController.getButton(Button.RB)))
         .onTrue(new SetArmState(ArmStates.INTAKE, m_arm));
-    new Trigger(() -> (m_secondaryController.getButton(frc.twilight.Controller.Button.UP)))
-        .onTrue(new SetArmState(ArmStates.LOADING_STATION_CONE, m_arm));
-    new Trigger(() -> (m_secondaryController.getButton(frc.twilight.Controller.Button.DOWN)))
+    new Trigger(() -> (m_secondaryController.getButton(Button.DOWN)))
         .onTrue(new SetArmState(ArmStates.TRANSIT, m_arm));
-    new Trigger(() -> (m_secondaryController.getButton(frc.twilight.Controller.Button.LEFT)))
-        .onTrue(new SetArmState(ArmStates.LOADING_STATION_CUBE, m_arm));
+    
+    new Trigger(() -> (m_secondaryController.getButton(Button.X)))
+        .whileTrue(new SetArmState(ArmStates.SINGLE_LOADING_STATION, m_arm));
+
+    new Trigger(() -> (m_secondaryController.getButton(Button.B)))
+        .whileTrue(new SetArmState(ArmStates.DOUBLE_LOADING_STATION, m_arm));
+
+    new Trigger(() -> (m_secondaryController.getButton(Button.Y)))
+        .and(() -> (!m_secondaryController.getButton(Button.DOWN)))
+        .whileTrue(new SetArmState(ArmStates.HIGH_CONE_NODE, m_arm));
+    new Trigger(() -> (m_secondaryController.getButton(Button.Y)))
+        .and(() -> (m_secondaryController.getButton(Button.DOWN)))
+        .whileTrue(new SetArmState(ArmStates.HIGH_CUBE_NODE, m_arm));
+
+    new Trigger(() -> (m_secondaryController.getButton(Button.A)))
+        .and(() -> (!m_secondaryController.getButton(Button.DOWN)))
+        .whileTrue(new SetArmState(ArmStates.MID_CUBE_NODE, m_arm));
+    new Trigger(() -> (m_secondaryController.getButton(Button.A)))
+        .and(() -> (m_secondaryController.getButton(Button.DOWN)))
+        .whileTrue(new SetArmState(ArmStates.MID_CUBE_NODE, m_arm));
 
     // Override limits
-    new Trigger(() -> (m_secondaryController.getButton(frc.twilight.Controller.Button.LS)))
+    new Trigger(() -> (m_secondaryController.getButton(Button.LS)))
         .onTrue(new InstantCommand(() -> m_arm.overrideShoulderSoftLimits(false)))
         .onFalse(new InstantCommand(() -> m_arm.overrideShoulderSoftLimits(true)));
 
-    new Trigger(() -> (m_secondaryController.getButton(frc.twilight.Controller.Button.RS)))
+    new Trigger(() -> (m_secondaryController.getButton(Button.RS)))
         .onTrue(new InstantCommand(() -> m_arm.overrideWristSoftLimits(false)))
         .onFalse(new InstantCommand(() -> m_arm.overrideWristSoftLimits(true)));
   }
