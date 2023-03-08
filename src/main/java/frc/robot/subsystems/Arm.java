@@ -389,6 +389,7 @@ public class Arm extends SubsystemBase {
 
   }
 
+  // Moves encoder discontinuity outisde of range to stop values from jumping
   public double remap(double value, double limit) {
     if (value >= 0 && value <= limit) {
       return value + 1;
