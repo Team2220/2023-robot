@@ -20,7 +20,8 @@ import frc.robot.Constants;
 import frc.robot.commands.Leds.SetLedsStates;
 
 public class LEDs extends SubsystemBase {
-  private CANdle candle = new CANdle(Constants.LEDS.CANDLE);
+  private CANdle left = new CANdle(Constants.LEDS.LEFT);
+  private CANdle right = new CANdle(Constants.LEDS.RIGHT);
   private double m_lastDisconectTime = 0.0;
   private double m_lastBrownedOutTime = 0.0;
   private double m_startTime = 25.0;
@@ -105,7 +106,8 @@ public class LEDs extends SubsystemBase {
   public LEDs() {
 
     CANdleConfiguration config = new CANdleConfiguration();
-    candle.configAllSettings(config);
+    left.configAllSettings(config);
+    right.configAllSettings(config);
     setUpTestCommands();
   }
 
@@ -204,40 +206,47 @@ public class LEDs extends SubsystemBase {
   private void setBlue() {
 
     SingleFadeAnimation singleFadeAnimation = new SingleFadeAnimation(0, 0, 100, 0, .5, 164);
-    candle.animate(singleFadeAnimation);
+    left.animate(singleFadeAnimation);
+    right.animate(singleFadeAnimation);
   }
 
   private void setLEDRainAnimationFast() {
 
     RainbowAnimation rAnimation = new RainbowAnimation(1, 1, 164);
-    candle.animate(rAnimation);
+    left.animate(rAnimation);
+    right.animate(rAnimation);
   }
 
   private void setSolidColor() {
-    candle.setLEDs(255, 0, 225, 0, 0, 164);
+    left.setLEDs(255, 0, 225, 0, 0, 164);
+    right.setLEDs(255, 0, 225, 0, 0, 164);
   }
 
   public void setOffLEDs() {
-    candle.animate(null);
-    candle.setLEDs(0, 0, 0, 0, 0, 164);
+    left.animate(null);
+    left.setLEDs(0, 0, 0, 0, 0, 164);
+    right.animate(null);
+    right.setLEDs(0, 0, 0, 0, 0, 164);
   }
 
   private void setBrown() {
 
     StrobeAnimation strobeAnimation = new StrobeAnimation(64, 36, 0, 0, 0.1, 164);
-    candle.animate(strobeAnimation);
+    left.animate(strobeAnimation);
+    right.animate(strobeAnimation);
   }
 
   private void setLEDStrobeAnimation(
       int r, int g, int b, int w, double speed, int numLed, int ledOffset) {
     StrobeAnimation strobeAnimation = new StrobeAnimation(r, g, b, w, speed, numLed, ledOffset);
-    candle.animate(strobeAnimation);
+    left.animate(strobeAnimation);
+    right.animate(strobeAnimation);
   }
 
   private void setLeds20SecsLeft() {
     StrobeAnimation timedStrobeAnimation = new StrobeAnimation(0, 0, 0, 0, m_lastBrownedOutTime, 0, 0);
-    candle.animate(timedStrobeAnimation);
-
+    left.animate(timedStrobeAnimation);
+    right.animate(timedStrobeAnimation);
   }
 
   public void setUpTestCommands() {

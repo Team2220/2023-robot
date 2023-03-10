@@ -19,7 +19,8 @@ public final class Constants {
   public static final double BUMPER_THICKNESS = Units.inchesToMeters(2);
 
   public static final class LEDS {
-    public static final int CANDLE = 1;
+    public static final int LEFT = 1;
+    public static final int RIGHT = 1;
   }
 
   public static final class LimelightConfig {
