@@ -2,6 +2,9 @@
 
 package frc.robot.auto.Finished;
 
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.commands.Balancing;
@@ -16,20 +19,35 @@ import frc.twilight.swerve.vectors.Position;
 
 public class MidScore1BalRedAuto extends SequentialCommandGroup {
   public MidScore1BalRedAuto(Swerve swerve, Arm arm, Intake intake) {
-    addCommands(new InstantCommand(() -> swerve.setOdo(1.8453771028, 1.071499, 180))); // set starting position
+    addCommands(
+        new InstantCommand(
+            () -> swerve.setPose2d(
+                new Pose2d(
+                    new Translation2d(1.8453771028, 1.071499),
+                    Rotation2d.fromDegrees(180))))); // set starting position
     addCommands( // score starting game piece
         new SetArmState(ArmStates.INTAKE, arm),
-        new IntakePercentOutput(()->-.5, null, intake).withTimeout(1));
-    addCommands( // score game piece 1
+        new IntakePercentOutput(() -> -.5, null, intake).withTimeout(1),
+        // score game piece 1
         new SetArmState(ArmStates.INTAKE, arm),
-        new GoToCommand(swerve, new Position(7.070376, 0.919099, 0)),
-        new IntakePercentOutput(() -> .5, null, intake),withTimeout(1),
-        new GoToCommand(swerve, new Position(1.8453771028, 1.071499, 180)),
+        new GoToCommand(
+            swerve,
+            new Pose2d(7.070376, 0.919099,
+                Rotation2d.fromDegrees(0))),
+        new IntakePercentOutput(() -> .5, null, intake).withTimeout(1),
+
+        new GoToCommand(
+            swerve,
+            new Pose2d(1.8453771028, 1.071499,
+                Rotation2d.fromDegrees(180))),
         new SetArmState(ArmStates.HIGH_CUBE_NODE, arm),
         new SetArmState(ArmStates.INTAKE, arm),
-        new IntakePercentOutput(()->-.5, null, intake).withTimeout(1));
+        new IntakePercentOutput(() -> -.5, null, intake).withTimeout(1));
     addCommands( // balance
-        new GoToCommand(swerve, new Position(3.279775, 2.743581, 0)), 
+        new GoToCommand(
+            swerve,
+            new Pose2d(3.279775, 2.743581,
+                Rotation2d.fromDegrees(0))),
         new Balancing(swerve));
   }
 }
