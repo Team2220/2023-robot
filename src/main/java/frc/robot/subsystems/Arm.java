@@ -205,46 +205,30 @@ public class Arm extends SubsystemBase {
 
   /** Arm enum for arm stataes */
   public enum ArmStates {
-    INTAKE,
-    MID_CUBE_NODE,
-    HIGH_CUBE_NODE,
-    MID_CONE_NODE,
-    HIGH_CONE_NODE,
-    TRANSIT,
+    INTAKE(152, 41),
+    MID_CUBE_NODE(60, -90),
+    HIGH_CUBE_NODE(70, -40),
+    MID_CONE_NODE(60, -85),
+    HIGH_CONE_NODE(70, -20),
+    TRANSIT(171, 150),
     // Starting: Shoulder = 171 , Wrist = 150
-    SINGLE_LOADING_STATION,
-    DOUBLE_LOADING_STATION
+    SINGLE_LOADING_STATION(171, 140),
+    DOUBLE_LOADING_STATION(68, -43);
+
+
+  final double shoulderAngle;
+  final double wristAngle;
+  private ArmStates(double shoulderAngle, double wristAngle){
+      this.shoulderAngle = shoulderAngle;
+      this.wristAngle = wristAngle;
+  }
+
   }
 
   /** arm states */
   public void setArmState(ArmStates newState) {
     DataLogManager.log("Setting arm state to " + newState.name());
-    switch (newState) {
-      case INTAKE:
-        setPosition(152, 41);
-        break;
-      case MID_CUBE_NODE:
-        setPosition(60, -90);
-        break;
-      case HIGH_CUBE_NODE:
-        setPosition(70, -40);
-        break;
-      case MID_CONE_NODE:
-        setPosition(60, -85);
-        break;
-      case HIGH_CONE_NODE:
-        setPosition(70, -20);
-        break;
-      case TRANSIT:
-        setPosition(171, 150);
-        break;
-      case SINGLE_LOADING_STATION:
-        setPosition(171, 140);
-        break;
-      case DOUBLE_LOADING_STATION:
-        setPosition(68, -43);
-        break;
-    }
+    setPosition(newState.shoulderAngle, newState.wristAngle);
   }
 
   private double degreesPerSecondToEncoderTicks(double angle, double gearRatio) {
