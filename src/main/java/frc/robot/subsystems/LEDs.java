@@ -240,6 +240,9 @@ public class LEDs extends SubsystemBase {
       case HAVE_GAME_PIECE: {
         if (Timer.getFPGATimestamp() > m_startHavingGamePiece + 1.5) {
           transitionSystemState(SystemState.OFF);
+          if(desieredState == DesiredState.WANT_CUBE){
+            setDesieredState(DesiredState.OFF);
+          }
         }
       }
     }
@@ -314,7 +317,7 @@ public class LEDs extends SubsystemBase {
         .withSize(2, 3)
         .withProperties(Map.of("Label position", "TOP"));
 
-    angLayout.addString("DesieredStatew", () -> this.desieredState.name());
+    angLayout.addString("DesiredStatew", () -> this.desieredState.name());
     angLayout.addString("SystemState", () -> this.systemState.name());
   }
 }
