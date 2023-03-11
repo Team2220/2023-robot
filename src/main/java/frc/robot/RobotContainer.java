@@ -129,7 +129,7 @@ public class RobotContainer {
     autoChooser.addOption(new Square(m_swerve));
     // autoChooser.addOption(new rightTwoCubeAuto(m_swerve, m_arm, m_intake));
     // autoChooser.addOption(new leftTwoCubeAuto(m_swerve, m_arm, m_intake));
-    autoChooser.addOption(new TestPath(m_swerve));
+    autoChooser.addOption(new TestPath(m_swerve, m_arm, m_intake));
     // autoChooser.addOption(new NewPath(m_swerve));
     autoChooser.addOption(new MidScore1BalRedAuto(m_swerve, m_arm, m_intake));
     autoChooser.addOption(new BlueCornerMobility(m_swerve, m_intake));
@@ -158,11 +158,11 @@ public class RobotContainer {
     new Trigger(() -> m_secondaryController.getButtonPressed(Controller.Button.BACK))
         .onTrue(new InstantCommand(() -> DataLogManager.log("Manipulator Problem")));
 
-    new Trigger(() -> m_secondaryController.getButtonPressed(Controller.Button.START))
-        .onTrue(new InstantCommand(() -> {
-          m_arm.setWristToReferenceAngle();
-          m_arm.setShoulderToReferenceAngle();
-        }));
+    // new Trigger(() -> m_secondaryController.getButtonPressed(Controller.Button.START))
+    //     .onTrue(new InstantCommand(() -> {
+    //       m_arm.setWristToReferenceAngle();
+    //       m_arm.setShoulderToReferenceAngle();
+    //     }));
     new Trigger(
         () -> {
           boolean left = Math.abs(m_secondaryController.getLeftY()) > 0.1;

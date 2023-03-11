@@ -155,13 +155,13 @@ public class Arm extends SubsystemBase {
     setUpTestCommands();
   }
 
-  private void setShoulderFromAbsEncoder() {
+  public void setShoulderFromAbsEncoder() {
     double shoulderOffset =
         getShoulderPosition() * (ArmConfig.SHOULDER_GEAR_RATIO) * (ArmConfig.TALONFX_ENCODER_TICKS);
     shoulder.setSelectedSensorPosition(shoulderOffset);
   }
 
-  private void setWristFromAbsEncoder() {
+  public void setWristFromAbsEncoder() {
     double wristOffset =
         getWristPosition() * (ArmConfig.WRIST_GEAR_RATIO) * (ArmConfig.TALONFX_ENCODER_TICKS);
     wrist.setSelectedSensorPosition(wristOffset);
@@ -207,7 +207,7 @@ public class Arm extends SubsystemBase {
   public enum ArmStates {
     INTAKE(152, 41),
     MID_CUBE_NODE(60, -90),
-    HIGH_CUBE_NODE(70, -40),
+    HIGH_CUBE_NODE(70, -30),
     MID_CONE_NODE(60, -85),
     HIGH_CONE_NODE(70, -20),
     TRANSIT(171, 150),
@@ -285,6 +285,14 @@ public class Arm extends SubsystemBase {
   public double getWristPosition() {
 
     return remap(wristEncoder.getAbsolutePosition(), ArmConfig.WRIST_REMAP_LIMIT) - ArmConfig.WRIST_ENCODER_OFFSET;
+  }
+
+  public double getMotorShoulderPosition() {
+    return ticksToShoulderAngle(shoulder.getSelectedSensorPosition());
+  }
+
+  public double getMotorWristPosition() {
+    return -ticksToWristAngle(wrist.getSelectedSensorPosition());
   }
 
   public void setUpTestCommands() {

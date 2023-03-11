@@ -16,9 +16,9 @@ import frc.twilight.tunables.TunableDouble;
 public class Intake extends SubsystemBase {
   private TalonFX intake = new TalonFX(IntakeConfig.INTAKE_TALONFX);
 
-  private TunableDouble intakeP = new TunableDouble("IntakeP", .1, true); 
-  private TunableDouble intakeI = new TunableDouble("IntakeI", 0, true);
-  private TunableDouble intakeD = new TunableDouble("IntakeD", .2, true);
+  private TunableDouble intakeP = new TunableDouble("IntakeP", 0.05, false); 
+  private TunableDouble intakeI = new TunableDouble("IntakeI", 0, false);
+  private TunableDouble intakeD = new TunableDouble("IntakeD", 0, false);
 
   private double oldP = intakeP.getValue();
   private double oldI = intakeI.getValue();
