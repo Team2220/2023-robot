@@ -1,6 +1,7 @@
 package frc.robot.subsystems;
 
 import java.util.Map;
+import java.util.function.BooleanSupplier;
 
 import com.ctre.phoenix.led.CANdle;
 import com.ctre.phoenix.led.CANdleConfiguration;
@@ -25,10 +26,10 @@ public class LEDs extends SubsystemBase {
   private double m_lastDisconectTime = 0.0;
   private double m_lastBrownedOutTime = 0.0;
   private double m_startTime = 25.0;
-  private double m_startWantingCube = 0;
-  private double m_startWantingCone = 0;
+  private double m_startHavingGamePiece = 0;
+  private BooleanSupplier haveGamePiece;
 
-  public enum DesieredState {
+  public enum DesiredState {
     RAINBOW_ANIMATION,
     STROBE_ANIMATION,
     FULL_LEDS,
@@ -37,7 +38,7 @@ public class LEDs extends SubsystemBase {
     WANT_CONE,
   }
 
-  private DesieredState desieredState = DesieredState.OFF;
+  private DesiredState desieredState = DesiredState.OFF;
 
   private enum SystemState {
     RAINBOW_ANIMATION,
@@ -50,21 +51,12 @@ public class LEDs extends SubsystemBase {
     TWENTY_SEC_LEFT,
     WANTING_CUBE,
     WANTING_CONE,
+    HAVE_GAME_PIECE,
   }
 
   private SystemState systemState = SystemState.OFF;
 
-  public void setDesieredState(DesieredState desieredState) {
-    switch (desieredState) {
-      case WANT_CONE:
-        m_startWantingCone = Timer.getFPGATimestamp();
-        break;
-      case WANT_CUBE:
-        m_startWantingCube = Timer.getFPGATimestamp();
-        break;
-      default:
-        break;
-    }
+  public void setDesieredState(DesiredState desieredState) {
     this.desieredState = desieredState;
   }
 
@@ -123,15 +115,21 @@ public class LEDs extends SubsystemBase {
         setLEDStrobeAnimation(66, 5, 188, 0, .5, 164, 0);
         break;
       }
+      case HAVE_GAME_PIECE: {
+        setLEDStrobeAnimation(0, 255, 0, 0, 0.5, 164, 0);
+        break;
+      }
     }
   }
 
-  public LEDs() {
+  public LEDs(BooleanSupplier haveGamePiece) {
 
     CANdleConfiguration config = new CANdleConfiguration();
     left.configAllSettings(config);
     right.configAllSettings(config);
     setUpTestCommands();
+
+    this.haveGamePiece = haveGamePiece;
   }
 
   private void switchDesieredState() {
@@ -182,6 +180,11 @@ public class LEDs extends SubsystemBase {
       transitionSystemState(SystemState.DRIVER_STATION_DISCONNECTED);
     }
 
+    if (haveGamePiece.getAsBoolean()) {
+      m_startHavingGamePiece = Timer.getFPGATimestamp();
+      transitionSystemState(SystemState.HAVE_GAME_PIECE);
+    }
+
     switch (systemState) {
       case DRIVER_STATION_DISCONNECTED: {
         if (Timer.getFPGATimestamp() > m_lastDisconectTime + 5) {
@@ -227,23 +230,18 @@ public class LEDs extends SubsystemBase {
       }
         break;
       case WANTING_CONE: {
-        if (Timer.getFPGATimestamp() > m_startWantingCone + 2.5) {
-          transitionSystemState(SystemState.OFF);
-          if(desieredState == DesieredState.WANT_CONE){
-            setDesieredState(DesieredState.OFF);
-          }
-        } 
+        switchDesieredState(); 
       }
         break;
       case WANTING_CUBE: {
-        if (Timer.getFPGATimestamp() > m_startWantingCube + 2.5) {
-          transitionSystemState(SystemState.OFF);
-          if(desieredState == DesieredState.WANT_CUBE){
-            setDesieredState(DesieredState.OFF);
-          }
-        }
+        switchDesieredState();
       }
         break;
+      case HAVE_GAME_PIECE: {
+        if (Timer.getFPGATimestamp() > m_startHavingGamePiece + 1.5) {
+          switchDesieredState();        
+        }
+      }
     }
   }
 
@@ -306,7 +304,7 @@ public class LEDs extends SubsystemBase {
         .withSize(2, 3)
         .withProperties(Map.of("Label position", "HIDDEN"));
 
-    for (DesieredState state : DesieredState.values()) {
+    for (DesiredState state : DesiredState.values()) {
       stateLayout.add(state.name(), new SetLedsStates(state, this));
     }
 
@@ -316,7 +314,7 @@ public class LEDs extends SubsystemBase {
         .withSize(2, 3)
         .withProperties(Map.of("Label position", "TOP"));
 
-    angLayout.addString("DesieredStatew", () -> this.desieredState.name());
+    angLayout.addString("DesiredStatew", () -> this.desieredState.name());
     angLayout.addString("SystemState", () -> this.systemState.name());
   }
 }

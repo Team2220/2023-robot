@@ -26,9 +26,12 @@ public class MidScore1BalBlueAutoR extends SequentialCommandGroup {
                 new InstantCommand(
                         () -> swerve.setPose2d(
                                 new Pose2d(
-                                        new Translation2d(1.8453771028, 1.071499),
-                                        Rotation2d.fromDegrees(180))))); // set starting position
-        addCommands( // score starting game piece
+                                        new Translation2d(1.8453771028,
+                                                1.071499),
+                                        Rotation2d.fromDegrees(180)))), // set
+                                                                        // starting
+                                                                        // position
+                // score starting game piece
                 new AutoShoulderState(ArmStates.MID_CUBE_NODE, arm).withTimeout(1),
                 new AutoWristState(ArmStates.MID_CUBE_NODE, arm).withTimeout(1),
                 new AutoIntake(.5, intake).withTimeout(1),
@@ -38,17 +41,16 @@ public class MidScore1BalBlueAutoR extends SequentialCommandGroup {
                 new GoToCommand(
                         swerve,
                         new Pose2d(7.070376, 0.919099,
-                                Rotation2d.fromDegrees(0))),
-                new AutoIntake(-.5, intake).withTimeout(1),
-
+                                Rotation2d.fromDegrees(0)))
+                        .alongWith(new AutoIntake(-.5, intake).withTimeout(1)),
                 new GoToCommand(
                         swerve,
                         new Pose2d(1.8453771028, 1.071499,
                                 Rotation2d.fromDegrees(180))),
                 new SetArmState(ArmStates.HIGH_CUBE_NODE, arm),
-                new AutoIntake(.5, intake).withTimeout(1));
-                new SetArmState(ArmStates.TRANSIT, arm);
-        addCommands( // balance
+                new AutoIntake(.5, intake).withTimeout(1),
+                new SetArmState(ArmStates.TRANSIT, arm),
+                // balance
                 new GoToCommand(
                         swerve,
                         new Pose2d(1.9453771028, 2.743581,
