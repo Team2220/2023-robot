@@ -1,4 +1,4 @@
-// Half of robot: 16.291382
+// Half of robot: 16.291382 or 0.4138011028
 
 package frc.robot.auto.Finished;
 
