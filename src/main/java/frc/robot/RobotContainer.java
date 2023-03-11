@@ -32,8 +32,6 @@ import frc.twilight.swerve.commands.ControllerDrive;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import static frc.twilight.Controller.Button;
 
-import candle.setLEDs;
-
 /**
  * This class is where the bulk of the robot should be declared. Since
  * Command-based is a
