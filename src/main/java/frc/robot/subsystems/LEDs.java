@@ -25,12 +25,17 @@ public class LEDs extends SubsystemBase {
   private double m_lastDisconectTime = 0.0;
   private double m_lastBrownedOutTime = 0.0;
   private double m_startTime = 25.0;
+  private double m_startWantingCube = 0;
+  private double m_startWantingCone = 0;
+
 
   public enum DesieredState {
     RAINBOW_ANIMATION,
     STROBE_ANIMATION,
     FULL_LEDS,
     OFF,
+    WANT_CUBE,
+    WANT_CONE,
   }
 
   private DesieredState desieredState = DesieredState.OFF;
@@ -44,12 +49,22 @@ public class LEDs extends SubsystemBase {
     OFF,
     NOTHING_IN_AUTO,
     TWENTY_SEC_LEFT,
+    WANTING_CUBE,
+    WANTING_CONE,
   }
 
   private SystemState systemState = SystemState.OFF;
 
   public void setDesieredState(DesieredState desieredState) {
-
+switch (desieredState){
+  case WANT_CONE: 
+  m_startWantingCone = Timer.getFPGATimestamp();
+  break;
+  case WANT_CUBE: 
+  m_startWantingCube = Timer.getFPGATimestamp();
+  break;
+default: break;
+}
     this.desieredState = desieredState;
   }
 
@@ -194,6 +209,16 @@ public class LEDs extends SubsystemBase {
         }
       }
         break;
+      case WANTING_CONE: {
+        if (Timer.getFPGATimestamp() > m_startWantingCone + 5) {
+          transitionSystemState(SystemState.OFF);
+        }
+      }  break;
+      case WANTING_CUBE: {
+        if (Timer.getFPGATimestamp() > m_startWantingCube + 5) {
+          transitionSystemState(SystemState.OFF);
+        }
+      } break;
     }
   }
 

@@ -22,7 +22,7 @@ public class ArmPercentOutput extends CommandBase {
 
   @Override
   public void execute() {
-    if (!disableManual.getValue()) {
+    if (disableManual.getValue()) {
       m_arm.setShoulderPercentOutput(-shoulderSpeed.getAsDouble());
       m_arm.setWristPercentOutput(-wristSpeed.getAsDouble());
     } else {

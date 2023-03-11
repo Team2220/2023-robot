@@ -216,8 +216,8 @@ public class Arm extends SubsystemBase {
     DOUBLE_LOADING_STATION(68, -43);
 
 
-  final double shoulderAngle;
-  final double wristAngle;
+  public final double shoulderAngle;
+  public final double wristAngle;
   private ArmStates(double shoulderAngle, double wristAngle){
       this.shoulderAngle = shoulderAngle;
       this.wristAngle = wristAngle;
