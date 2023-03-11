@@ -154,21 +154,21 @@ public class RobotContainer {
     private void configureButtonBindings() {
         // Map Driver Controller Buttons
         ControllerLayout.mapDriverController(m_controller);
-        new Trigger(() -> m_controller.getButtonPressed(Controller.Button.LB))
+        new Trigger(() -> m_controller.getButton(Controller.Button.LB))
                 .onTrue(new SetLedsStates(DesiredState.WANT_CONE, m_leds))
                 .onFalse(new SetLedsStates(DesiredState.OFF, m_leds));
 
-        new Trigger(() -> m_controller.getButtonPressed(Controller.Button.RB))
+        new Trigger(() -> m_controller.getButton(Controller.Button.RB))
                 .onTrue(new SetLedsStates(DesiredState.WANT_CUBE, m_leds))
                 .onFalse(new SetLedsStates(DesiredState.OFF, m_leds));
         // Map Manipulator Controller Buttons
         ControllerLayout.mapManipulatorController(m_secondaryController);
 
         // Manipulatror controller
-        new Trigger(() -> m_secondaryController.getButtonPressed(Controller.Button.BACK))
+        new Trigger(() -> m_secondaryController.getButton(Controller.Button.BACK))
                 .onTrue(new InstantCommand(() -> DataLogManager.log("Manipulator Problem")));
 
-        new Trigger(() -> m_secondaryController.getButtonPressed(Controller.Button.START))
+        new Trigger(() -> m_secondaryController.getButton(Controller.Button.START))
                 .onTrue(new InstantCommand(() -> {
                     m_arm.setWristToReferenceAngle();
                     m_arm.setShoulderToReferenceAngle();
