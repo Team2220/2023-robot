@@ -227,13 +227,13 @@ public class LEDs extends SubsystemBase {
       }
         break;
       case WANTING_CONE: {
-        if (Timer.getFPGATimestamp() > m_startWantingCone + 5) {
+        if (Timer.getFPGATimestamp() > m_startWantingCone + 2.5) {
           transitionSystemState(SystemState.OFF);
-        }
+        } 
       }
         break;
       case WANTING_CUBE: {
-        if (Timer.getFPGATimestamp() > m_startWantingCube + 5) {
+        if (Timer.getFPGATimestamp() > m_startWantingCube + 2.5) {
           transitionSystemState(SystemState.OFF);
         }
       }

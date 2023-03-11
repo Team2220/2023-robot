@@ -20,7 +20,7 @@ public final class Constants {
 
   public static final class LEDS {
     public static final int LEFT = 1;
-    public static final int RIGHT = 1;
+    public static final int RIGHT = 2;
   }
 
   public static final class LimelightConfig {

@@ -34,7 +34,7 @@ public class MidScore1BalRedAuto extends SequentialCommandGroup {
                 new AutoIntake(.5, intake).withTimeout(1),
 
                 // score game piece 1
-                // new SetArmState(ArmStates.INTAKE, arm),
+                new SetArmState(ArmStates.INTAKE, arm),
                 new GoToCommand(
                         swerve,
                         new Pose2d(7.070376, 0.919099,
@@ -45,9 +45,9 @@ public class MidScore1BalRedAuto extends SequentialCommandGroup {
                         swerve,
                         new Pose2d(1.8453771028, 1.071499,
                                 Rotation2d.fromDegrees(180))),
-                // new SetArmState(ArmStates.HIGH_CUBE_NODE, arm),
-                // new SetArmState(ArmStates.INTAKE, arm),
-                new AutoIntake(-.5, intake).withTimeout(1));
+                new SetArmState(ArmStates.HIGH_CUBE_NODE, arm),
+                new AutoIntake(.5, intake).withTimeout(1));
+                new SetArmState(ArmStates.TRANSIT, arm);
         addCommands( // balance
                 new GoToCommand(
                         swerve,
@@ -56,7 +56,7 @@ public class MidScore1BalRedAuto extends SequentialCommandGroup {
                 new GoToCommand(
                         swerve,
                         new Pose2d(3.279775, 2.743581,
-                                Rotation2d.fromDegrees(0))),
+                                Rotation2d.fromDegrees(180))),
                 new Balancing(swerve));
     }
 }
