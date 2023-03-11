@@ -72,41 +72,44 @@ public class LEDs extends SubsystemBase {
     switch (newsystemState) {
       case FULL_LEDS: {
         setSolidColor();
-      }
         break;
+      }
 
       case DRIVER_STATION_DISCONNECTED: {
         setBlue();
-      }
         break;
+      }
 
       case RAINBOW_ANIMATION: {
         setLEDRainAnimationFast();
-      }
         break;
+      }
+
       case STROBE_ANIMATION: {
         setLEDStrobeAnimation(98, 56, 50, 0, .5, 164, 0);
-      }
         break;
+      }
 
       case BROWNOUT: {
         setBrown();
-      }
         break;
+      }
+
       case OFF: {
         setOffLEDs();
-      }
         break;
+      }
 
       case NOTHING_IN_AUTO: {
-      }
         break;
+      }
 
       case TWENTY_SEC_LEFT: {
 
         setLeds20SecsLeft();
-      }
         break;
+      }
+
       case WANTING_CONE: {
         setLEDStrobeAnimation(249, 149, 2, 0, .5, 164, 0);
         break;
@@ -137,22 +140,22 @@ public class LEDs extends SubsystemBase {
     switch (desieredState) {
       case RAINBOW_ANIMATION: {
         transitionSystemState(SystemState.RAINBOW_ANIMATION);
-      }
         break;
+      }
       case FULL_LEDS: {
         transitionSystemState(SystemState.FULL_LEDS);
-      }
         break;
+      }
 
       case OFF: {
         transitionSystemState(SystemState.OFF);
-      }
         break;
+      }
 
       case STROBE_ANIMATION: {
         transitionSystemState(SystemState.STROBE_ANIMATION);
-      }
         break;
+      }
       case WANT_CONE: {
         transitionSystemState(SystemState.WANTING_CONE);
         break;
@@ -190,57 +193,58 @@ public class LEDs extends SubsystemBase {
         if (Timer.getFPGATimestamp() > m_lastDisconectTime + 5) {
           switchDesieredState();
         }
-      }
         break;
+      }
 
       case BROWNOUT: {
         if (Timer.getFPGATimestamp() > m_lastBrownedOutTime + 5) {
           switchDesieredState();
         }
-      }
         break;
+      }
 
       case FULL_LEDS: {
         switchDesieredState();
-      }
         break;
+      }
 
       case OFF: {
         switchDesieredState();
-      }
         break;
+      }
 
       case RAINBOW_ANIMATION: {
         switchDesieredState();
-      }
         break;
+      }
+
       case STROBE_ANIMATION: {
         switchDesieredState();
-      }
         break;
+      }
       case NOTHING_IN_AUTO: {
-
-      }
         break;
+      }
 
       case TWENTY_SEC_LEFT: {
         if (Timer.getFPGATimestamp() > m_startTime - 5) {
           switchDesieredState();
         }
-      }
         break;
+      }
       case WANTING_CONE: {
-        switchDesieredState(); 
-      }
+        switchDesieredState();
         break;
+      }
       case WANTING_CUBE: {
         switchDesieredState();
-      }
         break;
+      }
       case HAVE_GAME_PIECE: {
         if (Timer.getFPGATimestamp() > m_startHavingGamePiece + 1.5) {
-          switchDesieredState();        
+          switchDesieredState();
         }
+        break;
       }
     }
   }
