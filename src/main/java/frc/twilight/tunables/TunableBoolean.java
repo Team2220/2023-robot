@@ -1,6 +1,7 @@
 package frc.twilight.tunables;
 
 import edu.wpi.first.networktables.GenericEntry;
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.SimpleWidget;
 
@@ -20,7 +21,7 @@ public class TunableBoolean {
     this.defaultValue = defaultValue;
 
     if (tunable) {
-      shuffleboardWidget = Shuffleboard.getTab(tab).add(name, defaultValue);
+      shuffleboardWidget = Shuffleboard.getTab(tab).add(name, defaultValue).withWidget(BuiltInWidgets.kToggleSwitch);
 
       shuffleboard = shuffleboardWidget.getEntry();
     } else {
