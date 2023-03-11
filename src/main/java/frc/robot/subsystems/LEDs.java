@@ -28,7 +28,6 @@ public class LEDs extends SubsystemBase {
   private double m_startWantingCube = 0;
   private double m_startWantingCone = 0;
 
-
   public enum DesieredState {
     RAINBOW_ANIMATION,
     STROBE_ANIMATION,
@@ -56,15 +55,16 @@ public class LEDs extends SubsystemBase {
   private SystemState systemState = SystemState.OFF;
 
   public void setDesieredState(DesieredState desieredState) {
-switch (desieredState){
-  case WANT_CONE: 
-  m_startWantingCone = Timer.getFPGATimestamp();
-  break;
-  case WANT_CUBE: 
-  m_startWantingCube = Timer.getFPGATimestamp();
-  break;
-default: break;
-}
+    switch (desieredState) {
+      case WANT_CONE:
+        m_startWantingCone = Timer.getFPGATimestamp();
+        break;
+      case WANT_CUBE:
+        m_startWantingCube = Timer.getFPGATimestamp();
+        break;
+      default:
+        break;
+    }
     this.desieredState = desieredState;
   }
 
@@ -110,11 +110,19 @@ default: break;
       }
         break;
 
-        case TWENTY_SEC_LEFT: {
+      case TWENTY_SEC_LEFT: {
 
         setLeds20SecsLeft();
-        }
+      }
         break;
+      case WANTING_CONE: {
+        setLEDStrobeAnimation(249, 149, 2, 0, .5, 164, 0);
+        break;
+      }
+      case WANTING_CUBE: {
+        setLEDStrobeAnimation(66, 5, 188, 0, .5, 164, 0);
+        break;
+      }
     }
   }
 
@@ -147,6 +155,15 @@ default: break;
         transitionSystemState(SystemState.STROBE_ANIMATION);
       }
         break;
+      case WANT_CONE: {
+        transitionSystemState(SystemState.WANTING_CONE);
+        break;
+      }
+      case WANT_CUBE: {
+        transitionSystemState(SystemState.WANTING_CUBE);
+        break;
+
+      }
     }
   }
 
@@ -213,12 +230,14 @@ default: break;
         if (Timer.getFPGATimestamp() > m_startWantingCone + 5) {
           transitionSystemState(SystemState.OFF);
         }
-      }  break;
+      }
+        break;
       case WANTING_CUBE: {
         if (Timer.getFPGATimestamp() > m_startWantingCube + 5) {
           transitionSystemState(SystemState.OFF);
         }
-      } break;
+      }
+        break;
     }
   }
 
