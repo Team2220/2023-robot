@@ -23,7 +23,7 @@ import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.LEDs;
 import frc.robot.subsystems.Arm.ArmStates;
-import frc.robot.subsystems.LEDs.DesieredState;
+import frc.robot.subsystems.LEDs.DesiredState;
 import frc.twilight.swerve.subsystems.Swerve;
 import frc.twilight.Controller;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -31,6 +31,8 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.twilight.swerve.commands.ControllerDrive;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import static frc.twilight.Controller.Button;
+
+import javax.management.DescriptorRead;
 
 import candle.setLEDs;
 
@@ -65,7 +67,7 @@ public class RobotContainer {
      * LEDs not used rn
      */
     @SuppressWarnings("unused")
-    public static final LEDs m_leds = new LEDs();
+    public final LEDs m_leds;
 
     /*
      * Drivertab?
@@ -101,6 +103,7 @@ public class RobotContainer {
      * The container for the robot. Contains subsystems, OI devices, and commands.
      */
     public RobotContainer() {
+        m_leds = new LEDs(() -> m_intake.isStalled());
         // Stop logging for missing joysticks
         DriverStation.silenceJoystickConnectionWarning(true);
 
@@ -155,10 +158,12 @@ public class RobotContainer {
         // Map Driver Controller Buttons
         ControllerLayout.mapDriverController(m_controller);
         new Trigger(() -> m_controller.getButtonPressed(Controller.Button.LB))
-                .onTrue(new SetLedsStates(DesieredState.WANT_CONE, m_leds));
+                .onTrue(new SetLedsStates(DesiredState.WANT_CONE, m_leds))
+                .onFalse(new SetLedsStates(DesiredState.OFF, m_leds));
 
         new Trigger(() -> m_controller.getButtonPressed(Controller.Button.RB))
-                .onTrue(new SetLedsStates(DesieredState.WANT_CUBE, m_leds));
+                .onTrue(new SetLedsStates(DesiredState.WANT_CUBE, m_leds))
+                .onFalse(new SetLedsStates(DesiredState.OFF, m_leds));
         // Map Manipulator Controller Buttons
         ControllerLayout.mapManipulatorController(m_secondaryController);
 

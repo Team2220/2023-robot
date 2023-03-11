@@ -79,6 +79,16 @@ public class Intake extends SubsystemBase {
     intake.set(TalonFXControlMode.PercentOutput, value);
   }
 
+  // From: https://www.chiefdelphi.com/t/falcon-500-detecting-motor-stalls/428106
+  public boolean isStalled() {
+    if (intake.getSupplyCurrent() >= 0.1) {
+      double velocity = intake.getSelectedSensorVelocity();
+        return velocity <= 30;
+    } else {
+        return false;
+    }
+  }
+
   public ArrayList<TalonFX> geTalonFXs() {
 
     ArrayList<TalonFX> musicList = new ArrayList<>();
