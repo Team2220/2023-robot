@@ -1,4 +1,4 @@
-package frc.robot.auto.inProgress;
+package frc.robot.auto.Finished;
 
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
@@ -12,9 +12,9 @@ import frc.twilight.swerve.commands.GoToCommand;
 import frc.twilight.swerve.subsystems.Swerve;
 import frc.twilight.swerve.vectors.Position;
 
-public class MidScore1BalBlueAuto extends SequentialCommandGroup {
-  public MidScore1BalBlueAuto(Swerve swerve, Arm arm, Intake intake) {
-    addCommands(new InstantCommand(() -> swerve.setOdo(.5, 1.5, 0))); // set starting position
+public class MidScore1BalBlueAutoL extends SequentialCommandGroup {
+  public MidScore1BalBlueAutoL(Swerve swerve, Arm arm, Intake intake) {
+    addCommands(new InstantCommand(() -> swerve.setOdo(54.314418, 185.185000, 180))); // set starting position
     addCommands( // score starting game piece
         new SetArmState(ArmStates.INTAKE, arm),
         new AutoIntake(.5, intake).withTimeout(1),

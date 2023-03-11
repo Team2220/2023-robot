@@ -9,10 +9,10 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.auto.inProgress.MidScore1BalBlueAuto;
 import frc.robot.commands.Square;
 import frc.robot.auto.Finished.BlueCornerMobility;
-import frc.robot.auto.Finished.MidScore1BalRedAuto;
+import frc.robot.auto.Finished.MidScore1BalBlueAutoL;
+import frc.robot.auto.Finished.MidScore1BalBlueAutoR;
 import frc.robot.auto.Finished.RedCornerMobility;
 import frc.robot.auto.TestPath;
 import frc.robot.commands.Arm.SetArmState;
@@ -135,7 +135,7 @@ public class RobotContainer {
         // autoChooser.addOption(new leftTwoCubeAuto(m_swerve, m_arm, m_intake));
         autoChooser.addOption(new TestPath(m_swerve, m_arm, m_intake));
         // autoChooser.addOption(new NewPath(m_swerve));
-        autoChooser.addOption(new MidScore1BalRedAuto(m_swerve, m_arm, m_intake));
+        autoChooser.addOption(new MidScore1BalBlueAutoR(m_swerve, m_arm, m_intake));
         autoChooser.addOption(new BlueCornerMobility(m_swerve, m_intake));
         autoChooser.addOption(new RedCornerMobility(m_swerve));
 

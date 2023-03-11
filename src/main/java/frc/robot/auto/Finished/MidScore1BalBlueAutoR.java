@@ -20,8 +20,8 @@ import frc.twilight.swerve.commands.GoToCommand;
 import frc.twilight.swerve.subsystems.Swerve;
 import frc.twilight.swerve.vectors.Position;
 
-public class MidScore1BalRedAuto extends SequentialCommandGroup {
-    public MidScore1BalRedAuto(Swerve swerve, Arm arm, Intake intake) {
+public class MidScore1BalBlueAutoR extends SequentialCommandGroup {
+    public MidScore1BalBlueAutoR(Swerve swerve, Arm arm, Intake intake) {
         addCommands(
                 new InstantCommand(
                         () -> swerve.setPose2d(
