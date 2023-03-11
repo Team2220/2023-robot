@@ -15,8 +15,8 @@ import edu.wpi.first.math.util.Units;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
-  public static final double ROBOT_SIZE = Units.inchesToMeters(36);
-  public static final double BUMPER_THICKNESS = Units.inchesToMeters(2);
+  public static final double ROBOT_X_LENGTH = Units.inchesToMeters(31.768);
+  public static final double ROBOT_Y_LENGTH = Units.inchesToMeters(31.768);
 
   public static final class LEDS {
     public static final int LEFT = 1;
