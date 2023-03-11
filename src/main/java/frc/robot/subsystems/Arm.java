@@ -10,6 +10,7 @@ import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.motorcontrol.can.TalonFXConfiguration;
 
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.RobotController;
@@ -39,10 +40,6 @@ public class Arm extends SubsystemBase {
   private final TunableDouble wristI = new TunableDouble("wristI", 0, tunableDoubleEnabled);
   private final TunableDouble wristD = new TunableDouble("wristD", 0.2, tunableDoubleEnabled);
 
-  private double oldWristP = wristP.getValue();
-  private double oldWristI = wristI.getValue();
-  private double oldWristD = wristD.getValue();
-
   private final TunableDouble shoulderP = new TunableDouble("shoulderP", 0.1, tunableDoubleEnabled);
   private final TunableDouble shoulderI = new TunableDouble("shoulderI", 0, tunableDoubleEnabled);
   private final TunableDouble shoulderD = new TunableDouble("shoulderD", 0.2, tunableDoubleEnabled);
@@ -51,8 +48,12 @@ public class Arm extends SubsystemBase {
   private double oldShoulderI = shoulderI.getValue();
   private double oldShoulderD = shoulderD.getValue();
 
-  private double lastWristAngle = 0;
   private double lastShoulderAngle = 0;
+
+  private PIDController wristPID = new PIDController(wristP.getValue(), wristI.getValue(), wristD.getValue());
+
+  private double wristAngle = 0;
+  private boolean manualWrist = false;
 
   /** Config Objects for motor controllers */
   TalonFXConfiguration wristConfig = new TalonFXConfiguration();
@@ -60,21 +61,8 @@ public class Arm extends SubsystemBase {
   TalonFXConfiguration shoulderConfig = new TalonFXConfiguration();
 
   public void updatePID() {
+    wristPID.setPID(wristP.getValue(), wristI.getValue(), wristD.getValue());
 
-    if (wristP.getValue() != oldWristP) {
-      wrist.config_kP(0, wristP.getValue());
-      oldWristP = wristP.getValue();
-    }
-
-    if (wristI.getValue() != oldWristI) {
-      wrist.config_kI(0, wristI.getValue());
-      oldWristI = wristI.getValue();
-    }
-
-    if (wristD.getValue() != oldWristD) {
-      wrist.config_kD(0, wristD.getValue());
-      oldWristD = wristD.getValue();
-    }
     if (shoulderP.getValue() != oldShoulderP) {
       shoulder.config_kP(0, shoulderP.getValue());
       oldShoulderP = shoulderP.getValue();
@@ -115,12 +103,16 @@ public class Arm extends SubsystemBase {
     supplyConfig.currentLimit = 20;
     supplyConfig.enable = true;
     shoulder.configSupplyCurrentLimit(supplyConfig);
+
+    supplyConfig.currentLimit = 10;
     wrist.configSupplyCurrentLimit(supplyConfig);
 
     StatorCurrentLimitConfiguration config = new StatorCurrentLimitConfiguration();
     config.currentLimit = 33;
     config.enable = true;
     shoulder.configStatorCurrentLimit(config);
+
+    config.currentLimit = 20;
     wrist.configStatorCurrentLimit(config);
 
     shoulder.setNeutralMode(NeutralMode.Brake);
@@ -153,6 +145,8 @@ public class Arm extends SubsystemBase {
         anglesToWristSensorPosition(ArmConfig.WRIST_REVERSE_LIMIT));
 
     setUpTestCommands();
+
+    wristAngle = getWristPosition();
   }
 
   public void setShoulderFromAbsEncoder() {
@@ -209,7 +203,7 @@ public class Arm extends SubsystemBase {
     MID_CUBE_NODE(60, -90),
     HIGH_CUBE_NODE(70, -30),
     MID_CONE_NODE(60, -85),
-    HIGH_CONE_NODE(70, -20),
+    HIGH_CONE_NODE(44, -53),
     TRANSIT(171, 150),
     // Starting: Shoulder = 171 , Wrist = 150
     SINGLE_LOADING_STATION(171, 140),
@@ -251,6 +245,7 @@ public class Arm extends SubsystemBase {
   }
 
   public void setWristPercentOutput(double value) {
+    manualWrist = true;
     wrist.set(TalonFXControlMode.PercentOutput, value);
   }
 
@@ -259,9 +254,8 @@ public class Arm extends SubsystemBase {
   }
 
   public void setWristAngle(double angle) {
-    lastWristAngle = angle;
-    double posValue = anglesToWristSensorPosition(-angle);
-    wrist.set(TalonFXControlMode.Position, posValue);
+    manualWrist = false;
+    wristAngle = angle;
   }
 
   public void setShoulderAngle(double angle) {
@@ -275,7 +269,7 @@ public class Arm extends SubsystemBase {
   }
 
   public void changeWristAngle(double amount) {
-    setWristAngle(lastWristAngle + amount);
+    setWristAngle(wristAngle + amount);
   }
 
   public double getShoulderPosition() {
@@ -289,10 +283,6 @@ public class Arm extends SubsystemBase {
 
   public double getMotorShoulderPosition() {
     return ticksToShoulderAngle(shoulder.getSelectedSensorPosition());
-  }
-
-  public double getMotorWristPosition() {
-    return -ticksToWristAngle(wrist.getSelectedSensorPosition());
   }
 
   public void setUpTestCommands() {
@@ -409,6 +399,9 @@ public class Arm extends SubsystemBase {
     // }
 
     updatePID();
+
+    if (!manualWrist)
+      wrist.set(TalonFXControlMode.PercentOutput, wristPID.calculate(getWristPosition(), -wristAngle));
   }
 
   public void holdCurrentPosition() {

@@ -62,8 +62,8 @@ public class DriveMotor {
     motor.configNominalOutputReverse(0, TIMOUT_MS);
 
     // Set current limiting
-    motor.configStatorCurrentLimit(new StatorCurrentLimitConfiguration(true, 30, 35, 0.5));
-    motor.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, 30, 35, 0.5));
+    motor.configStatorCurrentLimit(new StatorCurrentLimitConfiguration(true, 60, 60, 0.5));
+    motor.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, 60, 60, 0.5));
 
     // Set voltage comp
     motor.configVoltageCompSaturation(10);
