@@ -239,10 +239,7 @@ public class LEDs extends SubsystemBase {
         break;
       case HAVE_GAME_PIECE: {
         if (Timer.getFPGATimestamp() > m_startHavingGamePiece + 1.5) {
-          transitionSystemState(SystemState.OFF);
-          if(desieredState == DesiredState.WANT_CUBE){
-            setDesieredState(DesiredState.OFF);
-          }
+          switchDesieredState();        
         }
       }
     }
