@@ -52,7 +52,7 @@ public class Arm extends SubsystemBase {
 
   private PIDController wristPID = new PIDController(wristP.getValue(), wristI.getValue(), wristD.getValue());
 
-  private double wristAngle;
+  private double wristAngle = 0;
   private boolean manualWrist = false;
 
   /** Config Objects for motor controllers */
@@ -103,12 +103,16 @@ public class Arm extends SubsystemBase {
     supplyConfig.currentLimit = 20;
     supplyConfig.enable = true;
     shoulder.configSupplyCurrentLimit(supplyConfig);
+
+    supplyConfig.currentLimit = 10;
     wrist.configSupplyCurrentLimit(supplyConfig);
 
     StatorCurrentLimitConfiguration config = new StatorCurrentLimitConfiguration();
     config.currentLimit = 33;
     config.enable = true;
     shoulder.configStatorCurrentLimit(config);
+
+    config.currentLimit = 20;
     wrist.configStatorCurrentLimit(config);
 
     shoulder.setNeutralMode(NeutralMode.Brake);
@@ -142,7 +146,7 @@ public class Arm extends SubsystemBase {
 
     setUpTestCommands();
 
-    wristAngle = getWristPosition() * 360;
+    wristAngle = getWristPosition();
   }
 
   public void setShoulderFromAbsEncoder() {
@@ -397,7 +401,7 @@ public class Arm extends SubsystemBase {
     updatePID();
 
     if (!manualWrist)
-      wrist.set(TalonFXControlMode.PercentOutput, wristPID.calculate(getWristPosition() * 360, -wristAngle));
+      wrist.set(TalonFXControlMode.PercentOutput, wristPID.calculate(getWristPosition(), -wristAngle));
   }
 
   public void holdCurrentPosition() {
