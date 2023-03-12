@@ -40,12 +40,12 @@ public class Intake extends SubsystemBase {
 
     StatorCurrentLimitConfiguration statorConfig = new StatorCurrentLimitConfiguration();
     statorConfig.enable = false;
-    statorConfig.currentLimit = 10;
+    statorConfig.currentLimit = 5;
     intake.configStatorCurrentLimit(statorConfig);
 
     SupplyCurrentLimitConfiguration supplyConfig = new SupplyCurrentLimitConfiguration();
     supplyConfig.enable = false;
-    supplyConfig.currentLimit = 10;
+    supplyConfig.currentLimit = 5;
     intake.configSupplyCurrentLimit(supplyConfig);
   }
 
