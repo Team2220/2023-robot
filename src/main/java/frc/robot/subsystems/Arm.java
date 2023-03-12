@@ -401,7 +401,7 @@ public class Arm extends SubsystemBase {
     updatePID();
 
     if (!manualWrist)
-      wrist.set(TalonFXControlMode.PercentOutput, wristPID.calculate(getWristPosition(), -wristAngle));
+      wrist.set(TalonFXControlMode.PercentOutput, wristPID.calculate(getWristPosition(), wristAngle));
   }
 
   public void holdCurrentPosition() {
