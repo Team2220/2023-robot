@@ -164,6 +164,14 @@ public class RobotContainer {
         // Map Manipulator Controller Buttons
         ControllerLayout.mapManipulatorController(m_secondaryController);
 
+        new Trigger(() -> m_secondaryController.getButton(Controller.Button.LEFT))
+                .onTrue(new SetLedsStates(DesiredState.WANT_CONE, m_leds))
+                .onFalse(new SetLedsStates(DesiredState.OFF, m_leds));
+
+        new Trigger(() -> m_controller.getButton(Controller.Button.RIGHT))
+                .onTrue(new SetLedsStates(DesiredState.WANT_CUBE, m_leds))
+                .onFalse(new SetLedsStates(DesiredState.OFF, m_leds));
+
         // Manipulatror controller
         new Trigger(() -> m_secondaryController.getButton(Controller.Button.BACK))
                 .onTrue(new InstantCommand(() -> DataLogManager.log("Manipulator Problem")));
