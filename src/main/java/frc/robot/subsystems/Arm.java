@@ -222,7 +222,7 @@ public class Arm extends SubsystemBase {
   }
 
   private double degreesPerSecondToEncoderTicks(double angle, double gearRatio) {
-    double gfx = ((angle / 360.0) * gearRatio) * ArmConfig.TALONFX_ENCODER_TICKS * 1 / 10;
+    double gfx = ((angle / 360.0) * gearRatio) * ArmConfig.TALONFX_ENCODER_TICKS * 1.0 / 10.0;
     return gfx;
   }
 

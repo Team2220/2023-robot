@@ -47,4 +47,8 @@ public class Gyro {
   public static double getYRot() {
     return ahrs.getPitch();
   }
+
+  public static boolean isConnected() {
+    return ahrs.isConnected();
+  }
 }

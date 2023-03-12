@@ -81,7 +81,7 @@ public class Intake extends SubsystemBase {
 
   // From: https://www.chiefdelphi.com/t/falcon-500-detecting-motor-stalls/428106
   public boolean isStalled() {
-    if (intake.getSupplyCurrent() >= 0.1) {
+    if (intake.getSupplyCurrent() >= 9) {
       double velocity = intake.getSelectedSensorVelocity();
         return velocity <= 30;
     } else {

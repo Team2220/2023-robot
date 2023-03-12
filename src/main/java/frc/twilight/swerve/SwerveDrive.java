@@ -118,6 +118,7 @@ public class SwerveDrive {
       Shuffleboard.getTab("Swerve")
           .addNumber("Gyro Rate", () -> Gyro.getAngleSpeed())
           .withPosition(7, 3);
+      Shuffleboard.getTab("Swerve").addBoolean("Gyro is connected", () -> Gyro.isConnected());
     }
   }
 
