@@ -190,6 +190,11 @@ public class RobotContainer {
                     return rightX && !enabled;
                 }).whileTrue(m_ControllerDrive);
 
+        // Reset encoder arm
+        new Trigger(() -> (m_secondaryController.getButton(Button.START)))
+                .onTrue(new InstantCommand(() -> m_arm.setWristFromAbsEncoder()))
+                .onTrue(new InstantCommand(() -> m_arm.setShoulderFromAbsEncoder()));
+
         // Arm States
         new Trigger(() -> (m_secondaryController.getButton(Button.RB)))
                 .onTrue(new SetArmState(ArmStates.INTAKE, m_arm));
@@ -198,7 +203,6 @@ public class RobotContainer {
 
         new Trigger(() -> (m_secondaryController.getButton(Button.X)))
                 .whileTrue(new SetArmState(ArmStates.SINGLE_LOADING_STATION, m_arm));
-
         new Trigger(() -> (m_secondaryController.getButton(Button.B)))
                 .whileTrue(new SetArmState(ArmStates.DOUBLE_LOADING_STATION, m_arm));
 
