@@ -1,6 +1,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.twilight.swerve.devices.Gyro;
 import frc.twilight.swerve.subsystems.Swerve;
@@ -14,26 +15,36 @@ public class Balancing extends CommandBase {
   private static TunableDouble i = new TunableDouble("I", 0, true, "Balancing");
   private static TunableDouble d = new TunableDouble("D", 0, true, "Balancing");
 
+  private static boolean shuffled = false;
+
   public Balancing(Swerve swerve) {
     this.swerve = swerve;
     this.addRequirements(swerve);
+
+    if (!shuffled) {
+      Shuffleboard.getTab("Balancing").addNumber("Y Rot Angle", () -> Gyro.getYRot());
+      shuffled = true;
+    }
   }
 
   @Override
-  public void initialize() {
-    swerve.setDrive(0, 0, 0);
-  }
+  public void initialize() {}
 
   @Override
   public void execute() {
     pid.setPID(p.getValue(), i.getValue(), d.getValue());
     double out = Gyro.getYRot();
-    out = pid.calculate(out, 0);
+    out = pid.calculate(out, 5);
     swerve.setDrive(0, out, 0);
   }
 
   @Override
   public void end(boolean interupted) {
     swerve.setDrive(0, 0, 0);
+  }
+
+  @Override
+  public boolean isFinished() {
+    return false;
   }
 }
