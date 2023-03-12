@@ -48,7 +48,7 @@ public class ArmPosition extends CommandBase {
   @Override
   public boolean isFinished() {
     return
-      // Math.abs(wristAngle - m_arm.getMotorWristPosition()) < 3 &&
+      Math.abs(wristAngle - m_arm.getMotorWristPosition()) < 3 &&
       Math.abs(shoulderAngle - m_arm.getMotorShoulderPosition()) < 3;
   }
 }
