@@ -168,11 +168,11 @@ public class RobotContainer {
                 .onTrue(new SetLedsStates(DesiredState.WANT_CONE, m_leds))
                 .onFalse(new SetLedsStates(DesiredState.OFF, m_leds));
 
-        new Trigger(() -> m_controller.getButton(Controller.Button.RIGHT))
+        new Trigger(() -> m_secondaryController.getButton(Controller.Button.RIGHT))
                 .onTrue(new SetLedsStates(DesiredState.WANT_CUBE, m_leds))
                 .onFalse(new SetLedsStates(DesiredState.OFF, m_leds));
 
-        // Manipulatror controller
+        // Manipulator controller
         new Trigger(() -> m_secondaryController.getButton(Controller.Button.BACK))
                 .onTrue(new InstantCommand(() -> DataLogManager.log("Manipulator Problem")));
 
