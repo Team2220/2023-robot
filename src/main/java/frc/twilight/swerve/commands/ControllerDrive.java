@@ -42,6 +42,8 @@ public class ControllerDrive extends CommandBase {
     fwd = y;
     str = x;
     rot = rcw;
+
+    rotpid.enableContinuousInput(0, 360);
   }
 
   // Called when the command is initially scheduled.
@@ -56,7 +58,7 @@ public class ControllerDrive extends CommandBase {
     double rotation = rot.getAsDouble() * GeneralConfig.DT_MAX_ROT_VEL.getValue();
     
     if (snapDrive) {
-      rotation = rotpid.calculate(Gyro.getAngle(), snapRot);
+      rotation = rotpid.calculate(Gyro.getAngle() % 360, snapRot);
     }
 
     m_subsystem.setDrive(
