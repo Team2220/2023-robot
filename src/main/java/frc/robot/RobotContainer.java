@@ -162,6 +162,9 @@ public class RobotContainer {
         new Trigger(() -> m_controller.getButton(Controller.Button.RB))
                 .onTrue(new SetLedsStates(DesiredState.WANT_CUBE, m_leds))
                 .onFalse(new SetLedsStates(DesiredState.OFF, m_leds));
+
+        new Trigger(() -> Math.abs(m_controller.getRightX()) > 0.1)
+                .onTrue(new InstantCommand(() -> m_ControllerDrive.stopSnap()));
         // Map Manipulator Controller Buttons
         ControllerLayout.mapManipulatorController(m_secondaryController);
 
