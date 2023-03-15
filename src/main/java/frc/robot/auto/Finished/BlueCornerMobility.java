@@ -8,6 +8,7 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import frc.robot.commands.Balancing;
 import frc.robot.commands.Intake.AutoIntake;
 import frc.robot.subsystems.Intake;
 import frc.twilight.swerve.commands.GoToCommand;
@@ -58,6 +59,8 @@ public class BlueCornerMobility extends SequentialCommandGroup {
             new Pose2d(Units.inchesToMeters(75), Units.inchesToMeters(78),
                 Rotation2d.fromDegrees(
                     0))));
+
+    new Balancing(swerve);                
 
   }
 }
