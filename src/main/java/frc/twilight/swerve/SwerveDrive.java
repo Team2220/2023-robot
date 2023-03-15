@@ -171,6 +171,13 @@ public class SwerveDrive {
     return out;
   }
 
+  public void xMode() {
+    frontLeft.set(new WheelVector(0, -45));
+    frontRight.set(new WheelVector(0, 45));
+    backLeft.set(new WheelVector(0, 45));
+    backRight.set(new WheelVector(0, -45));
+  }
+
   public void setOdo(double x, double y, double angle) {
     odoPosition = new Position(x, y, angle);
     Gyro.setPosition(angle);

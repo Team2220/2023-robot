@@ -14,7 +14,7 @@ public class ControllerLayout {
     public final static Map<Button, Command> DRIVER = Map.ofEntries(
         // Map.entry(Button.A, null),
         // Map.entry(Button.B, null),
-        // Map.entry(Button.X, null),
+        Map.entry(Button.X, new InstantCommand(() -> RobotContainer.m_swerve.xMode())),
         // Map.entry(Button.Y, null),
 
         // Bumpers
