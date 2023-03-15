@@ -26,6 +26,10 @@ public class Swerve extends SubsystemBase {
     swerve.setDrive(vector);
   }
 
+  public void setDrive(DriveVector vector, boolean robotCentric) {
+    swerve.setDrive(vector, robotCentric);
+  }
+
   public DriveVector getDrive() {
     return swerve.getDrive();
   }

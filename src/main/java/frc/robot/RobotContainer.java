@@ -164,7 +164,15 @@ public class RobotContainer {
         // Map Manipulator Controller Buttons
         ControllerLayout.mapManipulatorController(m_secondaryController);
 
-        // Manipulatror controller
+        new Trigger(() -> m_secondaryController.getButton(Controller.Button.LEFT))
+                .onTrue(new SetLedsStates(DesiredState.WANT_CONE, m_leds))
+                .onFalse(new SetLedsStates(DesiredState.OFF, m_leds));
+
+        new Trigger(() -> m_secondaryController.getButton(Controller.Button.RIGHT))
+                .onTrue(new SetLedsStates(DesiredState.WANT_CUBE, m_leds))
+                .onFalse(new SetLedsStates(DesiredState.OFF, m_leds));
+
+        // Manipulator controller
         new Trigger(() -> m_secondaryController.getButton(Controller.Button.BACK))
                 .onTrue(new InstantCommand(() -> DataLogManager.log("Manipulator Problem")));
 
@@ -190,6 +198,11 @@ public class RobotContainer {
                     return rightX && !enabled;
                 }).whileTrue(m_ControllerDrive);
 
+        // Reset encoder arm
+        new Trigger(() -> (m_secondaryController.getButton(Button.START)))
+                .onTrue(new InstantCommand(() -> m_arm.setWristFromAbsEncoder()))
+                .onTrue(new InstantCommand(() -> m_arm.setShoulderFromAbsEncoder()));
+
         // Arm States
         new Trigger(() -> (m_secondaryController.getButton(Button.RB)))
                 .onTrue(new SetArmState(ArmStates.INTAKE, m_arm));
@@ -198,7 +211,6 @@ public class RobotContainer {
 
         new Trigger(() -> (m_secondaryController.getButton(Button.X)))
                 .whileTrue(new SetArmState(ArmStates.SINGLE_LOADING_STATION, m_arm));
-
         new Trigger(() -> (m_secondaryController.getButton(Button.B)))
                 .whileTrue(new SetArmState(ArmStates.DOUBLE_LOADING_STATION, m_arm));
 

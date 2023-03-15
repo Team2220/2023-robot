@@ -122,7 +122,7 @@ public class SwerveDrive {
     }
   }
 
-  public void setDrive(DriveVector vector) {
+  public void setDrive(DriveVector vector, boolean robotCentric) {
     gyroPID.setP(PIDconfig.DT_GYRO_P.getValue());
     gyroPID.setI(PIDconfig.DT_GYRO_I.getValue());
     gyroPID.setD(PIDconfig.DT_GYRO_D.getValue());
@@ -132,7 +132,8 @@ public class SwerveDrive {
         -gyroPID.calculate(Gyro.getAngleSpeed())
             + PIDconfig.DT_GYRO_F.getValue() * vector.getRcw());
 
-    vector.zeroDirection(-Gyro.getAngle());
+    if (!robotCentric)
+      vector.zeroDirection(-Gyro.getAngle());
 
     WheelVector[] wheelVectors = VectorFactory.wheelVectorsFromDriveVector(vector);
 
@@ -155,6 +156,10 @@ public class SwerveDrive {
       backRight.stop();
       backLeft.stop();
     }
+  }
+
+  public void setDrive(DriveVector vector) {
+    setDrive(vector, false);
   }
 
   public DriveVector getDrive() {
