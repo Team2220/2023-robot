@@ -39,6 +39,10 @@ public class Swerve extends SubsystemBase {
     swerve.updateOdo();
   }
 
+  public void xMode() {
+    swerve.xMode();
+  }
+
   public void zeroGyro() {
     swerve.zeroGyro();
   }

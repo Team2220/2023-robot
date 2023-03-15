@@ -93,14 +93,13 @@ public class Arm extends SubsystemBase {
 
   public Arm() {
     /* Motion Magic Configurations */
-    wristConfig.motionAcceleration = degreesPerSecondToEncoderTicks(10, ArmConfig.WRIST_GEAR_RATIO);
+    wristConfig.motionAcceleration = degreesPerSecondToEncoderTicks(200, ArmConfig.WRIST_GEAR_RATIO);
     wristConfig.motionCruiseVelocity =
-        degreesPerSecondToEncoderTicks(10, ArmConfig.WRIST_GEAR_RATIO);
-
+        degreesPerSecondToEncoderTicks(200, ArmConfig.WRIST_GEAR_RATIO);
     shoulderConfig.motionCruiseVelocity =
-        degreesPerSecondToEncoderTicks(10, ArmConfig.SHOULDER_GEAR_RATIO);
+        degreesPerSecondToEncoderTicks(100, ArmConfig.SHOULDER_GEAR_RATIO);
     shoulderConfig.motionAcceleration =
-        degreesPerSecondToEncoderTicks(10, ArmConfig.SHOULDER_GEAR_RATIO);
+        degreesPerSecondToEncoderTicks(200, ArmConfig.SHOULDER_GEAR_RATIO);
 
     wrist.configAllSettings(wristConfig);
     shoulder.configAllSettings(shoulderConfig);
@@ -263,13 +262,13 @@ public class Arm extends SubsystemBase {
   public void setWristAngle(double angle) {
     lastWristAngle = angle;
     double posValue = anglesToWristSensorPosition(-angle);
-    wrist.set(TalonFXControlMode.Position, posValue);
+    wrist.set(TalonFXControlMode.MotionMagic, posValue);
   }
 
   public void setShoulderAngle(double angle) {
     lastShoulderAngle = angle;
     double posValue = anglesToShoulderSensorPosition(angle);
-    shoulder.set(TalonFXControlMode.Position, posValue);
+    shoulder.set(TalonFXControlMode.MotionMagic, posValue);
   }
 
   public void changeShoulderAngle(double amount) {
