@@ -138,6 +138,7 @@ public class RobotContainer {
         autoChooser.addOption(new MidScore1BalBlueAutoR(m_swerve, m_arm, m_intake));
         autoChooser.addOption(new BlueCornerMobility(m_swerve, m_intake));
         autoChooser.addOption(new RedCornerMobility(m_swerve));
+        autoChooser.addOption(new MidScore1BalBlueAutoL(m_swerve, m_arm, m_intake));
 
         SmartDashboard.putData(autoChooser.getSendableChooser());
 
