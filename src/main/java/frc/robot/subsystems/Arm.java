@@ -210,7 +210,7 @@ public class Arm extends SubsystemBase {
     MID_CUBE_NODE(64, -82),
     HIGH_CUBE_NODE(63, -39),
     MID_CONE_NODE(58, -78),
-    HIGH_CONE_NODE(61, -27),
+    HIGH_CONE_NODE(57.5, -27),
     TRANSIT(171, 150),
     // Starting: Shoulder = 171 , Wrist = 150
     SINGLE_LOADING_STATION(171, 140),
