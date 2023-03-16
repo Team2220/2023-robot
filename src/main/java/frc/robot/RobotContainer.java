@@ -11,11 +11,13 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.Square;
 import frc.robot.auto.Finished.BlueCornerMobility;
+import frc.robot.auto.Finished.JustScoreTheCube;
 import frc.robot.auto.Finished.MidScore1BalBlueAutoL;
 import frc.robot.auto.Finished.MidScore1BalBlueAutoR;
 import frc.robot.auto.Finished.MobilityL;
 import frc.robot.auto.Finished.MobilityR;
 import frc.robot.auto.Finished.RedCornerMobility;
+import frc.robot.auto.Finished.ScoreAndGetC;
 import frc.robot.auto.TestPath;
 import frc.robot.commands.Arm.SetArmState;
 import frc.robot.commands.Arm.ArmPercentOutput;
@@ -143,6 +145,8 @@ public class RobotContainer {
         autoChooser.addOption(new MidScore1BalBlueAutoL(m_swerve, m_arm, m_intake));
         autoChooser.addOption(new MobilityL(m_swerve, null, m_intake));
         autoChooser.addOption(new MobilityR(m_swerve, null, m_intake));
+        autoChooser.addOption(new JustScoreTheCube(m_swerve, m_arm, m_intake));
+        autoChooser.addOption(new ScoreAndGetC(m_swerve, m_arm, m_intake));
 
 
         SmartDashboard.putData(autoChooser.getSendableChooser());

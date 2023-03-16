@@ -187,6 +187,7 @@ public class SwerveDrive {
       odoPosition = new Position(x, y, angle);
     else
       odoPosition = new Position(FieldConstants.fieldWidth - x, y, angle);
+      
     Gyro.setPosition(angle);
   }
 
