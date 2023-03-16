@@ -32,24 +32,34 @@ public class MidScore1BalBlueAutoR extends SequentialCommandGroup {
                                                                         // starting
                                                                         // position
                 // score starting game piece
+                new AutoIntake(-.5, intake).withTimeout(.2),
                 new AutoShoulderState(ArmStates.MID_CUBE_NODE, arm).withTimeout(1),
                 new AutoWristState(ArmStates.MID_CUBE_NODE, arm).withTimeout(1),
-                new AutoIntake(.5, intake).withTimeout(1),
+                new AutoIntake(.75, intake).withTimeout(1),
 
                 // score game piece 1
-                new SetArmState(ArmStates.INTAKE, arm),
+                new SetArmState(ArmStates.TRANSIT, arm),
+                new GoToCommand(
+                        swerve,
+                        new Pose2d(4.823257, 0.919099,
+                                Rotation2d.fromDegrees(0))),
+                new SetArmState(ArmStates.INTAKE, arm),                
                 new GoToCommand(
                         swerve,
                         new Pose2d(7.070376, 0.919099,
                                 Rotation2d.fromDegrees(0)))
-                        .alongWith(new AutoIntake(-.5, intake).withTimeout(1)),
+                        .alongWith(new AutoIntake(-.5, intake).withTimeout(2.5)),
+                new SetArmState(ArmStates.TRANSIT, arm)
+                .alongWith(new AutoIntake(-.5, intake).withTimeout(.2)),        
                 new GoToCommand(
                         swerve,
                         new Pose2d(1.8453771028, 1.071499,
                                 Rotation2d.fromDegrees(180))),
-                new SetArmState(ArmStates.HIGH_CUBE_NODE, arm),
+                new AutoShoulderState(ArmStates.HIGH_CUBE_NODE, arm).withTimeout(.5),
+                new AutoWristState(ArmStates.HIGH_CUBE_NODE, arm).withTimeout(.5),
                 new AutoIntake(.5, intake).withTimeout(1),
-                new SetArmState(ArmStates.TRANSIT, arm),
+                new AutoWristState(ArmStates.TRANSIT, arm).withTimeout(1),
+                new AutoShoulderState(ArmStates.TRANSIT, arm).withTimeout(1),
                 // balance
                 new GoToCommand(
                         swerve,
