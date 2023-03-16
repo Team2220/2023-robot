@@ -10,9 +10,14 @@ import frc.twilight.swerve.config.PIDconfig;
 import frc.twilight.swerve.subsystems.Swerve;
 import frc.twilight.swerve.vectors.DriveVector;
 import frc.twilight.swerve.vectors.Position;
+
+import org.littletonrobotics.frc2023.FieldConstants;
+
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
 /** An example command that uses an example subsystem. */
@@ -76,8 +81,12 @@ public class GoToCommand extends CommandBase {
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(subsystem);
 
-    goalX = new TrapezoidProfile.State(goal.getX(), 0);
     goalY = new TrapezoidProfile.State(goal.getY(), 0);
+
+    if (DriverStation.getAlliance() == Alliance.Blue)
+      goalX = new TrapezoidProfile.State(goal.getX(), 0);
+    else
+      goalX = new TrapezoidProfile.State(FieldConstants.fieldWidth - goal.getX(), 0);
 
     goalRot = new TrapezoidProfile.State(goal.getAngle(), 0);
   }
