@@ -15,7 +15,7 @@ import frc.twilight.swerve.vectors.Position;
 public class ScoreAndGetC extends SequentialCommandGroup {
     public ScoreAndGetC(Swerve swerve, Arm arm, Intake intake) {
         addCommands(
-            new JustScoreTheCube(swerve, arm, intake),
+            new JustScoreTheCubeHigh(swerve, arm, intake),
             new GoToCommand(swerve, new Position(0, .2, 180)),
             new SetArmState(ArmStates.TRANSIT, arm),
             new GoToCommand(swerve, new Position(0.3, 0.5, 180)),

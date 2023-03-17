@@ -11,8 +11,8 @@ import frc.twilight.swerve.commands.GoToCommand;
 import frc.twilight.swerve.subsystems.Swerve;
 import frc.twilight.swerve.vectors.Position;
 
-public class JustScoreTheCube extends SequentialCommandGroup {
-    public JustScoreTheCube(Swerve swerve, Arm arm, Intake intake) {
+public class JustScoreTheCubeHigh extends SequentialCommandGroup {
+    public JustScoreTheCubeHigh(Swerve swerve, Arm arm, Intake intake) {
         addCommands(
             new InstantCommand(() -> swerve.setOdo(0, 0, 180)),
             new AutoIntake(-0.5, intake).withTimeout(0.4),
