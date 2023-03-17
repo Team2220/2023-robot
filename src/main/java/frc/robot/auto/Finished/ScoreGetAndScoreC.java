@@ -12,24 +12,19 @@ import frc.twilight.swerve.commands.GoToCommand;
 import frc.twilight.swerve.subsystems.Swerve;
 import frc.twilight.swerve.vectors.Position;
 
-public class ScoreAndGetC extends SequentialCommandGroup {
-    public ScoreAndGetC(Swerve swerve, Arm arm, Intake intake) {
+public class ScoreGetAndScoreC extends SequentialCommandGroup {
+    public ScoreGetAndScoreC(Swerve swerve, Arm arm, Intake intake) {
         addCommands(
-            new JustScoreTheCube(swerve, arm, intake),
-            new GoToCommand(swerve, new Position(0, .2, 180)),
-            new SetArmState(ArmStates.TRANSIT, arm),
-            new GoToCommand(swerve, new Position(0.3, 0.5, 180)),
+            new ScoreAndGetC(swerve, arm, intake),
             new GoToCommand(swerve, new Position(
                 0.3,
                 Units.inchesToMeters(200.0) - (Constants.ROBOT_Y_LENGTH / 2),
                 0
-            )),
-            new SetArmState(ArmStates.INTAKE, arm),
-            new GoToCommand(swerve, new Position(
-                0, 
-                Units.inchesToMeters(224) - (Constants.ROBOT_Y_LENGTH / 2), 
-                0
-            )).raceWith(new AutoIntake(-0.5, intake))
+                )),
+            new GoToCommand(swerve, new Position(0.3, 0.5, 180)),
+            new GoToCommand(swerve, new Position(0, 0, 180)).alongWith(new SetArmState(ArmStates.MID_CUBE_NODE, arm)),
+            new GoToCommand(swerve, new Position(0, 0, 180)),
+            new AutoIntake(0.5, intake)
         );
     }
 }

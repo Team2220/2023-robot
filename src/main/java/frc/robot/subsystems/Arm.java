@@ -232,6 +232,12 @@ public class Arm extends SubsystemBase {
     setPosition(newState.shoulderAngle, newState.wristAngle);
   }
 
+  public boolean atArmState(ArmStates armState) {
+    return 
+      Math.abs(armState.shoulderAngle - getMotorShoulderPosition()) < 3 &&
+      Math.abs(armState.wristAngle - getMotorWristPosition()) < 3;
+  }
+
   private double degreesPerSecondToEncoderTicks(double angle, double gearRatio) {
     double gfx = ((angle / 360.0) * gearRatio) * ArmConfig.TALONFX_ENCODER_TICKS * 1.0 / 10.0;
     return gfx;

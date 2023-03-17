@@ -15,10 +15,11 @@ public class JustScoreTheCube extends SequentialCommandGroup {
     public JustScoreTheCube(Swerve swerve, Arm arm, Intake intake) {
         addCommands(
             new InstantCommand(() -> swerve.setOdo(0, 0, 180)),
-            new GoToCommand(swerve, new Position(0, 0.25, 180)),
+            new AutoIntake(-0.5, intake).withTimeout(0.4),
+            new GoToCommand(swerve, new Position(0, 0.2, 180)),
             new SetArmState(ArmStates.HIGH_CUBE_NODE, arm),
             new GoToCommand(swerve, new Position(0, 0, 180)),
-            new AutoIntake(-0.5, intake).withTimeout(1)
+            new AutoIntake(0.5, intake).withTimeout(0.5)
         );
     }
 }

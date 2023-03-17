@@ -11,13 +11,13 @@ import frc.twilight.swerve.subsystems.Swerve;
 import frc.twilight.swerve.vectors.DriveVector;
 import frc.twilight.swerve.vectors.Position;
 
-import org.littletonrobotics.frc2023.FieldConstants;
+import org.littletonrobotics.frc2023.util.AllianceFlipUtil;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
-import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import edu.wpi.first.wpilibj.DataLogManager;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
 /** An example command that uses an example subsystem. */
@@ -31,6 +31,8 @@ public class GoToCommand extends CommandBase {
   private final TrapezoidProfile.Constraints constraintsRot =
       new TrapezoidProfile.Constraints(
           GeneralConfig.DT_MAX_ROT_VEL.getValue(), GeneralConfig.DT_MAX_ROT_ACCEL.getValue());
+
+  private final Position goal;
 
   private TrapezoidProfile.State goalX = new TrapezoidProfile.State();
   private TrapezoidProfile.State goalY = new TrapezoidProfile.State();
@@ -71,6 +73,16 @@ public class GoToCommand extends CommandBase {
 
   private boolean stopAtEnd = true;
 
+  private static double drivingX = 0;
+  private static double drivingY = 0;
+  private static double drivingRot = 0;
+
+  private static double outputX = 0;
+  private static double outputY = 0;
+  private static double outputRot = 0;
+
+  private static boolean shuffled = false;
+
   /**
    * Creates a new GoToCommand.
    *
@@ -81,14 +93,21 @@ public class GoToCommand extends CommandBase {
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(subsystem);
 
-    goalY = new TrapezoidProfile.State(goal.getY(), 0);
+    this.goal = goal;
 
-    if (DriverStation.getAlliance() == Alliance.Blue)
-      goalX = new TrapezoidProfile.State(goal.getX(), 0);
-    else
-      goalX = new TrapezoidProfile.State(FieldConstants.fieldWidth - goal.getX(), 0);
+    if (!shuffled) {
+      Shuffleboard.getTab("Swerve").addDouble("Current Goto X", () -> {return drivingX;});
+      Shuffleboard.getTab("Swerve").addDouble("Current Goto Y", () -> {return drivingY;});
+      Shuffleboard.getTab("Swerve").addDouble("Current Goto Rot", () -> {return drivingRot;});
 
-    goalRot = new TrapezoidProfile.State(goal.getAngle(), 0);
+      Shuffleboard.getTab("Swerve").addDouble("Current Driving X", () -> {return outputX;});
+      Shuffleboard.getTab("Swerve").addDouble("Current Driving Y", () -> {return outputY;});
+      Shuffleboard.getTab("Swerve").addDouble("Current Driving Rot", () -> {return outputRot;});
+
+      Shuffleboard.getTab("DEBUG").addBoolean("ShouldFlip", () -> AllianceFlipUtil.shouldFlip());
+
+      shuffled = true;
+    }
   }
 
   public GoToCommand(Swerve subsystem, Pose2d goal) {
@@ -98,6 +117,12 @@ public class GoToCommand extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    Position goal2 = AllianceFlipUtil.apply(new Position(goal.getX(), goal.getY(), goal.getAngle()));
+     
+    goalX = new TrapezoidProfile.State(goal2.getX(), 0);
+    goalY = new TrapezoidProfile.State(goal2.getY(), 0);
+    goalRot = new TrapezoidProfile.State(goal2.getAngle(), 0);
+
     Position currentPos = m_subsystem.getOdo();
     DriveVector currentVec = m_subsystem.getDrive();
     setpointX = new TrapezoidProfile.State(currentPos.getX(), currentVec.getStr());
@@ -112,6 +137,11 @@ public class GoToCommand extends CommandBase {
     profileX = new TrapezoidProfile(constraints, goalX, setpointX);
     profileY = new TrapezoidProfile(constraints, goalY, setpointY);
     profileRot = new TrapezoidProfile(constraintsRot, goalRot, setpointRot);
+
+    DataLogManager.log("Running GoTo Command - \n" +
+      "\tStarting Point: " + setpointX.position + ", " + setpointY.position + ", " + setpointRot + "\n" +
+      "\tEnd Point: " + goalX.position + ", " + goalY.position + ", " + goalRot.position + "\n"
+    );
 
     kDt = 0;
   }
@@ -157,6 +187,14 @@ public class GoToCommand extends CommandBase {
 
     if (rotTol > 0) rotDone = Math.abs(currentPos.getAngle() - goalRot.position) < rotTol;
     else rotDone = true;
+
+    drivingX = xPos;
+    drivingY = yPos;
+    drivingRot = rotPos;
+
+    outputX = xVel;
+    outputY = yVel;
+    outputRot = rotVel;
   }
 
   // Called once the command ends or is interrupted.
