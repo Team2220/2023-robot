@@ -17,6 +17,9 @@ public class JustScoreTheCubeHigh extends SequentialCommandGroup {
             new InstantCommand(() -> swerve.setOdo(0, 0, 180)),
             new AutoIntake(-0.5, intake).withTimeout(0.4),
             new GoToCommand(swerve, new Position(0, 0.2, 180)),
+            new SetArmState(ArmStates.CALIBRATE, arm),
+            new InstantCommand(() -> arm.setShoulderFromAbsEncoder()),
+            new InstantCommand(() -> arm.setWristFromAbsEncoder()),
             new SetArmState(ArmStates.HIGH_CUBE_NODE, arm),
             new GoToCommand(swerve, new Position(0, 0, 180)),
             new AutoIntake(0.5, intake).withTimeout(0.5)

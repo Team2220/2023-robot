@@ -201,11 +201,6 @@ public class RobotContainer {
         new Trigger(() -> m_secondaryController.getButton(Controller.Button.BACK))
                 .onTrue(new InstantCommand(() -> DataLogManager.log("Manipulator Problem")));
 
-        new Trigger(() -> m_secondaryController.getButton(Controller.Button.START))
-                .onTrue(new InstantCommand(() -> {
-                    m_arm.setWristToReferenceAngle();
-                    m_arm.setShoulderToReferenceAngle();
-                }));
         new Trigger(
                 () -> {
                     boolean left = Math.abs(m_secondaryController.getLeftY()) > 0.1;
