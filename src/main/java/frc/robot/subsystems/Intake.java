@@ -83,7 +83,7 @@ public class Intake extends SubsystemBase {
   public boolean isStalled() {
     if (intake.getSupplyCurrent() >= 9) {
       double velocity = intake.getSelectedSensorVelocity();
-        return velocity <= 30;
+        return velocity <= 10;
     } else {
         return false;
     }

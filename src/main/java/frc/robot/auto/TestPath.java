@@ -1,11 +1,7 @@
 package frc.robot.auto;
 
-import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import frc.robot.Constants;
 import frc.robot.commands.Balancing;
-import frc.robot.commands.Arm.ArmPosition;
-import frc.robot.commands.Intake.AutoIntake;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Intake;
 import frc.twilight.swerve.subsystems.Swerve;

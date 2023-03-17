@@ -28,8 +28,8 @@ public class BlueCornerMobility extends SequentialCommandGroup {
 
     addCommands(
         new SetArmState(ArmStates.TRANSIT, arm),
-        new AutoIntake(-.5, intake).withTimeout(.2),
-        new AutoIntake(.75, intake).withTimeout(1));
+        // new AutoIntake(-.5, intake).withTimeout(.2),
+        new AutoIntake(.75, intake).withTimeout(.5));
 
     addCommands(
         new GoToCommand(

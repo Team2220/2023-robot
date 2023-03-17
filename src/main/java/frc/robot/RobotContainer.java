@@ -18,7 +18,7 @@ import frc.robot.auto.Finished.JustScoreTheCubeHigh;
 import frc.robot.auto.Finished.JustScoreTheCubeLow;
 import frc.robot.auto.Finished.JustScoreTheCubeMid;
 import frc.robot.auto.Finished.MidScore1BalBlueAutoL;
-import frc.robot.auto.Finished.MidScore1BalBlueAutoR;
+import frc.robot.auto.Finished.MidScore1BlueAutoR;
 import frc.robot.auto.Finished.MobilityL;
 import frc.robot.auto.Finished.MobilityR;
 import frc.robot.auto.Finished.RedCornerMobility;
@@ -144,7 +144,7 @@ public class RobotContainer {
         // autoChooser.addOption(new leftTwoCubeAuto(m_swerve, m_arm, m_intake));
         autoChooser.addOption(new TestPath(m_swerve, m_arm, m_intake));
         // autoChooser.addOption(new NewPath(m_swerve));
-        autoChooser.addOption(new MidScore1BalBlueAutoR(m_swerve, m_arm, m_intake));
+        autoChooser.addOption(new MidScore1BlueAutoR(m_swerve, m_arm, m_intake));
         autoChooser.addOption(new BlueCornerMobility(m_swerve, m_intake, m_arm));
         autoChooser.addOption(new RedCornerMobility(m_swerve, m_intake, m_arm));
         autoChooser.addOption(new MidScore1BalBlueAutoL(m_swerve, m_arm, m_intake));

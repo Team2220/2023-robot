@@ -3,8 +3,6 @@ package frc.twilight.swerve.devices;
 import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.wpilibj.SPI;
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
-import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 
 public class Gyro {
   private static final AHRS ahrs = new AHRS(SPI.Port.kMXP);
