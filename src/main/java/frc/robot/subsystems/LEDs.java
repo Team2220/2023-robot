@@ -283,7 +283,7 @@ public class LEDs extends SubsystemBase {
 
   private void setBrown() {
 
-    StrobeAnimation strobeAnimation = new StrobeAnimation(64, 36, 0, 0, 0.1, 164);
+    StrobeAnimation strobeAnimation = new StrobeAnimation(64, 0, 0, 0, 0.1, 164);
     left.animate(strobeAnimation);
     right.animate(strobeAnimation);
   }

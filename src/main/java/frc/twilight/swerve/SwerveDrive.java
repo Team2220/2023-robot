@@ -1,8 +1,13 @@
 package frc.twilight.swerve;
 
+import org.littletonrobotics.frc2023.FieldConstants;
+import org.littletonrobotics.frc2023.util.AllianceFlipUtil;
+
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -179,8 +184,10 @@ public class SwerveDrive {
   }
 
   public void setOdo(double x, double y, double angle) {
-    odoPosition = new Position(x, y, angle);
+    odoPosition = AllianceFlipUtil.apply(new Position(x, y, angle));
+
     Gyro.setPosition(angle);
+
   }
 
   public void updateOdo() {

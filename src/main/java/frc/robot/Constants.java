@@ -26,8 +26,8 @@ public final class Constants {
   public static final class LimelightConfig {
     public static final String LEFT_NAME = "limelight-left";
     public static final String RIGHT_NAME = "limelight-right";
-    public static final String LEFT_URL = "http://10.22.20.45:5800/stream.mjpg";
-    public static final String RIGHT_URL = "http://10.22.20.45:5800/stream.mjpg";
+    public static final String LEFT_URL = "http://10.22.20.10:5800/stream.mjpg";
+    public static final String RIGHT_URL = "http://10.22.20.11:5800/stream.mjpg";
   }
 
   public static final class IntakeConfig {

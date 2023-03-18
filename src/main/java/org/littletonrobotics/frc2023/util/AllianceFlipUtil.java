@@ -16,6 +16,8 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import frc.twilight.swerve.vectors.Position;
+
 import org.littletonrobotics.frc2023.FieldConstants;
 // import org.littletonrobotics.frc2023.util.trajectory.RotationSequence;
 
@@ -49,7 +51,8 @@ public class AllianceFlipUtil {
       return new Pose2d(
           FieldConstants.fieldLength - pose.getX(),
           pose.getY(),
-          new Rotation2d(-pose.getRotation().getCos(), pose.getRotation().getSin()));
+          // new Rotation2d(-pose.getRotation().getCos(), pose.getRotation().getSin())
+          pose.getRotation());
     } else {
       return pose;
     }
@@ -76,6 +79,14 @@ public class AllianceFlipUtil {
     }
   }
 
+  public static Position apply(Position state) {
+    if (shouldFlip()) {
+      state.setX(FieldConstants.fieldWidth - state.getX());
+    }
+
+    return state;
+  }
+
   /** Flips a rotation sequence state based on the current alliance color. */
   // public static RotationSequence.State apply(RotationSequence.State state) {
   //   if (shouldFlip()) {
@@ -87,7 +98,9 @@ public class AllianceFlipUtil {
   //   }
   // }
 
-  private static boolean shouldFlip() {
+  public static boolean shouldFlip() {
     return DriverStation.getAlliance() == Alliance.Red;
+    // return false;
+    // return true;
   }
 }
