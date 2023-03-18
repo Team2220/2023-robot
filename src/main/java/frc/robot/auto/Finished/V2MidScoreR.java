@@ -18,8 +18,8 @@ import frc.robot.subsystems.Intake;
 import frc.twilight.swerve.commands.GoToCommand;
 import frc.twilight.swerve.subsystems.Swerve;
 
-public class MidScore1BalBlueAutoR extends SequentialCommandGroup {
-    public MidScore1BalBlueAutoR(Swerve swerve, Arm arm, Intake intake) {
+public class V2MidScoreR extends SequentialCommandGroup {
+    public V2MidScoreR(Swerve swerve, Arm arm, Intake intake) {
         addCommands(
                 new InstantCommand(
                         () -> swerve.setPose2d(
@@ -39,7 +39,7 @@ public class MidScore1BalBlueAutoR extends SequentialCommandGroup {
                 new SetArmState(ArmStates.TRANSIT, arm),
                 new GoToCommand(
                         swerve,
-                        new Pose2d(4.823257, 0.919099,
+                        new Pose2d(4.2238011028, 0.4498141028,
                                 Rotation2d.fromDegrees(0))),
                 new SetArmState(ArmStates.INTAKE, arm),                
                 new GoToCommand(
@@ -48,7 +48,11 @@ public class MidScore1BalBlueAutoR extends SequentialCommandGroup {
                                 Rotation2d.fromDegrees(0)))
                         .alongWith(new AutoIntake(-.5, intake).withTimeout(2.5)),
                 new SetArmState(ArmStates.TRANSIT, arm)
-                .alongWith(new AutoIntake(-.5, intake).withTimeout(.2)),        
+                .alongWith(new AutoIntake(-.5, intake).withTimeout(.2)),    
+                new GoToCommand(
+                    swerve,
+                    new Pose2d(4.2238011028, 0.4498141028,
+                            Rotation2d.fromDegrees(180))),    
                 new GoToCommand(
                         swerve,
                         new Pose2d(1.8453771028, 1.071499,
