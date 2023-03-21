@@ -28,6 +28,8 @@ public class ControllerDrive extends CommandBase {
   private double snapRot = 0;
   private PIDController rotpid = new PIDController(PIDconfig.DT_AUTO_ROT_P.getValue(), PIDconfig.DT_AUTO_ROT_I.getValue(), PIDconfig.DT_AUTO_ROT_D.getValue());
   
+  private double maxVelMov = GeneralConfig.DT_MAX_VEL.getValue();
+  private double maxVelRot = GeneralConfig.DT_MAX_ROT_VEL.getValue();
 
   /**
    * Creates a new GoToCommand.
@@ -77,6 +79,10 @@ public class ControllerDrive extends CommandBase {
 
   public void stopSnap() {
     snapDrive = false;
+  }
+
+  public void setMaxVel(double mov, double rot) {
+    
   }
 
   // Called once the command ends or is interrupted.

@@ -10,7 +10,7 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.auto.TestPath;
-import frc.robot.auto.Finished.BlueCornerMobility;
+import frc.robot.auto.Finished.WireBal;
 import frc.robot.auto.Finished.JustScoreTheConeHigh;
 import frc.robot.auto.Finished.JustScoreTheConeLow;
 import frc.robot.auto.Finished.JustScoreTheConeMid;
@@ -21,7 +21,7 @@ import frc.robot.auto.Finished.MidScore1BalBlueAutoL;
 import frc.robot.auto.Finished.MidScore1BlueAutoR;
 import frc.robot.auto.Finished.MobilityL;
 import frc.robot.auto.Finished.MobilityR;
-import frc.robot.auto.Finished.RedCornerMobility;
+import frc.robot.auto.Finished.NonWireBal;
 import frc.robot.auto.Finished.ScoreAndGetC;
 import frc.robot.auto.Finished.ScoreGetAndScoreC;
 import frc.robot.commands.Arm.SetArmState;
@@ -38,6 +38,7 @@ import frc.twilight.Controller;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.twilight.swerve.commands.ControllerDrive;
+import frc.twilight.swerve.config.GeneralConfig;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import static frc.twilight.Controller.Button;
 
@@ -145,8 +146,8 @@ public class RobotContainer {
         autoChooser.addOption(new TestPath(m_swerve, m_arm, m_intake));
         // autoChooser.addOption(new NewPath(m_swerve));
         autoChooser.addOption(new MidScore1BlueAutoR(m_swerve, m_arm, m_intake));
-        autoChooser.addOption(new BlueCornerMobility(m_swerve, m_intake, m_arm));
-        autoChooser.addOption(new RedCornerMobility(m_swerve, m_intake, m_arm));
+        autoChooser.addOption(new WireBal(m_swerve, m_intake, m_arm));
+        autoChooser.addOption(new NonWireBal(m_swerve, m_intake, m_arm));
         autoChooser.addOption(new MidScore1BalBlueAutoL(m_swerve, m_arm, m_intake));
         autoChooser.addOption(new MobilityL(m_swerve, m_arm, m_intake));
         autoChooser.addOption(new MobilityR(m_swerve, m_arm, m_intake));
@@ -186,6 +187,13 @@ public class RobotContainer {
 
         new Trigger(() -> Math.abs(m_controller.getRightX()) > 0.1)
                 .onTrue(new InstantCommand(() -> m_ControllerDrive.stopSnap()));
+
+        new Trigger(() -> m_controller.getLeftTrigger() > 0.4)
+                .onTrue(new InstantCommand(() -> m_ControllerDrive.setMaxVel(1, 90)))
+                .onFalse(new InstantCommand(() -> m_ControllerDrive.setMaxVel(
+                        GeneralConfig.DT_MAX_VEL.getValue(), 
+                        GeneralConfig.DT_MAX_ROT_VEL.getValue())));
+
         // Map Manipulator Controller Buttons
         ControllerLayout.mapManipulatorController(m_secondaryController);
 

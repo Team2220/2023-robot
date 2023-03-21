@@ -139,7 +139,7 @@ public class GoToCommand extends CommandBase {
     profileRot = new TrapezoidProfile(constraintsRot, goalRot, setpointRot);
 
     DataLogManager.log("Running GoTo Command - \n" +
-      "\tStarting Point: " + setpointX.position + ", " + setpointY.position + ", " + setpointRot + "\n" +
+      "\tStarting Point: " + setpointX.position + ", " + setpointY.position + ", " + setpointRot.position + "\n" +
       "\tEnd Point: " + goalX.position + ", " + goalY.position + ", " + goalRot.position + "\n"
     );
 
@@ -200,6 +200,7 @@ public class GoToCommand extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    DataLogManager.log("End GoToCommand");
     if (stopAtEnd) m_subsystem.setDrive(new DriveVector(0, 0, 0));
   }
 

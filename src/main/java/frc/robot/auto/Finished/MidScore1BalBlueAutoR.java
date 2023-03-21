@@ -63,7 +63,7 @@ public class MidScore1BalBlueAutoR extends SequentialCommandGroup {
                 new GoToCommand(
                         swerve,
                         new Pose2d(3.279775, 2.743581,
-                                Rotation2d.fromDegrees(180))),
+                                Rotation2d.fromDegrees(0))).setTolerence(0.2, 10),
                 new Balancing(swerve));
     }
 }

@@ -46,11 +46,11 @@ public class MidScore1BlueAutoR extends SequentialCommandGroup {
                         .alongWith(new SetArmState(ArmStates.INTAKE, arm))
                         .raceWith(new AutoIntake(-.5, intake)),
                 new SetArmState(ArmStates.TRANSIT, arm)
-                .alongWith(new AutoIntake(-.5, intake).withTimeout(.2))
-                .alongWith(new GoToCommand(
-                        swerve,
-                        new Pose2d(1.8453771028, 1.071499,
-                                Rotation2d.fromDegrees(180)))),
+                        .alongWith(new AutoIntake(-.5, intake).withTimeout(.2), 
+                                new GoToCommand(
+                                        swerve,
+                                        new Pose2d(1.8453771028, 1.071499,
+                                                Rotation2d.fromDegrees(180)))),
                 new SetArmState(ArmStates.HIGH_CUBE_NODE, arm),
                 new AutoIntake(.5, intake).withTimeout(0.5),
                 new SetArmState(ArmStates.TRANSIT, arm));
