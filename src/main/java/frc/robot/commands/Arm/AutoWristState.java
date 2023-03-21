@@ -26,6 +26,6 @@ public class AutoWristState extends CommandBase {
 
   @Override
   public boolean isFinished() {
-   return false;
+   return Math.abs(armState.wristAngle - m_arm.getMotorWristPosition()) < 3;
   }
 }

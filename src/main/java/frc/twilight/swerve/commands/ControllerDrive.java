@@ -57,7 +57,7 @@ public class ControllerDrive extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    double rotation = rot.getAsDouble() * GeneralConfig.DT_MAX_ROT_VEL.getValue();
+    double rotation = rot.getAsDouble() * maxVelRot;
     
     if (snapDrive) {
       rotation = rotpid.calculate(Gyro.getAngle() % 360, snapRot);
@@ -65,10 +65,10 @@ public class ControllerDrive extends CommandBase {
 
     m_subsystem.setDrive(
         new DriveVector(
-                fwd.getAsDouble() * GeneralConfig.DT_MAX_VEL.getValue(),
-                str.getAsDouble() * GeneralConfig.DT_MAX_VEL.getValue(),
+                fwd.getAsDouble() * maxVelMov,
+                str.getAsDouble() * maxVelMov,
                 rotation)
-            .maxVel()
+            .maxVel(maxVelMov, maxVelRot)
             .maxAccel());
   }
 
@@ -82,7 +82,8 @@ public class ControllerDrive extends CommandBase {
   }
 
   public void setMaxVel(double mov, double rot) {
-    
+    maxVelMov = mov;
+    maxVelRot = rot;
   }
 
   // Called once the command ends or is interrupted.

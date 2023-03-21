@@ -21,7 +21,7 @@ public class Balancing extends CommandBase {
   private static TunableDouble i2 = new TunableDouble("IC", 0, true, "Balancing");
   private static TunableDouble d2 = new TunableDouble("DC", 0, true, "Balancing");
 
-  public final static double level = 6;
+  public final static double level = 6.5;
 
   private static boolean shuffled = false;
 
@@ -47,10 +47,10 @@ public class Balancing extends CommandBase {
 
     double out = Gyro.getYRot();
     
-    if (Math.abs(out - level) < 1) {
+    if (Math.abs(out - level) < 3) {
       swerve.xMode();
       return;
-    } else if (Math.abs(out - level) < 4)
+    } else if (Math.abs(out - level) < 10)
       out = pidClose.calculate(out, level);
     else
       out = pid.calculate(out, level);

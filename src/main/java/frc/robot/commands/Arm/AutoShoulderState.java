@@ -26,6 +26,6 @@ public class AutoShoulderState extends CommandBase {
 
   @Override
   public boolean isFinished() {
-   return false;
+   return Math.abs(armState.shoulderAngle - m_arm.getMotorShoulderPosition()) < 3;
   }
 }

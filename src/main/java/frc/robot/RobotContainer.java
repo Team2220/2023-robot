@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.auto.TestPath;
 import frc.robot.auto.Finished.WireBal;
+import frc.robot.auto.Finished.CenterBal;
 import frc.robot.auto.Finished.JustScoreTheConeHigh;
 import frc.robot.auto.Finished.JustScoreTheConeLow;
 import frc.robot.auto.Finished.JustScoreTheConeMid;
@@ -160,6 +161,7 @@ public class RobotContainer {
         autoChooser.addOption(new JustScoreTheConeLow(m_swerve, m_arm, m_intake));
         autoChooser.addOption(new ScoreAndGetC(m_swerve, m_arm, m_intake));
         autoChooser.addOption(new ScoreGetAndScoreC(m_swerve, m_arm, m_intake));
+        autoChooser.addOption(new CenterBal(m_swerve, m_arm, m_intake));
         autoChooser.addOption(new SetArmState(ArmStates.TRANSIT, m_arm));
 
 
