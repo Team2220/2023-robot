@@ -2,6 +2,8 @@ package frc.robot.subsystems;
 
 import java.util.ArrayList;
 
+import org.opencv.aruco.DetectorParameters;
+
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.StatorCurrentLimitConfiguration;
 import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
@@ -9,6 +11,9 @@ import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.motorcontrol.can.TalonFXConfiguration;
 
+import edu.wpi.first.math.filter.Debouncer;
+import edu.wpi.first.math.filter.Debouncer.DebounceType;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.IntakeConfig;
 import frc.twilight.tunables.TunableDouble;
@@ -30,6 +35,8 @@ public class Intake extends SubsystemBase {
     intake.configAllSettings(new TalonFXConfiguration());
 
     intake.configVoltageCompSaturation(10);
+
+    Shuffleboard.getTab("intake").addDouble("Current", intake::getStatorCurrent);
 
     intake.setInverted(IntakeConfig.INTAKE_INVERTED);
     intake.setNeutralMode(NeutralMode.Brake);
@@ -79,14 +86,24 @@ public class Intake extends SubsystemBase {
     intake.set(TalonFXControlMode.PercentOutput, value);
   }
 
+  TunableDouble deTime = new TunableDouble("debounceTime", 0.1, true);
+  private double oldDeTime = deTime.getValue();
+
+  Debouncer debouncer = new Debouncer(deTime.getValue(), Debouncer.DebounceType.kBoth);
+  
+
   // From: https://www.chiefdelphi.com/t/falcon-500-detecting-motor-stalls/428106
-  public boolean isStalled() {
-    if (intake.getSupplyCurrent() >= 9) {
+  private boolean isStalledInternal() {
+    if (intake.getStatorCurrent() >= 75) {
       double velocity = intake.getSelectedSensorVelocity();
-        return velocity <= 10;
+        return velocity <= 5;
     } else {
         return false;
     }
+  }
+
+  public boolean isStalled() {
+    return debouncer.calculate(isStalledInternal());
   }
 
   public ArrayList<TalonFX> geTalonFXs() {
@@ -94,5 +111,13 @@ public class Intake extends SubsystemBase {
     ArrayList<TalonFX> musicList = new ArrayList<>();
     musicList.add(intake);
     return musicList;
+  }
+
+  @Override
+  public void periodic() {
+  if (deTime.getValue() != oldDeTime) {
+    debouncer = new Debouncer(deTime.getValue(), Debouncer.DebounceType.kBoth);
+    oldDeTime = deTime.getValue();
+  }
   }
 }
