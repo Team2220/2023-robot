@@ -25,6 +25,8 @@ import frc.robot.auto.Finished.MobilityR;
 import frc.robot.auto.Finished.NonWireBal;
 import frc.robot.auto.Finished.ScoreAndGetC;
 import frc.robot.auto.Finished.ScoreGetAndScoreC;
+import frc.robot.auto.Finished.V2MidScoreL;
+import frc.robot.auto.Finished.V2MidScoreR;
 import frc.robot.commands.Arm.SetArmState;
 import frc.robot.commands.CommandChooser;
 import frc.robot.commands.Arm.ArmPercentOutput;
@@ -163,7 +165,8 @@ public class RobotContainer {
         autoChooser.addOption(new ScoreGetAndScoreC(m_swerve, m_arm, m_intake));
         autoChooser.addOption(new CenterBal(m_swerve, m_arm, m_intake));
         autoChooser.addOption(new SetArmState(ArmStates.TRANSIT, m_arm));
-
+        autoChooser.addOption(new V2MidScoreR(m_swerve, m_arm, m_intake));
+        autoChooser.addOption(new V2MidScoreL(m_swerve, m_arm, m_intake));
 
         SmartDashboard.putData(autoChooser.getSendableChooser());
 
