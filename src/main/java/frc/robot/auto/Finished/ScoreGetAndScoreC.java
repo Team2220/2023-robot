@@ -17,11 +17,11 @@ public class ScoreGetAndScoreC extends SequentialCommandGroup {
         addCommands(
             new ScoreAndGetC(swerve, arm, intake),
             new GoToCommand(swerve, new Position(
-                0.3,
+                -0.3,
                 Units.inchesToMeters(200.0) - (Constants.ROBOT_Y_LENGTH / 2),
                 0
                 )),
-            new GoToCommand(swerve, new Position(0.3, 0.5, 180)),
+            new GoToCommand(swerve, new Position(-0.3, 0.5, 180)),
             new GoToCommand(swerve, new Position(0, 0, 180)).alongWith(new SetArmState(ArmStates.MID_CUBE_NODE, arm)),
             new GoToCommand(swerve, new Position(0, 0, 180)),
             new AutoIntake(0.5, intake)

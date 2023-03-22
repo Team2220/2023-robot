@@ -8,6 +8,7 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import frc.robot.commands.Balancing;
 import frc.robot.commands.Arm.SetArmState;
 import frc.robot.commands.Intake.AutoIntake;
 import frc.robot.subsystems.Arm;
@@ -16,8 +17,8 @@ import frc.robot.subsystems.Arm.ArmStates;
 import frc.twilight.swerve.commands.GoToCommand;
 import frc.twilight.swerve.subsystems.Swerve;
 
-public class RedCornerMobility extends SequentialCommandGroup {
-    public RedCornerMobility(Swerve swerve, Intake intake, Arm arm) {
+public class NonWireBal extends SequentialCommandGroup {
+    public NonWireBal(Swerve swerve, Intake intake, Arm arm) {
         addCommands(
                 new InstantCommand(
                         () -> swerve.setPose2d(
@@ -63,5 +64,9 @@ public class RedCornerMobility extends SequentialCommandGroup {
                         new Pose2d(Units.inchesToMeters(75), Units.inchesToMeters(-78),
                                 Rotation2d.fromDegrees(
                                         0))));
+
+        addCommands(
+                new Balancing(swerve)
+        );
     }
 }

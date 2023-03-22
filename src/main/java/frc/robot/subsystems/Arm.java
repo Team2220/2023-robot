@@ -207,11 +207,14 @@ public class Arm extends SubsystemBase {
   /** Arm enum for arm stataes */
   public enum ArmStates {
     INTAKE(152, 41),
+    CALIBRATE(160, 80),
+    INTERMEDIATE(60, 80),
     MID_CUBE_NODE(64, -82),
-    HIGH_CUBE_NODE(63, -39),
+    HIGH_CUBE_NODE(63, -32),
+    HIGH_CUBE_AUTO(105, 70),
     MID_CONE_NODE(58, -78),
     HIGH_CONE_NODE(57.5, -27),
-    TRANSIT(171, 150),
+    TRANSIT(165, 135),
     // Starting: Shoulder = 171 , Wrist = 150
     SINGLE_LOADING_STATION(171, 140),
     DOUBLE_LOADING_STATION(54, -63);

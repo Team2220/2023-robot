@@ -1,6 +1,5 @@
 package frc.robot.commands;
 
-import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
@@ -21,6 +20,8 @@ public class Balancing extends CommandBase {
   private static TunableDouble p2 = new TunableDouble("PC", 0, true, "Balancing");
   private static TunableDouble i2 = new TunableDouble("IC", 0, true, "Balancing");
   private static TunableDouble d2 = new TunableDouble("DC", 0, true, "Balancing");
+
+  public final static double level = 6.5;
 
   private static boolean shuffled = false;
 
@@ -46,13 +47,13 @@ public class Balancing extends CommandBase {
 
     double out = Gyro.getYRot();
     
-    if (Math.abs(out - 5.7) < 1) {
+    if (Math.abs(out - level) < 3) {
       swerve.xMode();
       return;
-    } else if (Math.abs(out - 5.7) < 4)
-      out = pidClose.calculate(out, 5.7);
+    } else if (Math.abs(out - level) < 10)
+      out = pidClose.calculate(out, level);
     else
-      out = pid.calculate(out, 5.7);
+      out = pid.calculate(out, level);
 
     // out = MathUtil.clamp(out, -1, 1);
     swerve.setDrive(new DriveVector(-out, 0, 0), true);

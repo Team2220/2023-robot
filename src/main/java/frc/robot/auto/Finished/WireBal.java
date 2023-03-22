@@ -17,8 +17,8 @@ import frc.twilight.swerve.commands.GoToCommand;
 import frc.twilight.swerve.subsystems.Swerve;
 import frc.robot.subsystems.Arm;
 
-public class BlueCornerMobility extends SequentialCommandGroup {
-  public BlueCornerMobility(Swerve swerve, Intake intake, Arm arm) {
+public class WireBal extends SequentialCommandGroup {
+  public WireBal(Swerve swerve, Intake intake, Arm arm) {
     addCommands(
         new InstantCommand(
             () -> swerve.setPose2d(
@@ -28,8 +28,8 @@ public class BlueCornerMobility extends SequentialCommandGroup {
 
     addCommands(
         new SetArmState(ArmStates.TRANSIT, arm),
-        new AutoIntake(-.5, intake).withTimeout(.2),
-        new AutoIntake(.75, intake).withTimeout(1));
+        // new AutoIntake(-.5, intake).withTimeout(.2),
+        new AutoIntake(.75, intake).withTimeout(.5));
 
     addCommands(
         new GoToCommand(
@@ -65,7 +65,7 @@ public class BlueCornerMobility extends SequentialCommandGroup {
                 Rotation2d.fromDegrees(
                     0))));
 
-    new Balancing(swerve);                
+    addCommands(new Balancing(swerve));                
 
   }
 }

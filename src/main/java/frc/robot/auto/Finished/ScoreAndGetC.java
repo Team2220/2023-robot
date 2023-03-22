@@ -18,9 +18,9 @@ public class ScoreAndGetC extends SequentialCommandGroup {
             new JustScoreTheCubeHigh(swerve, arm, intake),
             new GoToCommand(swerve, new Position(0, .2, 180)),
             new SetArmState(ArmStates.TRANSIT, arm),
-            new GoToCommand(swerve, new Position(0.3, 0.5, 180)),
+            new GoToCommand(swerve, new Position(-0.3, 0.5, 180)),
             new GoToCommand(swerve, new Position(
-                0.3,
+                -0.3,
                 Units.inchesToMeters(200.0) - (Constants.ROBOT_Y_LENGTH / 2),
                 0
             )),

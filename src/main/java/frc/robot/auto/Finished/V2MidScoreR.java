@@ -18,8 +18,8 @@ import frc.robot.subsystems.Intake;
 import frc.twilight.swerve.commands.GoToCommand;
 import frc.twilight.swerve.subsystems.Swerve;
 
-public class MidScore1BalBlueAutoR extends SequentialCommandGroup {
-    public MidScore1BalBlueAutoR(Swerve swerve, Arm arm, Intake intake) {
+public class V2MidScoreR extends SequentialCommandGroup {
+    public V2MidScoreR(Swerve swerve, Arm arm, Intake intake) {
         addCommands(
                 new InstantCommand(
                         () -> swerve.setPose2d(
@@ -31,31 +31,38 @@ public class MidScore1BalBlueAutoR extends SequentialCommandGroup {
                                                                         // position
                 // score starting game piece
                 new AutoIntake(-.5, intake).withTimeout(.2),
-                new SetArmState(ArmStates.MID_CUBE_NODE, arm),
-                new AutoIntake(.75, intake).withTimeout(0.5),
+                new AutoShoulderState(ArmStates.MID_CUBE_NODE, arm).withTimeout(1),
+                new AutoWristState(ArmStates.MID_CUBE_NODE, arm).withTimeout(1),
+                new AutoIntake(.75, intake).withTimeout(1),
 
                 // score game piece 1
                 new SetArmState(ArmStates.TRANSIT, arm),
                 new GoToCommand(
                         swerve,
-                        new Pose2d(4.823257, 0.919099,
-                                Rotation2d.fromDegrees(0))),                
+                        new Pose2d(4.2238011028, 0.4498141028,
+                                Rotation2d.fromDegrees(0))),
+                new SetArmState(ArmStates.INTAKE, arm),                
                 new GoToCommand(
                         swerve,
                         new Pose2d(7.070376, 0.919099,
                                 Rotation2d.fromDegrees(0)))
-                        .alongWith(new SetArmState(ArmStates.INTAKE, arm))
-                        .raceWith(new AutoIntake(-.5, intake)),
+                        .alongWith(new AutoIntake(-.5, intake).withTimeout(2.5)),
                 new SetArmState(ArmStates.TRANSIT, arm)
-                .alongWith(new AutoIntake(-.5, intake).withTimeout(.2))
-                .alongWith(new GoToCommand(
+                .alongWith(new AutoIntake(-.5, intake).withTimeout(.2)),    
+                new GoToCommand(
+                    swerve,
+                    new Pose2d(4.2238011028, 0.4498141028,
+                            Rotation2d.fromDegrees(180))),    
+                new GoToCommand(
                         swerve,
                         new Pose2d(1.8453771028, 1.071499,
-                                Rotation2d.fromDegrees(180)))),
-                new SetArmState(ArmStates.HIGH_CUBE_NODE, arm),
-                new AutoIntake(.5, intake).withTimeout(0.5),
-                new SetArmState(ArmStates.TRANSIT, arm),
-                //balance
+                                Rotation2d.fromDegrees(180))),
+                new AutoShoulderState(ArmStates.HIGH_CUBE_NODE, arm).withTimeout(.5),
+                new AutoWristState(ArmStates.HIGH_CUBE_NODE, arm).withTimeout(.5),
+                new AutoIntake(.5, intake).withTimeout(1),
+                new AutoWristState(ArmStates.TRANSIT, arm).withTimeout(1),
+                new AutoShoulderState(ArmStates.TRANSIT, arm).withTimeout(1),
+                // balance
                 new GoToCommand(
                         swerve,
                         new Pose2d(1.9453771028, 2.743581,
@@ -63,7 +70,7 @@ public class MidScore1BalBlueAutoR extends SequentialCommandGroup {
                 new GoToCommand(
                         swerve,
                         new Pose2d(3.279775, 2.743581,
-                                Rotation2d.fromDegrees(0))).setTolerence(0.2, 10),
+                                Rotation2d.fromDegrees(180))),
                 new Balancing(swerve));
     }
 }

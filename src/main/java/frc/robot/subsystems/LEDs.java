@@ -181,12 +181,12 @@ public class LEDs extends SubsystemBase {
 
       m_lastDisconectTime = Timer.getFPGATimestamp();
       transitionSystemState(SystemState.DRIVER_STATION_DISCONNECTED);
-    }
+    } 
 
-    // if (haveGamePiece.getAsBoolean()) {
-    //   m_startHavingGamePiece = Timer.getFPGATimestamp();
-    //   transitionSystemState(SystemState.HAVE_GAME_PIECE);
-    // }
+    if (haveGamePiece.getAsBoolean()) {
+      m_startHavingGamePiece = Timer.getFPGATimestamp();
+      transitionSystemState(SystemState.HAVE_GAME_PIECE);
+    }
 
     switch (systemState) {
       case DRIVER_STATION_DISCONNECTED: {
