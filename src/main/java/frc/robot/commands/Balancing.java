@@ -17,11 +17,11 @@ public class Balancing extends CommandBase {
   private static TunableDouble i = new TunableDouble("I", 0.005, true, "Balancing");
   private static TunableDouble d = new TunableDouble("D", 0.000003, true, "Balancing");
 
-  private static TunableDouble p2 = new TunableDouble("PC", 0, true, "Balancing");
+  private static TunableDouble p2 = new TunableDouble("PC", 0.015, true, "Balancing");
   private static TunableDouble i2 = new TunableDouble("IC", 0, true, "Balancing");
   private static TunableDouble d2 = new TunableDouble("DC", 0, true, "Balancing");
 
-  public final static double level = 6.5;
+  public final static double level = 2.6;
 
   private static boolean shuffled = false;
 

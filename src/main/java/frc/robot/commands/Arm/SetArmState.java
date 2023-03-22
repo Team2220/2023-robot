@@ -20,6 +20,11 @@ public class SetArmState extends CommandBase {
   }
 
   @Override
+  public void execute() {
+    // m_arm.setArmState(armState);
+  }
+
+  @Override
   public String getName() {
     return "Set " + armState.name();
   }

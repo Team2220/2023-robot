@@ -401,9 +401,9 @@ public class Arm extends SubsystemBase {
 
   @Override
   public void periodic() {
-    if (!RobotController.isSysActive()) {
-      holdCurrentPosition();
-    }
+    // if (!RobotController.isSysActive()) {
+    //   holdCurrentPosition();
+    // }
     // double shoulderForwardLimit = anglesToShoulderSensorPosition(ArmConfig.SHOULDER_FORWARD_LIMIT);
     // double shoulderReverseLimit = anglesToShoulderSensorPosition(ArmConfig.SHOULDER_REVERSE_LIMIT);
     // double wristForwardLimit = anglesToWristSensorPosition(ArmConfig.WRIST_FORWARD_LIMIT);

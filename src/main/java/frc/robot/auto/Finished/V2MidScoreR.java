@@ -21,6 +21,8 @@ import frc.twilight.swerve.subsystems.Swerve;
 public class V2MidScoreR extends SequentialCommandGroup {
     public V2MidScoreR(Swerve swerve, Arm arm, Intake intake) {
         addCommands(
+                new JustScoreTheCubeHigh(swerve, arm, intake),
+
                 new InstantCommand(
                         () -> swerve.setPose2d(
                                 new Pose2d(
@@ -29,11 +31,11 @@ public class V2MidScoreR extends SequentialCommandGroup {
                                         Rotation2d.fromDegrees(180)))), // set
                                                                         // starting
                                                                         // position
-                // score starting game piece
-                new AutoIntake(-.5, intake).withTimeout(.2),
-                new AutoShoulderState(ArmStates.MID_CUBE_NODE, arm).withTimeout(1),
-                new AutoWristState(ArmStates.MID_CUBE_NODE, arm).withTimeout(1),
-                new AutoIntake(.75, intake).withTimeout(1),
+                // // score starting game piece
+                // new AutoIntake(-.5, intake).withTimeout(.2),
+                // new AutoShoulderState(ArmStates.MID_CUBE_NODE, arm).withTimeout(1),
+                // new AutoWristState(ArmStates.MID_CUBE_NODE, arm).withTimeout(1),
+                // new AutoIntake(.75, intake).withTimeout(1),
 
                 // score game piece 1
                 new SetArmState(ArmStates.TRANSIT, arm),
