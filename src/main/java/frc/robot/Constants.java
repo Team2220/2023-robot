@@ -49,7 +49,7 @@ public final class Constants {
     public static final double WRIST_GEAR_RATIO = (5.0 / 1.0) * (5.0 / 1.0) * (5.0 / 1.0);
     public static final double TALONFX_ENCODER_TICKS = 2048;
     public static final double WRIST_FORWARD_LIMIT = 135.0;
-    public static final double WRIST_REVERSE_LIMIT = -135.0;
+    public static final double WRIST_REVERSE_LIMIT = -160.0;
     public static final double SHOULDER_FORWARD_LIMIT = 165.0; // Away from battery
     public static final double SHOULDER_REVERSE_LIMIT = -100.0; // Towards battery
     // Stowed position
