@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.auto.TestPath;
 import frc.robot.auto.Finished.WireBal;
 import frc.robot.auto.Finished.CenterBal;
+import frc.robot.auto.Finished.CenterBalV2;
 import frc.robot.auto.Finished.JustScoreTheConeHigh;
 import frc.robot.auto.Finished.JustScoreTheConeLow;
 import frc.robot.auto.Finished.JustScoreTheConeMid;
@@ -167,6 +168,7 @@ public class RobotContainer {
         autoChooser.addOption(new SetArmState(ArmStates.TRANSIT, m_arm));
         autoChooser.addOption(new V2MidScoreR(m_swerve, m_arm, m_intake));
         autoChooser.addOption(new V2MidScoreL(m_swerve, m_arm, m_intake));
+        autoChooser.addOption(new CenterBalV2(m_swerve, m_arm, m_intake));
 
         SmartDashboard.putData(autoChooser.getSendableChooser());
 
@@ -280,5 +282,6 @@ public class RobotContainer {
     public Command getAutonomousCommand() {
         // An ExampleCommand will run in autonomous
         return autoChooser.getSelected();
+        // return new CenterBalV2(m_swerve, m_arm, m_intake);
     }
 }
