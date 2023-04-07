@@ -4,6 +4,10 @@
 
 package frc.robot;
 
+import java.util.function.BiConsumer;
+
+import edu.wpi.first.util.datalog.StringLogEntry;
+import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -39,6 +43,31 @@ public class Robot extends TimedRobot {
     SmartDashboard.putData(CommandScheduler.getInstance());
 
     addPeriodic(() -> LogPowerFaults.check(), 1, 0.01);
+
+    BiConsumer<Command, Boolean> logCommandFunction = (Command command, Boolean active) -> {
+      String name = command.getName();
+    };
+    CommandScheduler.getInstance()
+        .onCommandInitialize(
+            (Command command) -> {
+              logCommand(command, "initialize");
+            });
+    CommandScheduler.getInstance()
+        .onCommandFinish(
+            (Command command) -> {
+              logCommand(command, "finish");
+            });
+    CommandScheduler.getInstance()
+        .onCommandInterrupt(
+            (Command command) -> {
+              logCommand(command, "interrupt");
+            });
+  }
+
+  private StringLogEntry commandStateEntry = new StringLogEntry(DataLogManager.getLog(), "CommandStates");
+
+  private void logCommand(Command command, String state) {
+    commandStateEntry.append(command.getName() + " " + state);
   }
 
   /**
