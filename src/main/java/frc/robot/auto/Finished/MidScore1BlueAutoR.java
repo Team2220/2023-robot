@@ -7,8 +7,6 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import frc.robot.commands.Arm.AutoShoulderState;
-import frc.robot.commands.Arm.AutoWristState;
 import frc.robot.commands.Arm.SetArmState;
 import frc.robot.commands.Intake.AutoIntake;
 import frc.robot.subsystems.Arm;
