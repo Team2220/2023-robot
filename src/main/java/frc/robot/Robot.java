@@ -4,10 +4,15 @@
 
 package frc.robot;
 
+import java.util.function.BiConsumer;
+
+import edu.wpi.first.util.datalog.StringLogEntry;
+import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -31,6 +36,31 @@ public class Robot extends TimedRobot {
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
     SmartDashboard.putData(CommandScheduler.getInstance());
+
+    BiConsumer<Command, Boolean> logCommandFunction = (Command command, Boolean active) -> {
+      String name = command.getName();
+    };
+    CommandScheduler.getInstance()
+        .onCommandInitialize(
+            (Command command) -> {
+              logCommand(command, "initialize");
+            });
+    CommandScheduler.getInstance()
+        .onCommandFinish(
+            (Command command) -> {
+              logCommand(command, "finish");
+            });
+    CommandScheduler.getInstance()
+        .onCommandInterrupt(
+            (Command command) -> {
+              logCommand(command, "interrupt");
+            });
+  }
+  
+  private StringLogEntry commandStateEntry = new StringLogEntry(DataLogManager.getLog(), "CommandStates");
+
+  private void logCommand(Command command, String state) {
+    commandStateEntry.append(command.getName() + " " + state);
   }
   
   /**
@@ -103,5 +133,7 @@ public class Robot extends TimedRobot {
 
   /** This function is called periodically whilst in simulation. */
   @Override
-  public void simulationPeriodic() {}
+  public void simulationPeriodic() {
+  }
+  
 }
