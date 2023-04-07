@@ -2,6 +2,7 @@ package frc.robot.auto.Finished;
 
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import frc.robot.auto.SimpleAutos.JustScoreTheCubeHigh;
 import frc.robot.commands.Balancing;
 import frc.robot.commands.Arm.SetArmState;
 import frc.robot.subsystems.Arm;

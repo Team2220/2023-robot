@@ -7,6 +7,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import frc.robot.auto.SimpleAutos.JustScoreTheCubeHigh;
 import frc.robot.commands.Balancing;
 import frc.robot.commands.Arm.AutoShoulderState;
 import frc.robot.commands.Arm.AutoWristState;
