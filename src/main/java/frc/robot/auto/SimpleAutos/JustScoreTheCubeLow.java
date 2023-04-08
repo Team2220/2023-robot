@@ -1,4 +1,4 @@
-package frc.robot.auto.Finished;
+package frc.robot.auto.SimpleAutos;
 
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
@@ -11,8 +11,8 @@ import frc.twilight.swerve.commands.GoToCommand;
 import frc.twilight.swerve.subsystems.Swerve;
 import frc.twilight.swerve.vectors.Position;
 
-public class JustScoreTheConeLow extends SequentialCommandGroup {
-    public JustScoreTheConeLow(Swerve swerve, Arm arm, Intake intake) {
+public class JustScoreTheCubeLow extends SequentialCommandGroup {
+    public JustScoreTheCubeLow(Swerve swerve, Arm arm, Intake intake) {
         addCommands(
             new InstantCommand(() -> swerve.setOdo(0, 0, 180)),
             new AutoIntake(-0.5, intake).withTimeout(0.4),
@@ -21,7 +21,7 @@ public class JustScoreTheConeLow extends SequentialCommandGroup {
             new InstantCommand(() -> arm.setShoulderFromAbsEncoder()),
             new InstantCommand(() -> arm.setWristFromAbsEncoder()),
             new SetArmState(ArmStates.INTAKE, arm),
-            new GoToCommand(swerve, new Position(0, 0, 180)),
+            // new GoToCommand(swerve, new Position(0, 0, 180)),
             new AutoIntake(0.5, intake).withTimeout(0.5)
         );
     }
