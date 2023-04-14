@@ -4,8 +4,6 @@
 
 package frc.robot;
 
-import java.util.function.BiConsumer;
-
 import edu.wpi.first.util.datalog.StringLogEntry;
 import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.TimedRobot;
@@ -44,9 +42,6 @@ public class Robot extends TimedRobot {
 
     addPeriodic(() -> LogPowerFaults.check(), 1, 0.01);
 
-    BiConsumer<Command, Boolean> logCommandFunction = (Command command, Boolean active) -> {
-      String name = command.getName();
-    };
     CommandScheduler.getInstance()
         .onCommandInitialize(
             (Command command) -> {
