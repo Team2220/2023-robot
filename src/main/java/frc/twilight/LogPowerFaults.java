@@ -1,5 +1,9 @@
 package frc.twilight;
 
+import java.util.ArrayList;
+
+import com.ctre.phoenix.motorcontrol.can.TalonFX;
+
 import edu.wpi.first.hal.PowerDistributionStickyFaults;
 import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.PowerDistribution;
@@ -7,6 +11,12 @@ import edu.wpi.first.wpilibj.PowerDistribution;
 public class LogPowerFaults {
     private static boolean firstCheck = true;
     private static PowerDistribution pdh = new PowerDistribution();
+
+    private static ArrayList<TalonFX> talonFXs = new ArrayList<>();
+
+    public static void add(TalonFX talonFX){
+        talonFXs.add(talonFX);
+    }
 
     public static void check() {
         if (firstCheck) {
@@ -89,5 +99,9 @@ public class LogPowerFaults {
             return null;
 
         return "PDH faults:\n" + out;
+    }
+
+    private static void checkTalonFX(TalonFX talon) {
+        
     }
 }
