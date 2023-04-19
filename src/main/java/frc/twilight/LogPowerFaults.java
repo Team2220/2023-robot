@@ -2,6 +2,7 @@ package frc.twilight;
 
 import java.util.ArrayList;
 
+import com.ctre.phoenix.motorcontrol.StickyFaults;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 
 import edu.wpi.first.hal.PowerDistributionStickyFaults;
@@ -9,20 +10,20 @@ import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.PowerDistribution;
 
 public class LogPowerFaults {
-    private static boolean firstCheck = true;
+    private static boolean firstCheckTalon = true;
+    private static boolean firstCheckPdh = true;
     private static PowerDistribution pdh = new PowerDistribution();
+    private static ArrayList<TalonFX> talonFxs = new ArrayList<>();
 
-    private static ArrayList<TalonFX> talonFXs = new ArrayList<>();
-
-    public static void add(TalonFX talonFX){
-        talonFXs.add(talonFX);
+    public static void add(TalonFX talonFX) {
+        talonFxs.add(talonFX);
     }
 
-    public static void check() {
-        if (firstCheck) {
+    public static void checkPDH() {
+        if (firstCheckPdh) {
             DataLogManager.log(pdhFaultsToString(pdh.getStickyFaults(), false));
             pdh.clearStickyFaults();
-            firstCheck = false;
+            firstCheckPdh = false;
         }
 
         PowerDistributionStickyFaults faults = pdh.getStickyFaults();
@@ -101,7 +102,86 @@ public class LogPowerFaults {
         return "PDH faults:\n" + out;
     }
 
-    private static void checkTalonFX(TalonFX talon) {
-        
+    // public static void main(String[] args) {
+    // if (firstCheck) {
+    // DataLogManager.log(checkTalonFX(stickyfaults.hasAnyFault(), false));
+    // TalonFX.clearStickyFaults();
+    // firstCheck = false;
+    // }
+    // StickyFaults tFaults = talon.getDeviceID();
+    // String talonFault = checkTalonFX(null, tFaults, true);
+    // if (talonFault != null) {
+    // DataLogManager.log(talonFault);
+    // TalonFX.clearStickyFaults();
+    // }
+    // }
+    /* Advanced For Loop */
+
+    public static void checkTalons() {
+
+        StickyFaults talonFaults = new StickyFaults();
+        String talonFault = checkTalonFX(null, talonFaults, firstCheckTalon);
+
+        if (firstCheckTalon)
+            for (TalonFX num : talonFxs) {
+                DataLogManager.log(checkTalonFX(num, talonFaults, false));
+                firstCheckTalon = false;
+            }
+        if (talonFault != null) {
+            DataLogManager.log(talonFault);
+            talonFxs.clear();
+        }
     }
+
+    private static String checkTalonFX(TalonFX talon, StickyFaults faults, boolean emptyOnNone) {
+
+        String out = "";
+
+        if (faults.UnderVoltage)
+            out += " - UnderVolyage\n";
+
+        if (faults.ForwardLimitSwitch)
+            out += " - ForwardLimitSwitch\n";
+
+        if (faults.ReverseLimitSwitch)
+            out += " - ReverseLimitSwitch\n";
+
+        if (faults.ForwardSoftLimit)
+            out += " - ForwardSoftLimit\n";
+
+        if (faults.ReverseSoftLimit)
+            out += " - ReverseSoftLimit\n";
+
+        if (faults.ResetDuringEn)
+            out += " - ResetDuringEn\n";
+
+        if (faults.SensorOverflow)
+            out += " - SensorOverflow\n";
+
+        if (faults.SensorOutOfPhase)
+            out += " - SensorOutOfPhase\n";
+
+        if (faults.HardwareESDReset)
+            out += " - HardwareESDReset\n";
+
+        if (faults.RemoteLossOfSignal)
+            out += " - RemoteLossOfSignal\n";
+
+        if (faults.APIError)
+            out += " - APIError\n";
+
+        if (faults.SupplyOverV)
+            out += " - SupplyOverV\n";
+
+        if (faults.SupplyUnstable)
+            out += " - SupplyUnstable\n";
+
+        if (out == "" && !emptyOnNone)
+            out = " - No TalonFX " + talon.getDeviceID() + " sticky faults on startup :)";
+        else if (out == "" && emptyOnNone)
+            return null;
+
+        return "TalonFX" + talon.getDeviceID() + "faults:\n + out";
+    }
+
 }

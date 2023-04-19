@@ -41,7 +41,10 @@ public class Robot extends TimedRobot {
     m_robotContainer = new RobotContainer();
     SmartDashboard.putData(CommandScheduler.getInstance());
 
-    addPeriodic(() -> LogPowerFaults.check(), 1, 0.01);
+    addPeriodic(() -> LogPowerFaults.checkPDH(), 1, 0.01);
+   
+
+    addPeriodic(() -> LogPowerFaults.checkTalons(), 1, 0.01);
     CommandObserver.start();
   }
 

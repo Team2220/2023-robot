@@ -25,11 +25,10 @@ public class SwerveDrive {
   private final SwerveModule backLeft;
   private final SwerveModule backRight;
 
-  private PIDController gyroPID =
-      new PIDController(
-          PIDconfig.DT_GYRO_P.getValue(),
-          PIDconfig.DT_GYRO_I.getValue(),
-          PIDconfig.DT_GYRO_D.getValue());
+  private PIDController gyroPID = new PIDController(
+      PIDconfig.DT_GYRO_P.getValue(),
+      PIDconfig.DT_GYRO_I.getValue(),
+      PIDconfig.DT_GYRO_D.getValue());
 
   private double odoLastCheck = -1;
   private Position odoPosition;
@@ -37,38 +36,33 @@ public class SwerveDrive {
   private Field2d field = new Field2d();
 
   public SwerveDrive() {
-    frontLeft =
-        new SwerveModule(
-            CANidConfig.DT_FL_DM,
-            CANidConfig.DT_FL_SM,
-            CANidConfig.DT_FL_SE,
-            ModuleConfig.DT_FL_SE_OFFSET);
-    frontRight =
-        new SwerveModule(
-            CANidConfig.DT_FR_DM,
-            CANidConfig.DT_FR_SM,
-            CANidConfig.DT_FR_SE,
-            ModuleConfig.DT_FR_SE_OFFSET);
-    backLeft =
-        new SwerveModule(
-            CANidConfig.DT_BL_DM,
-            CANidConfig.DT_BL_SM,
-            CANidConfig.DT_BL_SE,
-            ModuleConfig.DT_BL_SE_OFFSET);
-    backRight =
-        new SwerveModule(
-            CANidConfig.DT_BR_DM,
-            CANidConfig.DT_BR_SM,
-            CANidConfig.DT_BR_SE,
-            ModuleConfig.DT_BR_SE_OFFSET);
+    frontLeft = new SwerveModule(
+        CANidConfig.DT_FL_DM,
+        CANidConfig.DT_FL_SM,
+        CANidConfig.DT_FL_SE,
+        ModuleConfig.DT_FL_SE_OFFSET);
+    frontRight = new SwerveModule(
+        CANidConfig.DT_FR_DM,
+        CANidConfig.DT_FR_SM,
+        CANidConfig.DT_FR_SE,
+        ModuleConfig.DT_FR_SE_OFFSET);
+    backLeft = new SwerveModule(
+        CANidConfig.DT_BL_DM,
+        CANidConfig.DT_BL_SM,
+        CANidConfig.DT_BL_SE,
+        ModuleConfig.DT_BL_SE_OFFSET);
+    backRight = new SwerveModule(
+        CANidConfig.DT_BR_DM,
+        CANidConfig.DT_BR_SM,
+        CANidConfig.DT_BR_SE,
+        ModuleConfig.DT_BR_SE_OFFSET);
 
     odoLastCheck = System.currentTimeMillis();
 
     Gyro.setPosition(GeneralConfig.DT_START_GYRO);
 
-    odoPosition =
-        new Position(
-            GeneralConfig.DT_START_X, GeneralConfig.DT_START_Y, GeneralConfig.DT_START_GYRO);
+    odoPosition = new Position(
+        GeneralConfig.DT_START_X, GeneralConfig.DT_START_Y, GeneralConfig.DT_START_GYRO);
 
     if (GeneralConfig.SWERVE_SHUFFLEBOARD_ENABLED) {
       Shuffleboard.getTab("Swerve")
@@ -122,6 +116,7 @@ public class SwerveDrive {
           .withPosition(7, 3);
       Shuffleboard.getTab("Swerve").addBoolean("Gyro is connected", () -> Gyro.isConnected());
     }
+
   }
 
   public void setDrive(DriveVector vector, boolean robotCentric) {
@@ -165,9 +160,8 @@ public class SwerveDrive {
   }
 
   public DriveVector getDrive() {
-    DriveVector out =
-        VectorFactory.driveVectorFromWheelVectors(
-            frontRight.get(), frontLeft.get(), backRight.get(), backLeft.get());
+    DriveVector out = VectorFactory.driveVectorFromWheelVectors(
+        frontRight.get(), frontLeft.get(), backRight.get(), backLeft.get());
     out.zeroDirection(-Gyro.getAngle());
 
     return out;

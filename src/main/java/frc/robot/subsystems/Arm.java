@@ -21,6 +21,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Constants.ArmConfig;
 import frc.robot.commands.Arm.SetArmState;
+import frc.twilight.LogPowerFaults;
 import frc.twilight.tunables.TunableDouble;
 
 public class Arm extends SubsystemBase {
@@ -93,12 +94,9 @@ public class Arm extends SubsystemBase {
   public Arm() {
     /* Motion Magic Configurations */
     wristConfig.motionAcceleration = degreesPerSecondToEncoderTicks(200, ArmConfig.WRIST_GEAR_RATIO);
-    wristConfig.motionCruiseVelocity =
-        degreesPerSecondToEncoderTicks(200, ArmConfig.WRIST_GEAR_RATIO);
-    shoulderConfig.motionCruiseVelocity =
-        degreesPerSecondToEncoderTicks(100, ArmConfig.SHOULDER_GEAR_RATIO);
-    shoulderConfig.motionAcceleration =
-        degreesPerSecondToEncoderTicks(200, ArmConfig.SHOULDER_GEAR_RATIO);
+    wristConfig.motionCruiseVelocity = degreesPerSecondToEncoderTicks(200, ArmConfig.WRIST_GEAR_RATIO);
+    shoulderConfig.motionCruiseVelocity = degreesPerSecondToEncoderTicks(100, ArmConfig.SHOULDER_GEAR_RATIO);
+    shoulderConfig.motionAcceleration = degreesPerSecondToEncoderTicks(200, ArmConfig.SHOULDER_GEAR_RATIO);
 
     wrist.configAllSettings(wristConfig);
     shoulder.configAllSettings(shoulderConfig);
@@ -121,10 +119,10 @@ public class Arm extends SubsystemBase {
     shoulder.configStatorCurrentLimit(config);
     wrist.configStatorCurrentLimit(config);
 
-    //----------------------------------------------------------------------------------------------------------------------
+    // ----------------------------------------------------------------------------------------------------------------------
     shoulder.setNeutralMode(NeutralMode.Brake);
     wrist.setNeutralMode(NeutralMode.Brake);
-    //----------------------------------------------------------------------------------------------------------------------
+    // ----------------------------------------------------------------------------------------------------------------------
 
     wrist.config_kP(0, wristP.getValue());
     wrist.config_kI(0, wristI.getValue());
@@ -153,17 +151,18 @@ public class Arm extends SubsystemBase {
         anglesToWristSensorPosition(ArmConfig.WRIST_REVERSE_LIMIT));
 
     setUpTestCommands();
+
+    LogPowerFaults.add(shoulder);
+    LogPowerFaults.add(wrist);
   }
 
   public void setShoulderFromAbsEncoder() {
-    double shoulderOffset =
-        getShoulderPosition() * (ArmConfig.SHOULDER_GEAR_RATIO) * (ArmConfig.TALONFX_ENCODER_TICKS);
+    double shoulderOffset = getShoulderPosition() * (ArmConfig.SHOULDER_GEAR_RATIO) * (ArmConfig.TALONFX_ENCODER_TICKS);
     shoulder.setSelectedSensorPosition(shoulderOffset);
   }
 
   public void setWristFromAbsEncoder() {
-    double wristOffset =
-        getWristPosition() * (ArmConfig.WRIST_GEAR_RATIO) * (ArmConfig.TALONFX_ENCODER_TICKS);
+    double wristOffset = getWristPosition() * (ArmConfig.WRIST_GEAR_RATIO) * (ArmConfig.TALONFX_ENCODER_TICKS);
     wrist.setSelectedSensorPosition(wristOffset);
   }
 
@@ -218,13 +217,13 @@ public class Arm extends SubsystemBase {
     SINGLE_LOADING_STATION(171, 140),
     DOUBLE_LOADING_STATION(54, -63);
 
+    public final double shoulderAngle;
+    public final double wristAngle;
 
-  public final double shoulderAngle;
-  public final double wristAngle;
-  private ArmStates(double shoulderAngle, double wristAngle){
+    private ArmStates(double shoulderAngle, double wristAngle) {
       this.shoulderAngle = shoulderAngle;
       this.wristAngle = wristAngle;
-  }
+    }
 
   }
 
@@ -235,9 +234,8 @@ public class Arm extends SubsystemBase {
   }
 
   public boolean atArmState(ArmStates armState) {
-    return 
-      Math.abs(armState.shoulderAngle - getMotorShoulderPosition()) < 3 &&
-      Math.abs(armState.wristAngle - getMotorWristPosition()) < 3;
+    return Math.abs(armState.shoulderAngle - getMotorShoulderPosition()) < 3 &&
+        Math.abs(armState.wristAngle - getMotorWristPosition()) < 3;
   }
 
   private double degreesPerSecondToEncoderTicks(double angle, double gearRatio) {
@@ -288,7 +286,8 @@ public class Arm extends SubsystemBase {
   }
 
   public double getShoulderPosition() {
-    return remap(shoulderEncoder.getAbsolutePosition(), ArmConfig.SHOULDER_REMAP_LIMIT) - ArmConfig.SHOULDER_ENCODER_OFFSET;
+    return remap(shoulderEncoder.getAbsolutePosition(), ArmConfig.SHOULDER_REMAP_LIMIT)
+        - ArmConfig.SHOULDER_ENCODER_OFFSET;
   }
 
   public double getWristPosition() {
@@ -371,10 +370,11 @@ public class Arm extends SubsystemBase {
 
     angLayout.addDouble("shoulder angle", () -> ticksToShoulderAngle(shoulder.getSelectedSensorPosition()));
     angLayout.addDouble("wrist angle", () -> ticksToWristAngle(wrist.getSelectedSensorPosition()));
- 
-    // Angles using remap()   
+
+    // Angles using remap()
     angLayout.addDouble("wrist remap", () -> remap(wristEncoder.getAbsolutePosition(), ArmConfig.WRIST_REMAP_LIMIT));
-    angLayout.addDouble("shoulder remap", () -> remap(shoulderEncoder.getAbsolutePosition(), ArmConfig.SHOULDER_REMAP_LIMIT));
+    angLayout.addDouble("shoulder remap",
+        () -> remap(shoulderEncoder.getAbsolutePosition(), ArmConfig.SHOULDER_REMAP_LIMIT));
 
     angLayout.addBoolean("wrist is connected", () -> wristEncoder.isConnected());
     angLayout.addBoolean("shoulder is connected", () -> shoulderEncoder.isConnected());
@@ -383,7 +383,6 @@ public class Arm extends SubsystemBase {
     // .getLayout("Dynamic Limits", BuiltInLayouts.kGrid)
     // .withSize(2, 3)
     // .withProperties(Map.of("Label position", "TOP"));
-    
 
     // dynamicLimits.addDouble(getName(), null);
 
@@ -401,20 +400,24 @@ public class Arm extends SubsystemBase {
   @Override
   public void periodic() {
     // if (!RobotController.isSysActive()) {
-    //   holdCurrentPosition();
+    // holdCurrentPosition();
     // }
-    // double shoulderForwardLimit = anglesToShoulderSensorPosition(ArmConfig.SHOULDER_FORWARD_LIMIT);
-    // double shoulderReverseLimit = anglesToShoulderSensorPosition(ArmConfig.SHOULDER_REVERSE_LIMIT);
-    // double wristForwardLimit = anglesToWristSensorPosition(ArmConfig.WRIST_FORWARD_LIMIT);
-    // double wristReverseLimit = anglesToWristSensorPosition(ArmConfig.WRIST_REVERSE_LIMIT);
+    // double shoulderForwardLimit =
+    // anglesToShoulderSensorPosition(ArmConfig.SHOULDER_FORWARD_LIMIT);
+    // double shoulderReverseLimit =
+    // anglesToShoulderSensorPosition(ArmConfig.SHOULDER_REVERSE_LIMIT);
+    // double wristForwardLimit =
+    // anglesToWristSensorPosition(ArmConfig.WRIST_FORWARD_LIMIT);
+    // double wristReverseLimit =
+    // anglesToWristSensorPosition(ArmConfig.WRIST_REVERSE_LIMIT);
     // if ((wrist.getSelectedSensorPosition() >= wristForwardLimit)
-    //     || (wrist.getSelectedSensorPosition() <= wristReverseLimit)) {
-    //   controller.runRumble(RumbleVariables.medium);
+    // || (wrist.getSelectedSensorPosition() <= wristReverseLimit)) {
+    // controller.runRumble(RumbleVariables.medium);
     // } else if ((shoulder.getSelectedSensorPosition() >= shoulderForwardLimit)
-    //     || (shoulder.getSelectedSensorPosition() <= shoulderReverseLimit)) {
-    //   controller.runRumble(RumbleVariables.medium);
+    // || (shoulder.getSelectedSensorPosition() <= shoulderReverseLimit)) {
+    // controller.runRumble(RumbleVariables.medium);
     // } else {
-    //   controller.runRumble(RumbleVariables.off);
+    // controller.runRumble(RumbleVariables.off);
     // }
 
     updatePID();

@@ -6,6 +6,7 @@ import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
 import com.ctre.phoenix.motorcontrol.TalonFXFeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 
+import frc.twilight.LogPowerFaults;
 import frc.twilight.swerve.config.ModuleConfig;
 import frc.twilight.swerve.config.PIDconfig;
 import frc.twilight.tunables.TunableDouble;
@@ -27,6 +28,8 @@ public class SteerMotor {
 
   public SteerMotor(int canID) {
     motor = new TalonFX(canID);
+
+    LogPowerFaults.add(motor);
 
     // Reset motor settings
     motor.configFactoryDefault();
