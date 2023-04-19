@@ -45,6 +45,7 @@ public class LEDs extends SubsystemBase {
     STROBE_ANIMATION,
     FULL_LEDS,
     DRIVER_STATION_DISCONNECTED,
+    DRIVER_STATION_CONNECTED,
     BROWNOUT,
     OFF,
     NOTHING_IN_AUTO,
@@ -77,6 +78,11 @@ public class LEDs extends SubsystemBase {
 
       case DRIVER_STATION_DISCONNECTED: {
         setBlue();
+        break;
+      }
+
+      case DRIVER_STATION_CONNECTED: {
+        setLEDRainAnimationFast();
         break;
       }
 
@@ -181,7 +187,7 @@ public class LEDs extends SubsystemBase {
 
       m_lastDisconectTime = Timer.getFPGATimestamp();
       transitionSystemState(SystemState.DRIVER_STATION_DISCONNECTED);
-    } 
+    }
 
     if (haveGamePiece.getAsBoolean()) {
       m_startHavingGamePiece = Timer.getFPGATimestamp();
@@ -190,10 +196,16 @@ public class LEDs extends SubsystemBase {
 
     switch (systemState) {
       case DRIVER_STATION_DISCONNECTED: {
-        if (Timer.getFPGATimestamp() > m_lastDisconectTime + 5) {
-          switchDesieredState();
+        if (DriverStation.isDSAttached() && Timer.getFPGATimestamp() - m_lastDisconectTime > 3) {
+          transitionSystemState(SystemState.DRIVER_STATION_CONNECTED);
         }
         break;
+      }
+
+      case DRIVER_STATION_CONNECTED: {
+        if (Timer.getFPGATimestamp() - m_lastDisconectTime > 7) {
+          switchDesieredState();
+        }
       }
 
       case BROWNOUT: {
