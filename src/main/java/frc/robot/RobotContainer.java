@@ -114,7 +114,7 @@ public class RobotContainer {
          * The container for the robot. Contains subsystems, OI devices, and commands.
          */
         public RobotContainer() {
-                m_leds = new LEDs(() -> m_intake.isStalled());
+                m_leds = new LEDs(() -> m_intake.isStalled(), () -> autoChooser.isDefaultSelected());
                 // Stop logging for missing joysticks
                 DriverStation.silenceJoystickConnectionWarning(true);
 

@@ -28,6 +28,7 @@ public class LEDs extends SubsystemBase {
   private double m_startTime = 25.0;
   private double m_startHavingGamePiece = 0;
   private BooleanSupplier haveGamePiece;
+  private BooleanSupplier defaultAutoSelected;
 
   public enum DesiredState {
     RAINBOW_ANIMATION,
@@ -107,6 +108,7 @@ public class LEDs extends SubsystemBase {
       }
 
       case NOTHING_IN_AUTO: {
+        setYellow();
         break;
       }
 
@@ -131,7 +133,7 @@ public class LEDs extends SubsystemBase {
     }
   }
 
-  public LEDs(BooleanSupplier haveGamePiece) {
+  public LEDs(BooleanSupplier haveGamePiece, BooleanSupplier defaultAutoSelected) {
 
     CANdleConfiguration config = new CANdleConfiguration();
     left.configAllSettings(config);
@@ -139,6 +141,7 @@ public class LEDs extends SubsystemBase {
     setUpTestCommands();
 
     this.haveGamePiece = haveGamePiece;
+    this.defaultAutoSelected = defaultAutoSelected;
   }
 
   private void switchDesieredState() {
@@ -194,6 +197,10 @@ public class LEDs extends SubsystemBase {
       transitionSystemState(SystemState.HAVE_GAME_PIECE);
     }
 
+    if (defaultAutoSelected.getAsBoolean() && DriverStation.isDisabled()) {
+      transitionSystemState(SystemState.NOTHING_IN_AUTO);
+    }
+
     switch (systemState) {
       case DRIVER_STATION_DISCONNECTED: {
         if (DriverStation.isDSAttached() && Timer.getFPGATimestamp() - m_lastDisconectTime > 3) {
@@ -235,6 +242,9 @@ public class LEDs extends SubsystemBase {
         break;
       }
       case NOTHING_IN_AUTO: {
+        if (DriverStation.isEnabled() || !defaultAutoSelected.getAsBoolean()) {
+          switchDesieredState();
+        }
         break;
       }
 
@@ -270,6 +280,12 @@ public class LEDs extends SubsystemBase {
   private void setBlue() {
 
     SingleFadeAnimation singleFadeAnimation = new SingleFadeAnimation(0, 0, 100, 0, .5, 164);
+    left.animate(singleFadeAnimation);
+    right.animate(singleFadeAnimation);
+  }
+
+  private void setYellow() {
+    SingleFadeAnimation singleFadeAnimation = new SingleFadeAnimation(255, 255, 13, 0, .5, 164);
     left.animate(singleFadeAnimation);
     right.animate(singleFadeAnimation);
   }
