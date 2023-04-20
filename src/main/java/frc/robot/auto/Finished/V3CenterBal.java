@@ -35,7 +35,7 @@ public class V3CenterBal extends SequentialCommandGroup {
                                                 new Pose2d(2.952708,
                                                                 2.747899 + 0.377830 + 1.216025 + 0.379072
                                                                                 + 0.4138011028,
-                                                                Rotation2d.fromDegrees(0)))
+                                                                Rotation2d.fromDegrees(180)))
                                                 .alongWith(new SetArmState(ArmStates.TRANSIT, arm)),
                                 new GoToCommand(
                                                 swerve,

@@ -31,6 +31,7 @@ public class SetArmState extends CommandBase {
 
   @Override
   public boolean isFinished() {
-   return m_arm.atArmState(armState);
+    return m_arm.atArmState(armState);
+    // return true;
   }
 }

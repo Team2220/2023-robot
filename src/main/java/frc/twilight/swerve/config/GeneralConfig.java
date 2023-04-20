@@ -15,7 +15,7 @@ public final class GeneralConfig {
   public static final double DT_START_X = 0;
   public static final double DT_START_Y = 0;
 
-  public static final boolean SWERVE_SHUFFLEBOARD_ENABLED = false;
+  public static final boolean SWERVE_SHUFFLEBOARD_ENABLED = true;
 
   // Velocity restrictions m/s
   public static final TunableDouble DT_MAX_VEL =

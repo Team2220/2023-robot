@@ -18,7 +18,9 @@ import frc.robot.auto.SimpleAutos.JustScoreTheCubeHigh;
 import frc.robot.auto.SimpleAutos.JustScoreTheCubeLow;
 import frc.robot.auto.SimpleAutos.JustScoreTheCubeMid;
 import frc.robot.auto.Finished.CenterBal;
+import frc.robot.auto.Finished.CenterBalMobility;
 import frc.robot.auto.Finished.MidScore1BalBlueAutoL;
+import frc.robot.auto.Finished.MidScore1BalBlueAutoR;
 import frc.robot.auto.Finished.MidScore1BlueAutoR;
 import frc.robot.auto.Finished.MobilityL;
 import frc.robot.auto.Finished.MobilityR;
@@ -153,6 +155,7 @@ public class RobotContainer {
                 autoChooser.addOption(new WireBal(m_swerve, m_intake, m_arm));
                 autoChooser.addOption(new NonWireBal(m_swerve, m_intake, m_arm));
                 autoChooser.addOption(new MidScore1BalBlueAutoL(m_swerve, m_arm, m_intake));
+                autoChooser.addOption(new MidScore1BalBlueAutoR(m_swerve, m_arm, m_intake));
                 autoChooser.addOption(new MobilityL(m_swerve, m_arm, m_intake));
                 autoChooser.addOption(new MobilityR(m_swerve, m_arm, m_intake));
                 autoChooser.addOption(new JustScoreTheCubeHigh(m_swerve, m_arm, m_intake));
@@ -164,6 +167,7 @@ public class RobotContainer {
                 autoChooser.addOption(new ScoreAndGetC(m_swerve, m_arm, m_intake));
                 autoChooser.addOption(new ScoreGetAndScoreC(m_swerve, m_arm, m_intake));
                 autoChooser.addOption(new CenterBal(m_swerve, m_arm, m_intake));
+                autoChooser.addOption(new CenterBalMobility(m_swerve, m_arm, m_intake));
                 autoChooser.addOption(new SetArmState(ArmStates.TRANSIT, m_arm));
                 autoChooser.addOption(new V2MidScoreR(m_swerve, m_arm, m_intake));
                 autoChooser.addOption(new V2MidScoreL(m_swerve, m_arm, m_intake));
