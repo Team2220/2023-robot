@@ -22,15 +22,13 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 
 /** An example command that uses an example subsystem. */
 public class GoToCommand extends CommandBase {
-  @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
+  @SuppressWarnings({ "PMD.UnusedPrivateField", "PMD.SingularField" })
   private final Swerve m_subsystem;
 
-  private final TrapezoidProfile.Constraints constraints =
-      new TrapezoidProfile.Constraints(
-          GeneralConfig.DT_MAX_VEL.getValue(), GeneralConfig.DT_MAX_ACCEL.getValue());
-  private final TrapezoidProfile.Constraints constraintsRot =
-      new TrapezoidProfile.Constraints(
-          GeneralConfig.DT_MAX_ROT_VEL.getValue(), GeneralConfig.DT_MAX_ROT_ACCEL.getValue());
+  private TrapezoidProfile.Constraints constraints = new TrapezoidProfile.Constraints(
+      3, GeneralConfig.DT_MAX_ACCEL.getValue());
+  private TrapezoidProfile.Constraints constraintsRot = new TrapezoidProfile.Constraints(
+      360, GeneralConfig.DT_MAX_ROT_ACCEL.getValue());
 
   private final Position goal;
 
@@ -46,21 +44,18 @@ public class GoToCommand extends CommandBase {
   private TrapezoidProfile profileY;
   private TrapezoidProfile profileRot;
 
-  private PIDController pidX =
-      new PIDController(
-          PIDconfig.DT_AUTO_P.getValue(),
-          PIDconfig.DT_AUTO_I.getValue(),
-          PIDconfig.DT_AUTO_D.getValue());
-  private PIDController pidY =
-      new PIDController(
-          PIDconfig.DT_AUTO_P.getValue(),
-          PIDconfig.DT_AUTO_I.getValue(),
-          PIDconfig.DT_AUTO_D.getValue());
-  private PIDController pidRot =
-      new PIDController(
-          PIDconfig.DT_AUTO_ROT_P.getValue(),
-          PIDconfig.DT_AUTO_ROT_I.getValue(),
-          PIDconfig.DT_AUTO_ROT_D.getValue());
+  private PIDController pidX = new PIDController(
+      PIDconfig.DT_AUTO_P.getValue(),
+      PIDconfig.DT_AUTO_I.getValue(),
+      PIDconfig.DT_AUTO_D.getValue());
+  private PIDController pidY = new PIDController(
+      PIDconfig.DT_AUTO_P.getValue(),
+      PIDconfig.DT_AUTO_I.getValue(),
+      PIDconfig.DT_AUTO_D.getValue());
+  private PIDController pidRot = new PIDController(
+      PIDconfig.DT_AUTO_ROT_P.getValue(),
+      PIDconfig.DT_AUTO_ROT_I.getValue(),
+      PIDconfig.DT_AUTO_ROT_D.getValue());
 
   private double kDt = 0;
 
@@ -88,26 +83,47 @@ public class GoToCommand extends CommandBase {
    *
    * @param subsystem The subsystem used by this command.
    */
-  public GoToCommand(Swerve subsystem, Position goal) {
+  public GoToCommand(Swerve subsystem, Position goal, double vel, double rotVel) {
     m_subsystem = subsystem;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(subsystem);
 
     this.goal = goal;
 
-    if (!shuffled) {
-      Shuffleboard.getTab("Swerve").addDouble("Current Goto X", () -> {return drivingX;});
-      Shuffleboard.getTab("Swerve").addDouble("Current Goto Y", () -> {return drivingY;});
-      Shuffleboard.getTab("Swerve").addDouble("Current Goto Rot", () -> {return drivingRot;});
+    constraints = new TrapezoidProfile.Constraints(
+        vel, GeneralConfig.DT_MAX_ACCEL.getValue());
+    constraintsRot = new TrapezoidProfile.Constraints(
+        rotVel, GeneralConfig.DT_MAX_ROT_ACCEL.getValue());
 
-      Shuffleboard.getTab("Swerve").addDouble("Current Driving X", () -> {return outputX;});
-      Shuffleboard.getTab("Swerve").addDouble("Current Driving Y", () -> {return outputY;});
-      Shuffleboard.getTab("Swerve").addDouble("Current Driving Rot", () -> {return outputRot;});
+    if (!shuffled) {
+      Shuffleboard.getTab("Swerve").addDouble("Current Goto X", () -> {
+        return drivingX;
+      });
+      Shuffleboard.getTab("Swerve").addDouble("Current Goto Y", () -> {
+        return drivingY;
+      });
+      Shuffleboard.getTab("Swerve").addDouble("Current Goto Rot", () -> {
+        return drivingRot;
+      });
+
+      Shuffleboard.getTab("Swerve").addDouble("Current Driving X", () -> {
+        return outputX;
+      });
+      Shuffleboard.getTab("Swerve").addDouble("Current Driving Y", () -> {
+        return outputY;
+      });
+      Shuffleboard.getTab("Swerve").addDouble("Current Driving Rot", () -> {
+        return outputRot;
+      });
 
       Shuffleboard.getTab("DEBUG").addBoolean("ShouldFlip", () -> AllianceFlipUtil.shouldFlip());
 
       shuffled = true;
     }
+  }
+
+  public GoToCommand(Swerve subsystem, Position position) {
+    this(subsystem, position, 3, 360);
   }
 
   public GoToCommand(Swerve subsystem, Pose2d goal) {
@@ -118,7 +134,7 @@ public class GoToCommand extends CommandBase {
   @Override
   public void initialize() {
     Position goal2 = AllianceFlipUtil.apply(new Position(goal.getX(), goal.getY(), goal.getAngle()));
-     
+
     goalX = new TrapezoidProfile.State(goal2.getX(), 0);
     goalY = new TrapezoidProfile.State(goal2.getY(), 0);
     goalRot = new TrapezoidProfile.State(goal2.getAngle(), 0);
@@ -139,9 +155,8 @@ public class GoToCommand extends CommandBase {
     profileRot = new TrapezoidProfile(constraintsRot, goalRot, setpointRot);
 
     DataLogManager.log("Running GoTo Command - \n" +
-      "\tStarting Point: " + setpointX.position + ", " + setpointY.position + ", " + setpointRot.position + "\n" +
-      "\tEnd Point: " + goalX.position + ", " + goalY.position + ", " + goalRot.position + "\n"
-    );
+        "\tStarting Point: " + setpointX.position + ", " + setpointY.position + ", " + setpointRot.position + "\n" +
+        "\tEnd Point: " + goalX.position + ", " + goalY.position + ", " + goalRot.position + "\n");
 
     kDt = 0;
   }
@@ -185,8 +200,10 @@ public class GoToCommand extends CommandBase {
       yDone = true;
     }
 
-    if (rotTol > 0) rotDone = Math.abs(currentPos.getAngle() - goalRot.position) < rotTol;
-    else rotDone = true;
+    if (rotTol > 0)
+      rotDone = Math.abs(currentPos.getAngle() - goalRot.position) < rotTol;
+    else
+      rotDone = true;
 
     drivingX = xPos;
     drivingY = yPos;
@@ -201,7 +218,8 @@ public class GoToCommand extends CommandBase {
   @Override
   public void end(boolean interrupted) {
     DataLogManager.log("End GoToCommand");
-    if (stopAtEnd) m_subsystem.setDrive(new DriveVector(0, 0, 0));
+    if (stopAtEnd)
+      m_subsystem.setDrive(new DriveVector(0, 0, 0));
   }
 
   // Returns true when the command should end.
