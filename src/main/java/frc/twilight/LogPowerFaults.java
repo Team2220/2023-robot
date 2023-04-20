@@ -120,17 +120,20 @@ public class LogPowerFaults {
     public static void checkTalons() {
 
         StickyFaults talonFaults = new StickyFaults();
-        String talonFault = checkTalonFX(null, talonFaults, firstCheckTalon);
 
-        if (firstCheckTalon)
-            for (TalonFX num : talonFxs) {
-                DataLogManager.log(checkTalonFX(num, talonFaults, false));
-                firstCheckTalon = false;
+            for (TalonFX checkingTalonfxs : talonFxs) {
+                checkingTalonfxs.getStickyFaults(talonFaults);
+                String nullCheck = checkTalonFX(checkingTalonfxs, talonFaults, true);
+                if (nullCheck != null) {
+                    DataLogManager.log(nullCheck);
+                }
+
+                if (firstCheckTalon)
+                    for (TalonFX checkingTalonFxs : talonFxs) {
+                        DataLogManager.log(checkTalonFX(checkingTalonFxs, talonFaults, false));
+                        firstCheckTalon = true;
+                    }
             }
-        if (talonFault != null) {
-            DataLogManager.log(talonFault);
-            talonFxs.clear();
-        }
     }
 
     private static String checkTalonFX(TalonFX talon, StickyFaults faults, boolean emptyOnNone) {
