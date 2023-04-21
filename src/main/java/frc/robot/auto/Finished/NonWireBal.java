@@ -18,55 +18,54 @@ import frc.twilight.swerve.commands.GoToCommand;
 import frc.twilight.swerve.subsystems.Swerve;
 
 public class NonWireBal extends SequentialCommandGroup {
-    public NonWireBal(Swerve swerve, Intake intake, Arm arm) {
-        addCommands(
-                new InstantCommand(
-                        () -> swerve.setPose2d(
-                                new Pose2d(
-                                        new Translation2d(0, 0),
-                                        Rotation2d.fromDegrees(180)))));
+        public NonWireBal(Swerve swerve, Intake intake, Arm arm) {
+                addCommands(
+                                new InstantCommand(
+                                                () -> swerve.setPose2d(
+                                                                new Pose2d(
+                                                                                new Translation2d(0, 0),
+                                                                                Rotation2d.fromDegrees(180)))));
 
-        addCommands(
-                new SetArmState(ArmStates.TRANSIT, arm),
-                new AutoIntake(-.5, intake).withTimeout(.2),
-                new AutoIntake(.75, intake).withTimeout(1));
+                addCommands(
+                                new SetArmState(ArmStates.TRANSIT, arm),
+                                new AutoIntake(-.5, intake).withTimeout(.2),
+                                new AutoIntake(.75, intake).withTimeout(1));
 
-        addCommands(
-                new GoToCommand(
-                        swerve,
-                        new Pose2d(Units.inchesToMeters(60.5), Units.inchesToMeters(10),
-                                Rotation2d.fromDegrees(
-                                        180))));
-        addCommands(
-                new GoToCommand(
-                        swerve,
-                        new Pose2d(Units.inchesToMeters(165), Units.inchesToMeters(10),
-                                Rotation2d.fromDegrees(
-                                        180))));
+                addCommands(
+                                new GoToCommand(
+                                                swerve,
+                                                new Pose2d(Units.inchesToMeters(60.5), Units.inchesToMeters(10),
+                                                                Rotation2d.fromDegrees(
+                                                                                180))));
+                addCommands(
+                                new GoToCommand(
+                                                swerve,
+                                                new Pose2d(Units.inchesToMeters(165), Units.inchesToMeters(10),
+                                                                Rotation2d.fromDegrees(
+                                                                                180))));
 
-        addCommands(
-                new GoToCommand(
-                        swerve,
-                        new Pose2d(Units.inchesToMeters(165), Units.inchesToMeters(-78),
-                                Rotation2d.fromDegrees(
-                                        180))));
+                addCommands(
+                                new GoToCommand(
+                                                swerve,
+                                                new Pose2d(Units.inchesToMeters(165), Units.inchesToMeters(-78),
+                                                                Rotation2d.fromDegrees(
+                                                                                180))));
 
-        addCommands(
-                new GoToCommand(
-                        swerve,
-                        new Pose2d(Units.inchesToMeters(127), Units.inchesToMeters(-78),
-                                Rotation2d.fromDegrees(
-                                        180))));
+                addCommands(
+                                new GoToCommand(
+                                                swerve,
+                                                new Pose2d(Units.inchesToMeters(127), Units.inchesToMeters(-78),
+                                                                Rotation2d.fromDegrees(
+                                                                                180))));
 
-        addCommands(
-                new GoToCommand(
-                        swerve,
-                        new Pose2d(Units.inchesToMeters(75), Units.inchesToMeters(-78),
-                                Rotation2d.fromDegrees(
-                                        0))));
+                addCommands(
+                                new GoToCommand(
+                                                swerve,
+                                                new Pose2d(Units.inchesToMeters(75), Units.inchesToMeters(-78),
+                                                                Rotation2d.fromDegrees(
+                                                                                180))));
 
-        addCommands(
-                new Balancing(swerve)
-        );
-    }
+                addCommands(
+                                new Balancing(swerve));
+        }
 }

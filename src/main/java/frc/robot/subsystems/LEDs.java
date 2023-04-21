@@ -30,6 +30,18 @@ public class LEDs extends SubsystemBase {
   private BooleanSupplier haveGamePiece;
   private BooleanSupplier defaultAutoSelected;
 
+  public LEDs(BooleanSupplier haveGamePiece, BooleanSupplier defaultAutoSelected) {
+
+    CANdleConfiguration config = new CANdleConfiguration();
+    config.statusLedOffWhenActive = true;
+    left.configAllSettings(config);
+    right.configAllSettings(config);
+    setUpTestCommands();
+
+    this.haveGamePiece = haveGamePiece;
+    this.defaultAutoSelected = defaultAutoSelected;
+  }
+
   public enum DesiredState {
     RAINBOW_ANIMATION,
     STROBE_ANIMATION,
@@ -108,7 +120,7 @@ public class LEDs extends SubsystemBase {
       }
 
       case NOTHING_IN_AUTO: {
-        setYellow();
+        setRed();
         break;
       }
 
@@ -131,17 +143,6 @@ public class LEDs extends SubsystemBase {
         break;
       }
     }
-  }
-
-  public LEDs(BooleanSupplier haveGamePiece, BooleanSupplier defaultAutoSelected) {
-
-    CANdleConfiguration config = new CANdleConfiguration();
-    left.configAllSettings(config);
-    right.configAllSettings(config);
-    setUpTestCommands();
-
-    this.haveGamePiece = haveGamePiece;
-    this.defaultAutoSelected = defaultAutoSelected;
   }
 
   private void switchDesieredState() {
@@ -184,90 +185,29 @@ public class LEDs extends SubsystemBase {
 
       m_lastBrownedOutTime = Timer.getFPGATimestamp();
       transitionSystemState(SystemState.BROWNOUT);
-    }
+    } else
 
     if (!DriverStation.isDSAttached()) {
 
       m_lastDisconectTime = Timer.getFPGATimestamp();
       transitionSystemState(SystemState.DRIVER_STATION_DISCONNECTED);
-    }
+    } else
+
+    if (Timer.getFPGATimestamp() - m_lastDisconectTime < 3) {
+      transitionSystemState(SystemState.DRIVER_STATION_CONNECTED);
+    } else
 
     if (haveGamePiece.getAsBoolean()) {
       m_startHavingGamePiece = Timer.getFPGATimestamp();
       transitionSystemState(SystemState.HAVE_GAME_PIECE);
-    }
+    } else
 
     if (defaultAutoSelected.getAsBoolean() && DriverStation.isDisabled()) {
       transitionSystemState(SystemState.NOTHING_IN_AUTO);
-    }
+    } else
 
-    switch (systemState) {
-      case DRIVER_STATION_DISCONNECTED: {
-        if (DriverStation.isDSAttached() && Timer.getFPGATimestamp() - m_lastDisconectTime > 3) {
-          transitionSystemState(SystemState.DRIVER_STATION_CONNECTED);
-        }
-        break;
-      }
-
-      case DRIVER_STATION_CONNECTED: {
-        if (Timer.getFPGATimestamp() - m_lastDisconectTime > 7) {
-          switchDesieredState();
-        }
-      }
-
-      case BROWNOUT: {
-        if (Timer.getFPGATimestamp() > m_lastBrownedOutTime + 5) {
-          switchDesieredState();
-        }
-        break;
-      }
-
-      case FULL_LEDS: {
-        switchDesieredState();
-        break;
-      }
-
-      case OFF: {
-        switchDesieredState();
-        break;
-      }
-
-      case RAINBOW_ANIMATION: {
-        switchDesieredState();
-        break;
-      }
-
-      case STROBE_ANIMATION: {
-        switchDesieredState();
-        break;
-      }
-      case NOTHING_IN_AUTO: {
-        if (DriverStation.isEnabled() || !defaultAutoSelected.getAsBoolean()) {
-          switchDesieredState();
-        }
-        break;
-      }
-
-      case TWENTY_SEC_LEFT: {
-        if (Timer.getFPGATimestamp() > m_startTime - 5) {
-          switchDesieredState();
-        }
-        break;
-      }
-      case WANTING_CONE: {
-        switchDesieredState();
-        break;
-      }
-      case WANTING_CUBE: {
-        switchDesieredState();
-        break;
-      }
-      case HAVE_GAME_PIECE: {
-        if (Timer.getFPGATimestamp() > m_startHavingGamePiece + 1.5) {
-          switchDesieredState();
-        }
-        break;
-      }
+    {
+      transitionSystemState(SystemState.OFF);
     }
   }
 
@@ -284,15 +224,15 @@ public class LEDs extends SubsystemBase {
     right.animate(singleFadeAnimation);
   }
 
-  private void setYellow() {
-    SingleFadeAnimation singleFadeAnimation = new SingleFadeAnimation(255, 255, 13, 0, .5, 164);
+  private void setRed() {
+    SingleFadeAnimation singleFadeAnimation = new SingleFadeAnimation(255, 0, 0, 0, 0.9, 164);
     left.animate(singleFadeAnimation);
     right.animate(singleFadeAnimation);
   }
 
   private void setLEDRainAnimationFast() {
 
-    RainbowAnimation rAnimation = new RainbowAnimation(1, 1, 164);
+    RainbowAnimation rAnimation = new RainbowAnimation(1, 0, 164);
     left.animate(rAnimation);
     right.animate(rAnimation);
   }
