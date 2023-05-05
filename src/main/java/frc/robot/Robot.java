@@ -44,7 +44,7 @@ public class Robot extends TimedRobot {
     LogPowerFaults.addBreakerIgnore(4, 7, 8, 9, 11, 12, 23);
     addPeriodic(() -> LogPowerFaults.checkPDH(), 1, 0.01);
 
-    // addPeriodic(() -> LogPowerFaults.checkTalons(), 1, 0.01);
+    addPeriodic(() -> LogPowerFaults.checkTalons(), 1, 0.01);
     CommandObserver.start();
   }
 

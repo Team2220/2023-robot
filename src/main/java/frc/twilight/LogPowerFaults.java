@@ -126,25 +126,27 @@ public class LogPowerFaults {
 
     public static void checkTalons() {
         try {
-            StickyFaults talonFaults = new StickyFaults();
-            String talonFault = checkTalonFX(null, talonFaults, firstCheckTalon);
 
-            if (firstCheckTalon)
-                for (TalonFX num : talonFxs) {
-                    DataLogManager.log(checkTalonFX(num, talonFaults, false));
-                    firstCheckTalon = false;
+            for (TalonFX num : talonFxs) {
+                String outputTalonFx = checkTalonFX(num, !firstCheckTalon);
+
+                if (outputTalonFx != null) {
+                    DataLogManager.log(outputTalonFx);
                 }
-            if (talonFault != null) {
-                DataLogManager.log(talonFault);
-                talonFxs.clear();
+
             }
-        } catch (Exception e) {
-            System.out.println(e);
+            firstCheckTalon = false;
+
+        } catch (Exception expection) {
+            System.out.println(expection);
         }
     }
 
-    private static String checkTalonFX(TalonFX talon, StickyFaults faults, boolean emptyOnNone) {
+    private static String checkTalonFX(TalonFX talon, boolean emptyOnNone) {
         try {
+            StickyFaults faults = new StickyFaults();
+            talon.getStickyFaults(faults);
+            talon.clearStickyFaults();
             String out = "";
 
             if (faults.UnderVoltage)
@@ -186,12 +188,16 @@ public class LogPowerFaults {
             if (faults.SupplyUnstable)
                 out += " - SupplyUnstable\n";
 
-            if (out == "" && !emptyOnNone)
-                out = " - No TalonFX " + talon.getDeviceID() + " sticky faults on startup :)";
-            else if (out == "" && emptyOnNone)
-                return null;
+            if (out == "") {
+                if (emptyOnNone) {
+                    return null;
+                }
 
-            return "TalonFX" + talon.getDeviceID() + "faults:\n + out";
+                else {
+                    out = " - No TalonFX " + talon.getDeviceID() + " sticky faults on startup :)";
+                }
+            }
+            return "TalonFX" + talon.getDeviceID() + "faults:\n" + out;
         } catch (Exception e) {
             return e.toString();
         }

@@ -25,4 +25,9 @@ public class SetLedsStates extends CommandBase {
 
     return m_DesieredState.name();
   }
+
+  @Override
+  public boolean runsWhenDisabled() {
+    return true;
+  }
 }
