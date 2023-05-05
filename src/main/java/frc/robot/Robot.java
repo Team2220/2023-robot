@@ -6,7 +6,9 @@ package frc.robot;
 
 import edu.wpi.first.util.datalog.StringLogEntry;
 import edu.wpi.first.wpilibj.DataLogManager;
+import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
@@ -46,7 +48,11 @@ public class Robot extends TimedRobot {
 
     addPeriodic(() -> LogPowerFaults.checkTalons(), 1, 0.01);
     CommandObserver.start();
+    Shuffleboard.getTab("infrastructure").addNumber("Voltage", () -> RobotController.getBatteryVoltage());
+    Shuffleboard.getTab("infrastructure").addNumber("CanUsage",
+        () -> RobotController.getCANStatus().percentBusUtilization);
   }
+  
 
   /**
    * This function is called every 20 ms, no matter the mode. Use this for items
