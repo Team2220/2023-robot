@@ -13,7 +13,7 @@ import edu.wpi.first.math.filter.Debouncer;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.IntakeConfig;
-import frc.twilight.LogPowerFaults;
+import frc.twilight.TalonFXLogPowerFaults;
 import frc.twilight.tunables.TunableDouble;
 
 public class Intake extends SubsystemBase {
@@ -34,7 +34,7 @@ public class Intake extends SubsystemBase {
 
     Shuffleboard.getTab("intake").addDouble("Current", intake::getStatorCurrent);
 
-    LogPowerFaults.add(intake);
+    TalonFXLogPowerFaults.add(intake);
 
     intake.setInverted(IntakeConfig.INTAKE_INVERTED);
     intake.setNeutralMode(NeutralMode.Brake);

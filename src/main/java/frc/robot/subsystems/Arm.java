@@ -21,7 +21,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Constants.ArmConfig;
 import frc.robot.commands.Arm.SetArmState;
-import frc.twilight.LogPowerFaults;
+import frc.twilight.TalonFXLogPowerFaults;
 import frc.twilight.tunables.TunableDouble;
 
 public class Arm extends SubsystemBase {
@@ -152,8 +152,8 @@ public class Arm extends SubsystemBase {
 
     setUpTestCommands();
 
-    LogPowerFaults.add(shoulder);
-    LogPowerFaults.add(wrist);
+    TalonFXLogPowerFaults.add(shoulder);
+    TalonFXLogPowerFaults.add(wrist);
   }
 
   public void setShoulderFromAbsEncoder() {
