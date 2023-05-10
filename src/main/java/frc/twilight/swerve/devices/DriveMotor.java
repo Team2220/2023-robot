@@ -7,7 +7,7 @@ import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
 import com.ctre.phoenix.motorcontrol.TalonFXFeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 
-import frc.twilight.LogPowerFaults;
+import frc.twilight.TalonFXLogPowerFaults;
 import frc.twilight.swerve.config.*;
 import frc.twilight.tunables.TunableDouble;
 
@@ -33,7 +33,7 @@ public class DriveMotor {
     // Reset motor settings
     motor.configFactoryDefault();
 
-    LogPowerFaults.add(motor);
+    TalonFXLogPowerFaults.add(motor);
 
     // Set up PID
     motor.config_kP(0, p.getValue(), TIMOUT_MS);

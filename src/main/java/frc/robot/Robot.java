@@ -4,8 +4,6 @@
 
 package frc.robot;
 
-import edu.wpi.first.util.datalog.StringLogEntry;
-import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
@@ -13,8 +11,9 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.twilight.CommandObserver;
-import frc.twilight.LogPowerFaults;
-
+import frc.twilight.PDHLogPowerFaults;
+import frc.twilight.TalonFXLogPowerFaults;
+    
 /**
  * The VM is configured to automatically run this class, and to call the
  * functions corresponding to
@@ -43,14 +42,18 @@ public class Robot extends TimedRobot {
     m_robotContainer = new RobotContainer();
     SmartDashboard.putData(CommandScheduler.getInstance());
 
-    LogPowerFaults.addBreakerIgnore(4, 7, 8, 9, 11, 12, 23);
-    addPeriodic(() -> LogPowerFaults.checkPDH(), 1, 0.01);
 
-    addPeriodic(() -> LogPowerFaults.checkTalons(), 1, 0.01);
+    PDHLogPowerFaults.addBreakerIgnore(4, 7, 8, 9, 11, 12, 23);
+    addPeriodic(() -> PDHLogPowerFaults.checkPDH(), 1, 0.01);
+
+    addPeriodic(() -> TalonFXLogPowerFaults.checkTalons(), 1, 0.01);
     CommandObserver.start();
     Shuffleboard.getTab("infrastructure").addNumber("Voltage", () -> RobotController.getBatteryVoltage());
     Shuffleboard.getTab("infrastructure").addNumber("CanUsage",
         () -> RobotController.getCANStatus().percentBusUtilization);
+
+        
+
   }
   
 
