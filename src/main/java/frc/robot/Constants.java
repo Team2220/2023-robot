@@ -56,7 +56,7 @@ public final class Constants {
     public static final double SHOULDER_REF = 171;
     public static final double WRIST_REF = 150;
 
-    public static final double WRIST_REMAP_LIMIT = 0;
+    public static final double WRIST_REMAP_LIMIT = 0.0;
     public static final double SHOULDER_REMAP_LIMIT = 0.5;
   }
 }
