@@ -1,0 +1,88 @@
+<dashboard-tab
+    tab-name="TeleOperated"
+    slot="tab"
+    source-provider="NetworkTables"
+    selected=""
+>
+    <vaadin-number-field
+        label="Voltage"
+        value="0"
+        has-value=""
+        has-label=""
+        source-provider="NetworkTables"
+        style="width: 155.2px; height: 81.8px; transform: translate(652px, 557.588px);"
+        source-key="/Shuffleboard/infrastructure/Voltage"
+        min="NaN"
+        max="NaN"
+    ><input
+            slot="input"
+            value="0"
+            type="number"
+            id="vaadin-number-field-5"
+            aria-labelledby="label-vaadin-number-field-36"
+            aria-describedby=""
+            min="NaN"
+            max="NaN"
+            step="any"
+        ><label
+            slot="label"
+            id="label-vaadin-number-field-36"
+            for="vaadin-number-field-5"
+        >Voltage</label>
+        <div
+            slot="error-message"
+            id="error-message-vaadin-number-field-33"
+            hidden=""
+        ></div>
+    </vaadin-number-field>
+    <frc-line-chart
+        title="Can Usage"
+        source-provider="NetworkTables"
+        style="transform: translate(35.2px, 371.2px);"
+        source-key="/Shuffleboard/infrastructure/CanUsage"
+    >
+        <frc-chart-axis
+            source-provider="NetworkTables"
+            max="2"
+            tick-values="[]"
+        ></frc-chart-axis>
+        <frc-chart-data
+            label="Data"
+            color="#00aa00"
+            source-provider="NetworkTables"
+            source-key="/Shuffleboard/infrastructure/CanUsage"
+        ></frc-chart-data>
+    </frc-line-chart>
+    <frc-line-chart
+        title="Voltage"
+        source-provider="NetworkTables"
+        style="transform: translate(492px, 374.4px);"
+        source-key="/Shuffleboard/infrastructure/Voltage"
+    >
+        <frc-chart-axis
+            source-provider="NetworkTables"
+            min="9"
+            max="14"
+            label="Voltage"
+            tick-values="[]"
+        ></frc-chart-axis>
+        <frc-chart-data
+            label="Data"
+            color="#00aa00"
+            source-provider="NetworkTables"
+            source-key="/Shuffleboard/infrastructure/Voltage"
+        ></frc-chart-data>
+    </frc-line-chart>
+</dashboard-tab>
+<dashboard-tab
+    slot="tab"
+    tab-name="Autonomous"
+    source-provider="NetworkTables"
+    source-key="/SmartDashboard/SendableChooser[0]"
+>
+    <frc-sendable-chooser
+        source-key="/SmartDashboard/Auto choices"
+        source-provider="NetworkTables"
+        options="[]"
+    ></frc-sendable-chooser>
+</dashboard-tab>
