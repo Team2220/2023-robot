@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
@@ -13,7 +14,7 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.twilight.CommandObserver;
 import frc.twilight.PDHLogPowerFaults;
 import frc.twilight.TalonFXLogPowerFaults;
-    
+
 /**
  * The VM is configured to automatically run this class, and to call the
  * functions corresponding to
@@ -41,21 +42,37 @@ public class Robot extends TimedRobot {
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
     SmartDashboard.putData(CommandScheduler.getInstance());
-
-
+    PowerDistribution pdh = new PowerDistribution();
+    PDHLogPowerFaults.setPdh(pdh);
     PDHLogPowerFaults.addBreakerIgnore(4, 7, 8, 9, 11, 12, 23);
     addPeriodic(() -> PDHLogPowerFaults.checkPDH(), 1, 0.01);
 
     addPeriodic(() -> TalonFXLogPowerFaults.checkTalons(), 1, 0.01);
     CommandObserver.start();
     Shuffleboard.getTab("infrastructure").addNumber("Voltage", () -> RobotController.getBatteryVoltage());
+    Shuffleboard.getTab("infrastructure").addNumber("Value", () -> RobotController.getBatteryVoltage());
     Shuffleboard.getTab("infrastructure").addNumber("CanUsage",
         () -> RobotController.getCANStatus().percentBusUtilization);
 
-        
+    Shuffleboard.getTab("infrastructure").addNumber("chan0", () -> pdh.getCurrent(0));
+    Shuffleboard.getTab("infrastructure").addNumber("chan1", () -> pdh.getCurrent(1));
+    Shuffleboard.getTab("infrastructure").addNumber("chan2", () -> pdh.getCurrent(2));
+    Shuffleboard.getTab("infrastructure").addNumber("chan3", () -> pdh.getCurrent(3));
+    Shuffleboard.getTab("infrastructure").addNumber("chan4", () -> pdh.getCurrent(4));
+    Shuffleboard.getTab("infrastructure").addNumber("chan5", () -> pdh.getCurrent(5));
+    Shuffleboard.getTab("infrastructure").addNumber("chan6", () -> pdh.getCurrent(6));
+    Shuffleboard.getTab("infrastructure").addNumber("chan7", () -> pdh.getCurrent(7));
+    Shuffleboard.getTab("infrastructure").addNumber("chan8", () -> pdh.getCurrent(8));
+    Shuffleboard.getTab("infrastructure").addNumber("chan9", () -> pdh.getCurrent(9));
+    Shuffleboard.getTab("infrastructure").addNumber("chan10", () -> pdh.getCurrent(10));
+    Shuffleboard.getTab("infrastructure").addNumber("chan11", () -> pdh.getCurrent(11));
+    Shuffleboard.getTab("infrastructure").addNumber("chan12", () -> pdh.getCurrent(12));
+    Shuffleboard.getTab("infrastructure").addNumber("chan13", () -> pdh.getCurrent(13));
+    Shuffleboard.getTab("infrastructure").addNumber("chan14", () -> pdh.getCurrent(14));
+    Shuffleboard.getTab("infrastructure").addNumber("", () -> pdh.getCurrent(15));
+    Shuffleboard.getTab("infrastructure").addNumber("Total Current", () -> pdh.getTotalCurrent());
 
   }
-  
 
   /**
    * This function is called every 20 ms, no matter the mode. Use this for items

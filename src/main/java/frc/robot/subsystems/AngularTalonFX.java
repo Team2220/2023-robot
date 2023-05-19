@@ -20,7 +20,6 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.commands.Arm.SetArmState;
-import frc.twilight.LogPowerFaults;
 import frc.twilight.tunables.TunableDouble;
 
 public class AngularTalonFX extends SubsystemBase {
@@ -121,7 +120,7 @@ public class AngularTalonFX extends SubsystemBase {
     talon.configReverseSoftLimitThreshold(
         anglesToTalonSensorPosition(reverseLimit));
 
-         LogPowerFaults.add(talon);
+         //LogPowerFaults.add(talon);
 
   }
 
