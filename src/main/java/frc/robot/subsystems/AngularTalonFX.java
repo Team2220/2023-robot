@@ -65,9 +65,9 @@ class AngularTalonFX {
     oldTalonD = talonD.getValue();
 
     talonConfig.motionAcceleration =
-      degreesPerSecondToEncoderTicks(200, gearRatio);
+      degreesPerSecondToEncoderTicks(200);
     talonConfig.motionCruiseVelocity =
-      degreesPerSecondToEncoderTicks(200, gearRatio);
+      degreesPerSecondToEncoderTicks(200);
 
     talonFX.configAllSettings(talonConfig);
     talonFX.configVoltageCompSaturation(10);
@@ -88,7 +88,6 @@ class AngularTalonFX {
     talonFX.config_kP(0, talonP.getValue());
     talonFX.config_kI(0, talonI.getValue());
     talonFX.config_kD(0, talonD.getValue());
-
   }
 
   public void updatePID() {
@@ -108,10 +107,7 @@ class AngularTalonFX {
     }
   }
 
-  private double degreesPerSecondToEncoderTicks(
-    double angle,
-    double gearRatio
-  ) {
+  private double degreesPerSecondToEncoderTicks(double angle) {
     double gfx =
       ((angle / 360.0) * gearRatio) *
       ArmConfig.TALONFX_ENCODER_TICKS *
@@ -122,14 +118,14 @@ class AngularTalonFX {
 
   public void setTalonFromAbsEncoder() {
     double talonOffset =
-        getTalonPosition() * (gearRatio) * (ArmConfig.TALONFX_ENCODER_TICKS);
+      getTalonPosition() * (gearRatio) * (ArmConfig.TALONFX_ENCODER_TICKS);
     talonFX.setSelectedSensorPosition(talonOffset);
-  
-}
+  }
 
-public double getTalonPosition() {
-
-    return remap(dutyCycleEncoder.getAbsolutePosition(), remapLimit) - encoderOffset;
+  public double getTalonPosition() {
+    return (
+      remap(dutyCycleEncoder.getAbsolutePosition(), remapLimit) - encoderOffset
+    );
   }
 
   public double remap(double value, double limit) {
