@@ -26,10 +26,27 @@ import frc.twilight.tunables.TunableDouble;
 
 class AngularTalonFX {
     private DutyCycleEncoder dutyCycleEncoder;
+    private TalonFX talonFX;
+    
+    private final TunableDouble talonP;
+    private final TunableDouble talonI;
+    private final TunableDouble talonD;
+    private double oldTalonP;
+    private double oldTalonI;
+    private double oldTalonD;
 
     public AngularTalonFX(
-        int dutyEncoder
+        int dutyEncoder, int talonId, String name, boolean tunableDoubleEnabled
         ) {
         dutyCycleEncoder = new DutyCycleEncoder(dutyEncoder);
+        talonFX = new TalonFX(talonId);
+
+        talonP = new TunableDouble(name + "P", 0.1, tunableDoubleEnabled);
+        talonI = new TunableDouble(name + "I", 0, tunableDoubleEnabled);
+        talonD = new TunableDouble(name + "D", 0.2, tunableDoubleEnabled);
+        oldTalonP = talonP.getValue();
+        oldTalonI = talonI.getValue();
+        oldTalonD = talonD.getValue();
+
     }
 }
