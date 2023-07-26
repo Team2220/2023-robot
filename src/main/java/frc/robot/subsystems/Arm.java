@@ -51,9 +51,6 @@ public class Arm extends SubsystemBase {
   private double oldShoulderI = shoulderI.getValue();
   private double oldShoulderD = shoulderD.getValue();
 
-  private double lastWristAngle = 0;
-  private double lastShoulderAngle = 0;
-
   /** Config Objects for motor controllers */
   TalonFXConfiguration wristConfig = new TalonFXConfiguration();
 
@@ -269,23 +266,13 @@ public class Arm extends SubsystemBase {
   }
 
   public void setWristAngle(double angle) {
-    lastWristAngle = angle;
     double posValue = anglesToWristSensorPosition(-angle);
     wrist.set(TalonFXControlMode.MotionMagic, posValue);
   }
 
   public void setShoulderAngle(double angle) {
-    lastShoulderAngle = angle;
     double posValue = anglesToShoulderSensorPosition(angle);
     shoulder.set(TalonFXControlMode.MotionMagic, posValue);
-  }
-
-  public void changeShoulderAngle(double amount) {
-    setShoulderAngle(lastShoulderAngle + amount);
-  }
-
-  public void changeWristAngle(double amount) {
-    setWristAngle(lastWristAngle + amount);
   }
 
   public double getShoulderPosition() {

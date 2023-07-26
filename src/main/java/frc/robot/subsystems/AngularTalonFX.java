@@ -35,6 +35,8 @@ class AngularTalonFX {
     private double oldTalonI;
     private double oldTalonD;
 
+    private TalonFXConfiguration wristConfig = new TalonFXConfiguration();
+
     public AngularTalonFX(
         int dutyEncoder, int talonId, String name, boolean tunableDoubleEnabled
         ) {
@@ -48,5 +50,22 @@ class AngularTalonFX {
         oldTalonI = talonI.getValue();
         oldTalonD = talonD.getValue();
 
+    }
+
+    public void updatePID() {
+         if (talonP.getValue() != oldTalonP) {
+      talonFX.config_kP(0, talonP.getValue());
+      oldTalonP = talonP.getValue();
+    }
+
+    if (talonI.getValue() != oldTalonI) {
+      talonFX.config_kI(0, talonI.getValue());
+      oldTalonI = talonI.getValue();
+    }
+
+    if (talonD.getValue() != oldTalonD) {
+      talonFX.config_kD(0, talonD.getValue());
+      oldTalonD = talonD.getValue();
+    }
     }
 }
