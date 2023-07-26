@@ -72,6 +72,13 @@ class AngularTalonFX {
     statorConfig.currentLimit = 33;
     statorConfig.enable = true;
     talonFX.configStatorCurrentLimit(statorConfig);
+
+    talonFX.setNeutralMode(NeutralMode.Brake);
+
+    talonFX.config_kP(0, talonP.getValue());
+    talonFX.config_kI(0, talonI.getValue());
+    talonFX.config_kD(0, talonD.getValue());
+
   }
 
   public void updatePID() {
