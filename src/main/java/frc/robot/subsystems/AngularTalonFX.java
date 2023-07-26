@@ -34,6 +34,10 @@ class AngularTalonFX {
   private double oldTalonI;
   private double oldTalonD;
 
+  private double gearRatio;
+  private double remapLimit;
+  private double encoderOffset;
+
   private TalonFXConfiguration talonConfig = new TalonFXConfiguration();
 
   public AngularTalonFX(
@@ -42,8 +46,14 @@ class AngularTalonFX {
     String name,
     boolean tunableDoubleEnabled,
     double gearRatio,
-    boolean inverted
+    boolean inverted,
+    double remapLimit,
+    double encoderOffset
   ) {
+    this.gearRatio = gearRatio;
+    this.remapLimit = remapLimit;
+    this.encoderOffset = encoderOffset;
+
     dutyCycleEncoder = new DutyCycleEncoder(dutyEncoder);
     talonFX = new TalonFX(talonId);
 
@@ -108,5 +118,25 @@ class AngularTalonFX {
       1.0 /
       10.0;
     return gfx;
+  }
+
+  public void setTalonFromAbsEncoder() {
+    double talonOffset =
+        getTalonPosition() * (gearRatio) * (ArmConfig.TALONFX_ENCODER_TICKS);
+    talonFX.setSelectedSensorPosition(talonOffset);
+  
+}
+
+public double getTalonPosition() {
+
+    return remap(dutyCycleEncoder.getAbsolutePosition(), remapLimit) - encoderOffset;
+  }
+
+  public double remap(double value, double limit) {
+    if (value >= 0 && value < limit) {
+      return value + 1;
+    } else {
+      return value;
+    }
   }
 }
