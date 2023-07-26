@@ -35,10 +35,11 @@ class AngularTalonFX {
     private double oldTalonI;
     private double oldTalonD;
 
-    private TalonFXConfiguration wristConfig = new TalonFXConfiguration();
+    private TalonFXConfiguration talonConfig = new TalonFXConfiguration();
 
     public AngularTalonFX(
-        int dutyEncoder, int talonId, String name, boolean tunableDoubleEnabled
+        int dutyEncoder, int talonId, String name, boolean tunableDoubleEnabled, double gearRatio,
+        boolean inverted
         ) {
         dutyCycleEncoder = new DutyCycleEncoder(dutyEncoder);
         talonFX = new TalonFX(talonId);
@@ -50,6 +51,13 @@ class AngularTalonFX {
         oldTalonI = talonI.getValue();
         oldTalonD = talonD.getValue();
 
+        talonConfig.motionAcceleration = degreesPerSecondToEncoderTicks(200, gearRatio);
+        talonConfig.motionCruiseVelocity = degreesPerSecondToEncoderTicks(200, gearRatio);
+
+        talonFX.configAllSettings(talonConfig);
+        talonFX.configVoltageCompSaturation(10);
+        talonFX.setInverted(inverted);
+  
     }
 
     public void updatePID() {
@@ -68,4 +76,9 @@ class AngularTalonFX {
       oldTalonD = talonD.getValue();
     }
     }
+
+    private double degreesPerSecondToEncoderTicks(double angle, double gearRatio) {
+      double gfx = ((angle / 360.0) * gearRatio) * ArmConfig.TALONFX_ENCODER_TICKS * 1.0 / 10.0;
+      return gfx;
+  }
 }
