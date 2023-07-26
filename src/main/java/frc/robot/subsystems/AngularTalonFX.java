@@ -48,7 +48,9 @@ class AngularTalonFX {
     double gearRatio,
     boolean inverted,
     double remapLimit,
-    double encoderOffset
+    double encoderOffset,
+    double forwardLimit,
+    double reverseLimit
   ) {
     this.gearRatio = gearRatio;
     this.remapLimit = remapLimit;
@@ -64,10 +66,8 @@ class AngularTalonFX {
     oldTalonI = talonI.getValue();
     oldTalonD = talonD.getValue();
 
-    talonConfig.motionAcceleration =
-      degreesPerSecondToEncoderTicks(200);
-    talonConfig.motionCruiseVelocity =
-      degreesPerSecondToEncoderTicks(200);
+    talonConfig.motionAcceleration = degreesPerSecondToEncoderTicks(200);
+    talonConfig.motionCruiseVelocity = degreesPerSecondToEncoderTicks(200);
 
     talonFX.configAllSettings(talonConfig);
     talonFX.configVoltageCompSaturation(10);
@@ -88,6 +88,17 @@ class AngularTalonFX {
     talonFX.config_kP(0, talonP.getValue());
     talonFX.config_kI(0, talonI.getValue());
     talonFX.config_kD(0, talonD.getValue());
+
+    setTalonFromAbsEncoder();
+
+    talonFX.configForwardSoftLimitEnable(true);
+    talonFX.configForwardSoftLimitThreshold(
+      anglesToTalonSensorPosition(forwardLimit)
+    );
+    talonFX.configReverseSoftLimitEnable(true);
+    talonFX.configReverseSoftLimitThreshold(
+      anglesToTalonSensorPosition(reverseLimit)
+    );
   }
 
   public void updatePID() {
@@ -134,5 +145,12 @@ class AngularTalonFX {
     } else {
       return value;
     }
+  }
+
+  public double anglesToTalonSensorPosition(double angle) {
+    double posValue =
+      ((angle / 360.0) * gearRatio) * ArmConfig.TALONFX_ENCODER_TICKS;
+
+    return posValue;
   }
 }
