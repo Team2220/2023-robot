@@ -6,6 +6,8 @@ import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
 import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.motorcontrol.can.TalonFXConfiguration;
+import com.fasterxml.jackson.annotation.JacksonInject.Value;
+
 import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.RobotController;
@@ -30,9 +32,6 @@ class AngularTalonFX {
   private final TunableDouble talonP;
   private final TunableDouble talonI;
   private final TunableDouble talonD;
-  private double oldTalonP;
-  private double oldTalonI;
-  private double oldTalonD;
   private final TunableDouble cruiseVel;
   private final TunableDouble acel;
 
@@ -63,9 +62,7 @@ class AngularTalonFX {
     talonP = new TunableDouble(name + "P", 0.1, tunableDoubleEnabled);
     talonI = new TunableDouble(name + "I", 0, tunableDoubleEnabled);
     talonD = new TunableDouble(name + "D", 0.2, tunableDoubleEnabled);
-    oldTalonP = talonP.getValue();
-    oldTalonI = talonI.getValue();
-    oldTalonD = talonD.getValue();
+ 
 
     acel = new TunableDouble(name + "Acel", 200, tunableDoubleEnabled);
     cruiseVel = new TunableDouble(name + "CruiseVel", 200, tunableDoubleEnabled);
@@ -77,8 +74,20 @@ class AngularTalonFX {
       talonFX.configMotionCruiseVelocity(degreesPerSecondToEncoderTicks(value));
     });
 
+    talonP.addChangeListener((value) -> {
+      talonFX.config_kP(0, value);
+    });
+    talonI.addChangeListener((value) -> {
+      talonFX.config_kI(0, value);
+    });
+    talonD.addChangeListener((value) -> {
+      talonFX.config_kD(0, value);
+    });
+
     talonConfig.motionAcceleration = degreesPerSecondToEncoderTicks(200);
     talonConfig.motionCruiseVelocity = degreesPerSecondToEncoderTicks(200);
+
+
 
     talonFX.configAllSettings(talonConfig);
     talonFX.configVoltageCompSaturation(10);
@@ -110,22 +119,9 @@ class AngularTalonFX {
         anglesToTalonSensorPosition(reverseLimit));
   }
 
-  public void updatePID() {
-    if (talonP.getValue() != oldTalonP) {
-      talonFX.config_kP(0, talonP.getValue());
-      oldTalonP = talonP.getValue();
-    }
 
-    if (talonI.getValue() != oldTalonI) {
-      talonFX.config_kI(0, talonI.getValue());
-      oldTalonI = talonI.getValue();
-    }
-
-    if (talonD.getValue() != oldTalonD) {
-      talonFX.config_kD(0, talonD.getValue());
-      oldTalonD = talonD.getValue();
-    }
-  }
+    
+  
 
   private double degreesPerSecondToEncoderTicks(double angle) {
     double gfx = ((angle / 360.0) * gearRatio) *
