@@ -38,6 +38,10 @@ class AngularTalonFX {
   private double remapLimit;
   private double encoderOffset;
 
+  private double talonRef;
+
+  private String name;
+
   private TalonFXConfiguration talonConfig = new TalonFXConfiguration();
 
   public AngularTalonFX(
@@ -50,11 +54,14 @@ class AngularTalonFX {
     double remapLimit,
     double encoderOffset,
     double forwardLimit,
-    double reverseLimit
+    double reverseLimit,
+    double talonRef
   ) {
     this.gearRatio = gearRatio;
     this.remapLimit = remapLimit;
     this.encoderOffset = encoderOffset;
+    this.name = name;
+    this.talonRef = talonRef;
 
     dutyCycleEncoder = new DutyCycleEncoder(dutyEncoder);
     talonFX = new TalonFX(talonId);
@@ -152,5 +159,34 @@ class AngularTalonFX {
       ((angle / 360.0) * gearRatio) * ArmConfig.TALONFX_ENCODER_TICKS;
 
     return posValue;
+  }
+
+  public double ticksToTalonAngle(double ticks) {
+    double value = ticks / ArmConfig.TALONFX_ENCODER_TICKS / gearRatio;
+    value *= 360;
+    return value;
+  }
+
+private double degreesPerSecondToEncoderTicks(double angle, double gearRatio) {
+    double gfx = ((angle / 360.0) * gearRatio) * ArmConfig.TALONFX_ENCODER_TICKS * 1.0 / 10.0;
+    return gfx;
+  }
+
+  private void setPosition(double talonAng) {
+    setTalonAngle(talonAng);
+  }
+
+  public void setTalonToReferenceAngle() {
+    talonFX.setSelectedSensorPosition(
+        anglesToTalonSensorPosition(talonRef));
+  }
+
+  public void setTalonPercentOutput(double value) {
+    talonFX.set(TalonFXControlMode.PercentOutput, value);
+  }
+
+  public void setTalonAngle(double angle) {
+    double posValue = anglesToTalonSensorPosition(-angle);
+    talonFX.set(TalonFXControlMode.MotionMagic, posValue);
   }
 }
