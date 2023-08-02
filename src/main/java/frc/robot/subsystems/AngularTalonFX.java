@@ -185,7 +185,7 @@ class AngularTalonFX {
     return gfx;
   }
 
-  private void setPosition(double talonAng) {
+  public void setTalonPosition(double talonAng) {
     setTalonAngle(talonAng);
   }
 

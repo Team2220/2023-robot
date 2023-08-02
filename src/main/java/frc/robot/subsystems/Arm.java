@@ -164,17 +164,11 @@ public class Arm extends SubsystemBase {
   }
 
   public double ticksToWristAngle(double ticks) {
-    double value =
-      ticks / ArmConfig.TALONFX_ENCODER_TICKS / ArmConfig.WRIST_GEAR_RATIO;
-    value *= 360;
-    return value;
+    return angularWrist.ticksToTalonAngle(ticks);
   }
 
   public double ticksToShoulderAngle(double ticks) {
-    double value =
-      ticks / ArmConfig.TALONFX_ENCODER_TICKS / ArmConfig.SHOULDER_GEAR_RATIO;
-    value *= 360;
-    return value;
+    return angularShoulder.ticksToTalonAngle(ticks);
   }
 
   /** Arm enum for arm stataes */
@@ -214,21 +208,9 @@ public class Arm extends SubsystemBase {
     );
   }
 
-  private double degreesPerSecondToEncoderTicks(
-    double angle,
-    double gearRatio
-  ) {
-    double gfx =
-      ((angle / 360.0) * gearRatio) *
-      ArmConfig.TALONFX_ENCODER_TICKS *
-      1.0 /
-      10.0;
-    return gfx;
-  }
-
-  private void setPosition(double shouldereAng, double wristAng) {
-    setShoulderAngle(shouldereAng);
-    setWristAngle(wristAng);
+  private void setPosition(double shoulderAng, double wristAng) {
+    angularShoulder.setTalonPosition(shoulderAng);
+    angularWrist.setTalonPosition(wristAng);
   }
 
   public void setShoulderToReferenceAngle() {
