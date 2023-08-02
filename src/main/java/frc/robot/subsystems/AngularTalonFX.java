@@ -124,6 +124,8 @@ class AngularTalonFX {
     talonFX.configReverseSoftLimitThreshold(
       anglesToTalonSensorPosition(reverseLimit)
     );
+
+    setUpTestCommands();
   }
 
   private double degreesPerSecondToEncoderTicks(double angle) {
