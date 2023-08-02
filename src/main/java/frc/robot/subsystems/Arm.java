@@ -1,15 +1,11 @@
 package frc.robot.subsystems;
 
-import java.util.ArrayList;
-import java.util.Map;
-
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.StatorCurrentLimitConfiguration;
 import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
 import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.motorcontrol.can.TalonFXConfiguration;
-
 import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.RobotController;
@@ -23,6 +19,8 @@ import frc.robot.Constants;
 import frc.robot.Constants.ArmConfig;
 import frc.robot.commands.Arm.SetArmState;
 import frc.twilight.tunables.TunableDouble;
+import java.util.ArrayList;
+import java.util.Map;
 
 public class Arm extends SubsystemBase {
 
@@ -56,31 +54,75 @@ public class Arm extends SubsystemBase {
     ArmConfig.WRIST_REF
   );
 
-  private DutyCycleEncoder wristEncoder = new DutyCycleEncoder(ArmConfig.WRIST_DUTYENCODER);
-  private DutyCycleEncoder shoulderEncoder = new DutyCycleEncoder(ArmConfig.SHOULDER_DUTYENCODER);
+  private DutyCycleEncoder wristEncoder = new DutyCycleEncoder(
+    ArmConfig.WRIST_DUTYENCODER
+  );
+  private DutyCycleEncoder shoulderEncoder = new DutyCycleEncoder(
+    ArmConfig.SHOULDER_DUTYENCODER
+  );
 
   private TalonFX wrist = new TalonFX(ArmConfig.WRIST_TALONFX);
   private TalonFX shoulder = new TalonFX(ArmConfig.SHOULDER_TALONFX);
 
   ShuffleboardTab arm = Shuffleboard.getTab("arm");
 
-  private final TunableDouble wristP = new TunableDouble("wristP", 0.1, tunableDoubleEnabled);
-  private final TunableDouble wristI = new TunableDouble("wristI", 0, tunableDoubleEnabled);
-  private final TunableDouble wristD = new TunableDouble("wristD", 0.2, tunableDoubleEnabled);
+  private final TunableDouble wristP = new TunableDouble(
+    "wristP",
+    0.1,
+    tunableDoubleEnabled
+  );
+  private final TunableDouble wristI = new TunableDouble(
+    "wristI",
+    0,
+    tunableDoubleEnabled
+  );
+  private final TunableDouble wristD = new TunableDouble(
+    "wristD",
+    0.2,
+    tunableDoubleEnabled
+  );
 
   private double oldWristP = wristP.getValue();
   private double oldWristI = wristI.getValue();
   private double oldWristD = wristD.getValue();
 
-  private final TunableDouble shoulderP = new TunableDouble("shoulderP", 0.1, tunableDoubleEnabled);
-  private final TunableDouble shoulderI = new TunableDouble("shoulderI", 0, tunableDoubleEnabled);
-  private final TunableDouble shoulderD = new TunableDouble("shoulderD", 0.2, tunableDoubleEnabled);
+  private final TunableDouble shoulderP = new TunableDouble(
+    "shoulderP",
+    0.1,
+    tunableDoubleEnabled
+  );
+  private final TunableDouble shoulderI = new TunableDouble(
+    "shoulderI",
+    0,
+    tunableDoubleEnabled
+  );
+  private final TunableDouble shoulderD = new TunableDouble(
+    "shoulderD",
+    0.2,
+    tunableDoubleEnabled
+  );
 
-  private final TunableDouble shoulderCruiseVel = new TunableDouble("shoulderCruiseVel", 100, tunableDoubleEnabled);
-  private final TunableDouble shoulderAcel = new TunableDouble("shoulderAcel", 200, tunableDoubleEnabled);
+  private final TunableDouble shoulderCruiseVel = new TunableDouble(
+    "shoulderCruiseVel",
+    100,
+    tunableDoubleEnabled
+  );
+  private final TunableDouble shoulderAcel = new TunableDouble(
+    "shoulderAcel",
+    200,
+    tunableDoubleEnabled
+  );
 
-  private final TunableDouble wristCruiseVel = new TunableDouble("wristCruiseVel", 200, tunableDoubleEnabled);
-  private final TunableDouble wristAcel = new TunableDouble("wristAcel", 200, tunableDoubleEnabled);
+  private final TunableDouble wristCruiseVel = new TunableDouble(
+    "wristCruiseVel",
+    200,
+    tunableDoubleEnabled
+  );
+  private final TunableDouble wristAcel = new TunableDouble(
+    "wristAcel",
+    200,
+    tunableDoubleEnabled
+  );
 
   private double oldShoulderP = shoulderP.getValue();
   private double oldShoulderI = shoulderI.getValue();
@@ -91,53 +133,46 @@ public class Arm extends SubsystemBase {
 
   TalonFXConfiguration shoulderConfig = new TalonFXConfiguration();
 
- 
   public Arm() {
     setUpTestCommands();
   }
 
   public void setShoulderFromAbsEncoder() {
-    double shoulderOffset = getShoulderPosition() * (ArmConfig.SHOULDER_GEAR_RATIO) * (ArmConfig.TALONFX_ENCODER_TICKS);
-    shoulder.setSelectedSensorPosition(shoulderOffset);
+    angularShoulder.setTalonFromAbsEncoder();
   }
 
   public void setWristFromAbsEncoder() {
-    double wristOffset = getWristPosition() * (ArmConfig.WRIST_GEAR_RATIO) * (ArmConfig.TALONFX_ENCODER_TICKS);
-    wrist.setSelectedSensorPosition(wristOffset);
+    angularWrist.setTalonFromAbsEncoder();
   }
 
   public void overrideWristSoftLimits(boolean enabled) {
-    DataLogManager.log("overrideWristSoftLimits " + enabled);
-    wrist.overrideSoftLimitsEnable(enabled);
+    angularWrist.overrideTalonSoftLimits(enabled);
   }
 
   public void overrideShoulderSoftLimits(boolean enabled) {
-    DataLogManager.log("overrideSholderSoftLimits " + enabled);
-    shoulder.overrideSoftLimitsEnable(enabled);
+    angularShoulder.overrideTalonSoftLimits(enabled);
   }
 
   public double anglesToWristSensorPosition(double angle) {
-    double gearRatio = ArmConfig.WRIST_GEAR_RATIO;
-    double posValue = ((angle / 360.0) * gearRatio) * ArmConfig.TALONFX_ENCODER_TICKS;
-
+    double posValue = angularWrist.anglesToTalonSensorPosition(angle);
     return posValue;
   }
 
   public double anglesToShoulderSensorPosition(double angle) {
-    double gearRatio = ArmConfig.SHOULDER_GEAR_RATIO;
-    double posValue = ((angle / 360.0) * gearRatio) * ArmConfig.TALONFX_ENCODER_TICKS;
-
+    double posValue = angularShoulder.anglesToTalonSensorPosition(angle);
     return posValue;
   }
 
   public double ticksToWristAngle(double ticks) {
-    double value = ticks / ArmConfig.TALONFX_ENCODER_TICKS / ArmConfig.WRIST_GEAR_RATIO;
+    double value =
+      ticks / ArmConfig.TALONFX_ENCODER_TICKS / ArmConfig.WRIST_GEAR_RATIO;
     value *= 360;
     return value;
   }
 
   public double ticksToShoulderAngle(double ticks) {
-    double value = ticks / ArmConfig.TALONFX_ENCODER_TICKS / ArmConfig.SHOULDER_GEAR_RATIO;
+    double value =
+      ticks / ArmConfig.TALONFX_ENCODER_TICKS / ArmConfig.SHOULDER_GEAR_RATIO;
     value *= 360;
     return value;
   }
@@ -164,7 +199,6 @@ public class Arm extends SubsystemBase {
       this.shoulderAngle = shoulderAngle;
       this.wristAngle = wristAngle;
     }
-
   }
 
   /** arm states */
@@ -174,12 +208,21 @@ public class Arm extends SubsystemBase {
   }
 
   public boolean atArmState(ArmStates armState) {
-    return Math.abs(armState.shoulderAngle - getMotorShoulderPosition()) < 3 &&
-        Math.abs(armState.wristAngle - getMotorWristPosition()) < 3;
+    return (
+      Math.abs(armState.shoulderAngle - getMotorShoulderPosition()) < 3 &&
+      Math.abs(armState.wristAngle - getMotorWristPosition()) < 3
+    );
   }
 
-  private double degreesPerSecondToEncoderTicks(double angle, double gearRatio) {
-    double gfx = ((angle / 360.0) * gearRatio) * ArmConfig.TALONFX_ENCODER_TICKS * 1.0 / 10.0;
+  private double degreesPerSecondToEncoderTicks(
+    double angle,
+    double gearRatio
+  ) {
+    double gfx =
+      ((angle / 360.0) * gearRatio) *
+      ArmConfig.TALONFX_ENCODER_TICKS *
+      1.0 /
+      10.0;
     return gfx;
   }
 
@@ -190,11 +233,14 @@ public class Arm extends SubsystemBase {
 
   public void setShoulderToReferenceAngle() {
     shoulder.setSelectedSensorPosition(
-        anglesToShoulderSensorPosition(Constants.ArmConfig.SHOULDER_REF));
+      anglesToShoulderSensorPosition(Constants.ArmConfig.SHOULDER_REF)
+    );
   }
 
   public void setWristToReferenceAngle() {
-    wrist.setSelectedSensorPosition(anglesToWristSensorPosition(Constants.ArmConfig.WRIST_REF));
+    wrist.setSelectedSensorPosition(
+      anglesToWristSensorPosition(Constants.ArmConfig.WRIST_REF)
+    );
   }
 
   public void setWristPercentOutput(double value) {
@@ -216,13 +262,20 @@ public class Arm extends SubsystemBase {
   }
 
   public double getShoulderPosition() {
-    return remap(shoulderEncoder.getAbsolutePosition(), ArmConfig.SHOULDER_REMAP_LIMIT)
-        - ArmConfig.SHOULDER_ENCODER_OFFSET;
+    return (
+      remap(
+        shoulderEncoder.getAbsolutePosition(),
+        ArmConfig.SHOULDER_REMAP_LIMIT
+      ) -
+      ArmConfig.SHOULDER_ENCODER_OFFSET
+    );
   }
 
   public double getWristPosition() {
-
-    return remap(wristEncoder.getAbsolutePosition(), ArmConfig.WRIST_REMAP_LIMIT) - ArmConfig.WRIST_ENCODER_OFFSET;
+    return (
+      remap(wristEncoder.getAbsolutePosition(), ArmConfig.WRIST_REMAP_LIMIT) -
+      ArmConfig.WRIST_ENCODER_OFFSET
+    );
   }
 
   public double getMotorShoulderPosition() {
@@ -235,80 +288,137 @@ public class Arm extends SubsystemBase {
 
   public void setUpTestCommands() {
     // Arm States
-    ShuffleboardLayout stateLayout = Shuffleboard.getTab("arm")
-        .getLayout("States", BuiltInLayouts.kList)
-        .withSize(2, 4)
-        .withProperties(Map.of("Label position", "HIDDEN"));
+    ShuffleboardLayout stateLayout = Shuffleboard
+      .getTab("arm")
+      .getLayout("States", BuiltInLayouts.kList)
+      .withSize(2, 4)
+      .withProperties(Map.of("Label position", "HIDDEN"));
 
     for (ArmStates state : ArmStates.values()) {
       stateLayout.add(state.name(), new SetArmState(state, this));
     }
 
     // Test Positions
-    ShuffleboardLayout testPositionLayout = Shuffleboard.getTab("arm")
-        .getLayout("Test Positions", BuiltInLayouts.kList)
-        .withSize(2, 4)
-        .withProperties(Map.of("Label position", "HIDDEN"));
+    ShuffleboardLayout testPositionLayout = Shuffleboard
+      .getTab("arm")
+      .getLayout("Test Positions", BuiltInLayouts.kList)
+      .withSize(2, 4)
+      .withProperties(Map.of("Label position", "HIDDEN"));
 
     testPositionLayout.add(
-        "ZeroShoulder",
-        new InstantCommand(() -> shoulder.setSelectedSensorPosition(0)).withName("ZeroShoulder"));
+      "ZeroShoulder",
+      new InstantCommand(() -> shoulder.setSelectedSensorPosition(0))
+        .withName("ZeroShoulder")
+    );
     testPositionLayout.add(
-        "ZeroWrist",
-        new InstantCommand(() -> wrist.setSelectedSensorPosition(0)).withName("ZeroWrist"));
+      "ZeroWrist",
+      new InstantCommand(() -> wrist.setSelectedSensorPosition(0))
+        .withName("ZeroWrist")
+    );
 
     testPositionLayout.add(
-        "setShoulderFromEncoder",
-        new InstantCommand(() -> setShoulderFromAbsEncoder()).withName("setShoulderFromEncoder"));
+      "setShoulderFromEncoder",
+      new InstantCommand(() -> setShoulderFromAbsEncoder())
+        .withName("setShoulderFromEncoder")
+    );
     testPositionLayout.add(
-        "setWristFromEncoder",
-        new InstantCommand(() -> setWristFromAbsEncoder()).withName("setWristFromEncoder"));
+      "setWristFromEncoder",
+      new InstantCommand(() -> setWristFromAbsEncoder())
+        .withName("setWristFromEncoder")
+    );
 
     testPositionLayout.add(
-        "ReferenceShoulder",
-        new InstantCommand(() -> setShoulderToReferenceAngle()).withName("ReferenceShoulder"));
+      "ReferenceShoulder",
+      new InstantCommand(() -> setShoulderToReferenceAngle())
+        .withName("ReferenceShoulder")
+    );
     testPositionLayout.add(
-        "RefernceWrist",
-        new InstantCommand(() -> setWristToReferenceAngle()).withName("RefernceWrist"));
+      "RefernceWrist",
+      new InstantCommand(() -> setWristToReferenceAngle())
+        .withName("RefernceWrist")
+    );
     testPositionLayout.add(
-        "Wrist=90", new InstantCommand(() -> setWristAngle(90)).withName("Wrist=90"));
+      "Wrist=90",
+      new InstantCommand(() -> setWristAngle(90)).withName("Wrist=90")
+    );
     testPositionLayout.add(
-        "Wrist=0", new InstantCommand(() -> setWristAngle(0)).withName("Wrist=0"));
+      "Wrist=0",
+      new InstantCommand(() -> setWristAngle(0)).withName("Wrist=0")
+    );
     testPositionLayout.add(
-        "Wrist=-90", new InstantCommand(() -> setWristAngle(-90)).withName("Wrist=-90"));
+      "Wrist=-90",
+      new InstantCommand(() -> setWristAngle(-90)).withName("Wrist=-90")
+    );
     testPositionLayout.add(
-        "Shoulder=0", new InstantCommand(() -> setShoulderAngle(0)).withName("Shoulder=0"));
+      "Shoulder=0",
+      new InstantCommand(() -> setShoulderAngle(0)).withName("Shoulder=0")
+    );
     testPositionLayout.add(
-        "Shoulder=90", new InstantCommand(() -> setShoulderAngle(90)).withName("Shoulder=90"));
+      "Shoulder=90",
+      new InstantCommand(() -> setShoulderAngle(90)).withName("Shoulder=90")
+    );
     testPositionLayout.add(
-        "Shoulder=-90", new InstantCommand(() -> setShoulderAngle(-90)).withName("Shoulder=-90"));
+      "Shoulder=-90",
+      new InstantCommand(() -> setShoulderAngle(-90)).withName("Shoulder=-90")
+    );
 
     // Everything else
-    ShuffleboardLayout angLayout = Shuffleboard.getTab("arm")
-        .getLayout("Angles", BuiltInLayouts.kGrid)
-        .withSize(3, 4)
-        .withProperties(Map.of("Label position", "TOP"));
+    ShuffleboardLayout angLayout = Shuffleboard
+      .getTab("arm")
+      .getLayout("Angles", BuiltInLayouts.kGrid)
+      .withSize(3, 4)
+      .withProperties(Map.of("Label position", "TOP"));
 
-    angLayout.addDouble("shoulder raw abs encoder", shoulderEncoder::getAbsolutePosition);
-    angLayout.addDouble("wrist raw abs encoder", wristEncoder::getAbsolutePosition);
+    angLayout.addDouble(
+      "shoulder raw abs encoder",
+      shoulderEncoder::getAbsolutePosition
+    );
+    angLayout.addDouble(
+      "wrist raw abs encoder",
+      wristEncoder::getAbsolutePosition
+    );
 
     angLayout.addDouble("shoulder abs encoder", this::getShoulderPosition);
     angLayout.addDouble("wrist abs encoder", this::getWristPosition);
 
-    angLayout.addDouble("shoulder abs angle", () -> this.getShoulderPosition() * 360);
+    angLayout.addDouble(
+      "shoulder abs angle",
+      () -> this.getShoulderPosition() * 360
+    );
     angLayout.addDouble("wrist abs angle", () -> this.getWristPosition() * 360);
 
-    angLayout.addDouble("shoulder angle", () -> ticksToShoulderAngle(shoulder.getSelectedSensorPosition()));
-    angLayout.addDouble("wrist angle", () -> ticksToWristAngle(wrist.getSelectedSensorPosition()));
+    angLayout.addDouble(
+      "shoulder angle",
+      () -> ticksToShoulderAngle(shoulder.getSelectedSensorPosition())
+    );
+    angLayout.addDouble(
+      "wrist angle",
+      () -> ticksToWristAngle(wrist.getSelectedSensorPosition())
+    );
 
     // Angles using remap()
-    angLayout.addDouble("wrist remap", () -> remap(wristEncoder.getAbsolutePosition(), ArmConfig.WRIST_REMAP_LIMIT));
-    angLayout.addDouble("shoulder remap",
-        () -> remap(shoulderEncoder.getAbsolutePosition(), ArmConfig.SHOULDER_REMAP_LIMIT));
+    angLayout.addDouble(
+      "wrist remap",
+      () ->
+        remap(wristEncoder.getAbsolutePosition(), ArmConfig.WRIST_REMAP_LIMIT)
+    );
+    angLayout.addDouble(
+      "shoulder remap",
+      () ->
+        remap(
+          shoulderEncoder.getAbsolutePosition(),
+          ArmConfig.SHOULDER_REMAP_LIMIT
+        )
+    );
 
-    angLayout.addBoolean("wrist is connected", () -> wristEncoder.isConnected());
-    angLayout.addBoolean("shoulder is connected", () -> shoulderEncoder.isConnected());
-
+    angLayout.addBoolean(
+      "wrist is connected",
+      () -> wristEncoder.isConnected()
+    );
+    angLayout.addBoolean(
+      "shoulder is connected",
+      () -> shoulderEncoder.isConnected()
+    );
     // ShuffleboardLayout dynamicLimits = Shuffleboard.getTab("arm")
     // .getLayout("Dynamic Limits", BuiltInLayouts.kGrid)
     // .withSize(2, 3)
@@ -327,8 +437,5 @@ public class Arm extends SubsystemBase {
     }
   }
 
-
-  public void holdCurrentPosition() {
-
-  }
+  public void holdCurrentPosition() {}
 }

@@ -155,6 +155,11 @@ class AngularTalonFX {
     }
   }
 
+  public void overrideTalonSoftLimits(boolean enabled) {
+    DataLogManager.log("override" + name + "SoftLimits " + enabled);
+    talonFX.overrideSoftLimitsEnable(enabled);
+  }
+
   public double anglesToTalonSensorPosition(double angle) {
     double posValue =
       ((angle / 360.0) * gearRatio) * ArmConfig.TALONFX_ENCODER_TICKS;
