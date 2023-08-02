@@ -91,111 +91,8 @@ public class Arm extends SubsystemBase {
 
   TalonFXConfiguration shoulderConfig = new TalonFXConfiguration();
 
-  public void updatePID() {
-
-    if (wristP.getValue() != oldWristP) {
-      wrist.config_kP(0, wristP.getValue());
-      oldWristP = wristP.getValue();
-    }
-
-    if (wristI.getValue() != oldWristI) {
-      wrist.config_kI(0, wristI.getValue());
-      oldWristI = wristI.getValue();
-    }
-
-    if (wristD.getValue() != oldWristD) {
-      wrist.config_kD(0, wristD.getValue());
-      oldWristD = wristD.getValue();
-    }
-    if (shoulderP.getValue() != oldShoulderP) {
-      shoulder.config_kP(0, shoulderP.getValue());
-      oldShoulderP = shoulderP.getValue();
-    }
-
-    if (shoulderI.getValue() != oldShoulderI) {
-      shoulder.config_kI(0, shoulderI.getValue());
-      oldShoulderI = shoulderI.getValue();
-    }
-
-    if (shoulderD.getValue() != oldShoulderD) {
-      shoulder.config_kD(0, shoulderD.getValue());
-      oldShoulderD = shoulderD.getValue();
-    }
-  }
-
+ 
   public Arm() {
-
-    shoulderAcel.addChangeListener((value) -> {
-      shoulder.configMotionAcceleration(degreesPerSecondToEncoderTicks(value, ArmConfig.SHOULDER_GEAR_RATIO));
-    });
-    shoulderCruiseVel.addChangeListener((value) -> {
-      shoulder.configMotionCruiseVelocity(degreesPerSecondToEncoderTicks(value, ArmConfig.SHOULDER_GEAR_RATIO));
-    });
-    wristAcel.addChangeListener((value) -> {
-      wrist.configMotionAcceleration(degreesPerSecondToEncoderTicks(value, ArmConfig.WRIST_GEAR_RATIO));
-    });
-    wristCruiseVel.addChangeListener((value) -> {
-      wrist.configMotionCruiseVelocity(degreesPerSecondToEncoderTicks(value, ArmConfig.WRIST_GEAR_RATIO));
-    });
-
-    /* Motion Magic Configurations */
-    wristConfig.motionAcceleration = degreesPerSecondToEncoderTicks(200, ArmConfig.WRIST_GEAR_RATIO);
-    wristConfig.motionCruiseVelocity = degreesPerSecondToEncoderTicks(200, ArmConfig.WRIST_GEAR_RATIO);
-    shoulderConfig.motionCruiseVelocity = degreesPerSecondToEncoderTicks(100, ArmConfig.SHOULDER_GEAR_RATIO);
-    shoulderConfig.motionAcceleration = degreesPerSecondToEncoderTicks(200, ArmConfig.SHOULDER_GEAR_RATIO);
-
-    wrist.configAllSettings(wristConfig);
-    shoulder.configAllSettings(shoulderConfig);
-
-    wrist.configVoltageCompSaturation(10);
-    shoulder.configVoltageCompSaturation(10);
-
-    wrist.setInverted(ArmConfig.WRIST_INVERTED);
-    shoulder.setInverted(ArmConfig.SHOULDER_INVERTED);
-
-    SupplyCurrentLimitConfiguration supplyConfig = new SupplyCurrentLimitConfiguration();
-    supplyConfig.currentLimit = 20;
-    supplyConfig.enable = true;
-    shoulder.configSupplyCurrentLimit(supplyConfig);
-    wrist.configSupplyCurrentLimit(supplyConfig);
-
-    StatorCurrentLimitConfiguration config = new StatorCurrentLimitConfiguration();
-    config.currentLimit = 33;
-    config.enable = true;
-    shoulder.configStatorCurrentLimit(config);
-    wrist.configStatorCurrentLimit(config);
-
-    // ----------------------------------------------------------------------------------------------------------------------
-    shoulder.setNeutralMode(NeutralMode.Brake);
-    wrist.setNeutralMode(NeutralMode.Brake);
-    // ----------------------------------------------------------------------------------------------------------------------
-
-    wrist.config_kP(0, wristP.getValue());
-    wrist.config_kI(0, wristI.getValue());
-    wrist.config_kD(0, wristD.getValue());
-
-    shoulder.config_kP(0, shoulderP.getValue());
-    shoulder.config_kI(0, shoulderI.getValue());
-    shoulder.config_kD(0, shoulderD.getValue());
-
-    setWristFromAbsEncoder();
-
-    setShoulderFromAbsEncoder();
-
-    shoulder.configForwardSoftLimitEnable(true);
-    shoulder.configForwardSoftLimitThreshold(
-        anglesToShoulderSensorPosition(ArmConfig.SHOULDER_FORWARD_LIMIT));
-    shoulder.configReverseSoftLimitEnable(true);
-    shoulder.configReverseSoftLimitThreshold(
-        anglesToShoulderSensorPosition(ArmConfig.SHOULDER_REVERSE_LIMIT));
-
-    wrist.configForwardSoftLimitEnable(true);
-    wrist.configForwardSoftLimitThreshold(
-        anglesToWristSensorPosition(ArmConfig.WRIST_FORWARD_LIMIT));
-    wrist.configReverseSoftLimitEnable(true);
-    wrist.configReverseSoftLimitThreshold(
-        anglesToWristSensorPosition(ArmConfig.WRIST_REVERSE_LIMIT));
-
     setUpTestCommands();
   }
 
@@ -432,6 +329,6 @@ public class Arm extends SubsystemBase {
 
 
   public void holdCurrentPosition() {
-    
+
   }
 }
