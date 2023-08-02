@@ -6,6 +6,8 @@ import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
 import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.motorcontrol.can.TalonFXConfiguration;
+import com.fasterxml.jackson.annotation.JacksonInject.Value;
+
 import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.RobotController;
@@ -30,9 +32,8 @@ class AngularTalonFX {
   private final TunableDouble talonP;
   private final TunableDouble talonI;
   private final TunableDouble talonD;
-  private double oldTalonP;
-  private double oldTalonI;
-  private double oldTalonD;
+  private final TunableDouble cruiseVel;
+  private final TunableDouble acel;
 
   private double gearRatio;
   private double remapLimit;
@@ -69,12 +70,32 @@ class AngularTalonFX {
     talonP = new TunableDouble(name + "P", 0.1, tunableDoubleEnabled);
     talonI = new TunableDouble(name + "I", 0, tunableDoubleEnabled);
     talonD = new TunableDouble(name + "D", 0.2, tunableDoubleEnabled);
-    oldTalonP = talonP.getValue();
-    oldTalonI = talonI.getValue();
-    oldTalonD = talonD.getValue();
+ 
+
+    acel = new TunableDouble(name + "Acel", 200, tunableDoubleEnabled);
+    cruiseVel = new TunableDouble(name + "CruiseVel", 200, tunableDoubleEnabled);
+
+    acel.addChangeListener((value) -> {
+      talonFX.configMotionAcceleration(degreesPerSecondToEncoderTicks(value));
+    });
+    cruiseVel.addChangeListener((value) -> {
+      talonFX.configMotionCruiseVelocity(degreesPerSecondToEncoderTicks(value));
+    });
+
+    talonP.addChangeListener((value) -> {
+      talonFX.config_kP(0, value);
+    });
+    talonI.addChangeListener((value) -> {
+      talonFX.config_kI(0, value);
+    });
+    talonD.addChangeListener((value) -> {
+      talonFX.config_kD(0, value);
+    });
 
     talonConfig.motionAcceleration = degreesPerSecondToEncoderTicks(200);
     talonConfig.motionCruiseVelocity = degreesPerSecondToEncoderTicks(200);
+
+
 
     talonFX.configAllSettings(talonConfig);
     talonFX.configVoltageCompSaturation(10);
@@ -100,50 +121,31 @@ class AngularTalonFX {
 
     talonFX.configForwardSoftLimitEnable(true);
     talonFX.configForwardSoftLimitThreshold(
-      anglesToTalonSensorPosition(forwardLimit)
-    );
+        anglesToTalonSensorPosition(forwardLimit));
     talonFX.configReverseSoftLimitEnable(true);
     talonFX.configReverseSoftLimitThreshold(
-      anglesToTalonSensorPosition(reverseLimit)
-    );
+        anglesToTalonSensorPosition(reverseLimit));
   }
 
-  public void updatePID() {
-    if (talonP.getValue() != oldTalonP) {
-      talonFX.config_kP(0, talonP.getValue());
-      oldTalonP = talonP.getValue();
-    }
 
-    if (talonI.getValue() != oldTalonI) {
-      talonFX.config_kI(0, talonI.getValue());
-      oldTalonI = talonI.getValue();
-    }
-
-    if (talonD.getValue() != oldTalonD) {
-      talonFX.config_kD(0, talonD.getValue());
-      oldTalonD = talonD.getValue();
-    }
-  }
+    
+  
 
   private double degreesPerSecondToEncoderTicks(double angle) {
-    double gfx =
-      ((angle / 360.0) * gearRatio) *
-      ArmConfig.TALONFX_ENCODER_TICKS *
-      1.0 /
-      10.0;
+    double gfx = ((angle / 360.0) * gearRatio) *
+        ArmConfig.TALONFX_ENCODER_TICKS *
+        1.0 /
+        10.0;
     return gfx;
   }
 
   public void setTalonFromAbsEncoder() {
-    double talonOffset =
-      getTalonPosition() * (gearRatio) * (ArmConfig.TALONFX_ENCODER_TICKS);
+    double talonOffset = getTalonPosition() * (gearRatio) * (ArmConfig.TALONFX_ENCODER_TICKS);
     talonFX.setSelectedSensorPosition(talonOffset);
   }
 
   public double getTalonPosition() {
-    return (
-      remap(dutyCycleEncoder.getAbsolutePosition(), remapLimit) - encoderOffset
-    );
+    return (remap(dutyCycleEncoder.getAbsolutePosition(), remapLimit) - encoderOffset);
   }
 
   public double remap(double value, double limit) {
@@ -155,8 +157,7 @@ class AngularTalonFX {
   }
 
   public double anglesToTalonSensorPosition(double angle) {
-    double posValue =
-      ((angle / 360.0) * gearRatio) * ArmConfig.TALONFX_ENCODER_TICKS;
+    double posValue = ((angle / 360.0) * gearRatio) * ArmConfig.TALONFX_ENCODER_TICKS;
 
     return posValue;
   }

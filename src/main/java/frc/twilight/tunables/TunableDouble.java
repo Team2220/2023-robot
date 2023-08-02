@@ -1,8 +1,14 @@
 package frc.twilight.tunables;
 
+import java.util.function.BooleanSupplier;
+import java.util.function.DoubleConsumer;
+
+import com.fasterxml.jackson.annotation.JacksonInject.Value;
+
 import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.SimpleWidget;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
 public class TunableDouble {
   private double defaultValue;
@@ -44,7 +50,27 @@ public class TunableDouble {
    * @return Value as a double
    */
   public double getValue() {
-    if (shuffleboard != null) return shuffleboard.getDouble(defaultValue);
+    if (shuffleboard != null)
+      return shuffleboard.getDouble(defaultValue);
     return defaultValue;
   }
+
+  public void addChangeListener(DoubleConsumer onChange) {
+    CommandScheduler.getInstance().getDefaultButtonLoop().bind(
+        new Runnable() {
+          private double m_oldValue = getValue();
+
+          @Override
+          public void run() {
+            double newValue = getValue();
+
+            if (m_oldValue != newValue) {
+              onChange.accept(newValue);
+              m_oldValue = newValue;
+            }
+
+          }
+        });
+  }
+
 }
