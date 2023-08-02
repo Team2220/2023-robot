@@ -153,24 +153,6 @@ public class Arm extends SubsystemBase {
     angularShoulder.overrideTalonSoftLimits(enabled);
   }
 
-  public double anglesToWristSensorPosition(double angle) {
-    double posValue = angularWrist.anglesToTalonSensorPosition(angle);
-    return posValue;
-  }
-
-  public double anglesToShoulderSensorPosition(double angle) {
-    double posValue = angularShoulder.anglesToTalonSensorPosition(angle);
-    return posValue;
-  }
-
-  public double ticksToWristAngle(double ticks) {
-    return angularWrist.ticksToTalonAngle(ticks);
-  }
-
-  public double ticksToShoulderAngle(double ticks) {
-    return angularShoulder.ticksToTalonAngle(ticks);
-  }
-
   /** Arm enum for arm stataes */
   public enum ArmStates {
     INTAKE(152, 41),
@@ -213,13 +195,6 @@ public class Arm extends SubsystemBase {
     angularWrist.setTalonPosition(wristAng);
   }
 
-  public void setShoulderToReferenceAngle() {
-    angularShoulder.setTalonToReferenceAngle();
-  }
-
-  public void setWristToReferenceAngle() {
-    angularWrist.setTalonToReferenceAngle();
-  }
 
   public void setWristPercentOutput(double value) {
     angularWrist.setTalonPercentOutput(value);
@@ -264,11 +239,9 @@ public class Arm extends SubsystemBase {
     for (ArmStates state : ArmStates.values()) {
       stateLayout.add(state.name(), new SetArmState(state, this));
     }
-
   }
 
   // Moves encoder discontinuity outisde of range to stop values from jumping
- 
 
   public void holdCurrentPosition() {
     angularWrist.holdCurrentPosition();
