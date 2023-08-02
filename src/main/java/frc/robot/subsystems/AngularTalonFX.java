@@ -256,4 +256,39 @@ class AngularTalonFX {
     // dynamicLimits.addDouble(getName(), null);
 
   }
+
+ // if (!RobotController.isSysActive()) {
+    // holdCurrentPosition();
+    // }
+    // double shoulderForwardLimit =
+    // anglesToShoulderSensorPosition(ArmConfig.SHOULDER_FORWARD_LIMIT);
+    // double shoulderReverseLimit =
+    // anglesToShoulderSensorPosition(ArmConfig.SHOULDER_REVERSE_LIMIT);
+    // double wristForwardLimit =
+    // anglesToWristSensorPosition(ArmConfig.WRIST_FORWARD_LIMIT);
+    // double wristReverseLimit =
+    // anglesToWristSensorPosition(ArmConfig.WRIST_REVERSE_LIMIT);
+    // if ((wrist.getSelectedSensorPosition() >= wristForwardLimit)
+    // || (wrist.getSelectedSensorPosition() <= wristReverseLimit)) {
+    // controller.runRumble(RumbleVariables.medium);
+    // } else if ((shoulder.getSelectedSensorPosition() >= shoulderForwardLimit)
+    // || (shoulder.getSelectedSensorPosition() <= shoulderReverseLimit)) {
+    // controller.runRumble(RumbleVariables.medium);
+    // } else {
+    // controller.runRumble(RumbleVariables.off);
+    // }
+
+   public void holdCurrentPosition() {
+    double currentTalonPosition = talonFX.getSelectedSensorPosition();
+
+    talonFX.set(TalonFXControlMode.Position, currentTalonPosition);
+  }
+
+  public ArrayList<TalonFX> geTalonFXs() {
+
+    ArrayList<TalonFX> musicList = new ArrayList<>();
+    musicList.add(talonFX);
+
+    return musicList;
+  }
 }
