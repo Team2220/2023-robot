@@ -230,30 +230,19 @@ public class Arm extends SubsystemBase {
   }
 
   public void setWristAngle(double angle) {
-    double posValue = anglesToWristSensorPosition(-angle);
-    wrist.set(TalonFXControlMode.MotionMagic, posValue);
+    angularWrist.setTalonAngle(angle);
   }
 
   public void setShoulderAngle(double angle) {
-    double posValue = anglesToShoulderSensorPosition(angle);
-    shoulder.set(TalonFXControlMode.MotionMagic, posValue);
+    angularShoulder.setTalonAngle(angle);
   }
 
   public double getShoulderPosition() {
-    return (
-      remap(
-        shoulderEncoder.getAbsolutePosition(),
-        ArmConfig.SHOULDER_REMAP_LIMIT
-      ) -
-      ArmConfig.SHOULDER_ENCODER_OFFSET
-    );
+    return angularShoulder.getTalonPosition();
   }
 
   public double getWristPosition() {
-    return (
-      remap(wristEncoder.getAbsolutePosition(), ArmConfig.WRIST_REMAP_LIMIT) -
-      ArmConfig.WRIST_ENCODER_OFFSET
-    );
+    return angularWrist.getTalonPosition();
   }
 
   public double getMotorShoulderPosition() {
