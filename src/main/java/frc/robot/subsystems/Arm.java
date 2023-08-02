@@ -214,23 +214,19 @@ public class Arm extends SubsystemBase {
   }
 
   public void setShoulderToReferenceAngle() {
-    shoulder.setSelectedSensorPosition(
-      anglesToShoulderSensorPosition(Constants.ArmConfig.SHOULDER_REF)
-    );
+    angularShoulder.setTalonToReferenceAngle();
   }
 
   public void setWristToReferenceAngle() {
-    wrist.setSelectedSensorPosition(
-      anglesToWristSensorPosition(Constants.ArmConfig.WRIST_REF)
-    );
+    angularWrist.setTalonToReferenceAngle();
   }
 
   public void setWristPercentOutput(double value) {
-    wrist.set(TalonFXControlMode.PercentOutput, value);
+    angularWrist.setTalonPercentOutput(value);
   }
 
   public void setShoulderPercentOutput(double value) {
-    shoulder.set(TalonFXControlMode.PercentOutput, value);
+    angularShoulder.setTalonPercentOutput(value);
   }
 
   public void setWristAngle(double angle) {
