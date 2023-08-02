@@ -197,5 +197,63 @@ class AngularTalonFX {
     talonFX.set(TalonFXControlMode.MotionMagic, posValue);
   }
 
-  
+  public double getMotorTalonPosition() {
+    return ticksToTalonAngle(talonFX.getSelectedSensorPosition());
+  }
+
+  public void setUpTestCommands() {
+
+    // Test Positions
+    ShuffleboardLayout testPositionLayout = Shuffleboard.getTab("arm")
+        .getLayout("Test Positions", BuiltInLayouts.kList)
+        .withSize(2, 4)
+        .withProperties(Map.of("Label position", "HIDDEN"));
+
+    testPositionLayout.add(
+        "Zero" + name,
+        new InstantCommand(() -> talonFX.setSelectedSensorPosition(0)).withName("Zero" + name));
+
+    testPositionLayout.add(
+        "set" + name + "FromEncoder",
+        new InstantCommand(() -> setTalonFromAbsEncoder()).withName("set" + name + "FromEncoder"));
+
+   
+    testPositionLayout.add(
+        "Reference" + name,
+        new InstantCommand(() -> setTalonToReferenceAngle()).withName("Reference" + name));
+
+    testPositionLayout.add(
+        name + "=90", new InstantCommand(() -> setTalonAngle(90)).withName(name + "=90"));
+
+    testPositionLayout.add(
+        name + "=0", new InstantCommand(() -> setTalonAngle(0)).withName(name + "=0"));
+    testPositionLayout.add(
+        name + "=-90", new InstantCommand(() -> setTalonAngle(-90)).withName(name + "=-90"));
+
+    // Everything else
+    ShuffleboardLayout angLayout = Shuffleboard.getTab("arm")
+        .getLayout("Angles", BuiltInLayouts.kGrid)
+        .withSize(3, 4)
+        .withProperties(Map.of("Label position", "TOP"));
+
+    angLayout.addDouble(name + " raw abs encoder", talonEncoder::getAbsolutePosition);
+
+    angLayout.addDouble(name + " abs encoder", this::getTalonPosition);
+
+    angLayout.addDouble(name + " abs angle", () -> this.getTalonPosition() * 360);
+
+    angLayout.addDouble(name + " angle", () -> ticksToTalonAngle(talonFX.getSelectedSensorPosition()));
+    // Angles using remap()
+    angLayout.addDouble(name + " remap", () -> remap(talonEncoder.getAbsolutePosition(), remapLimit));
+
+    angLayout.addBoolean(name + " is connected", () -> talonEncoder.isConnected());
+
+    // ShuffleboardLayout dynamicLimits = Shuffleboard.getTab("arm")
+    // .getLayout("Dynamic Limits", BuiltInLayouts.kGrid)
+    // .withSize(2, 3)
+    // .withProperties(Map.of("Label position", "TOP"));
+
+    // dynamicLimits.addDouble(getName(), null);
+
+  }
 }
