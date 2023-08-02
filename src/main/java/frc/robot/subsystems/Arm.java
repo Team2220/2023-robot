@@ -25,6 +25,37 @@ import frc.robot.commands.Arm.SetArmState;
 import frc.twilight.tunables.TunableDouble;
 
 public class Arm extends SubsystemBase {
+
+  private final boolean tunableDoubleEnabled = true;
+
+  private AngularTalonFX angularShoulder = new AngularTalonFX(
+    ArmConfig.SHOULDER_DUTYENCODER,
+    ArmConfig.SHOULDER_TALONFX,
+    "Shoulder",
+    tunableDoubleEnabled,
+    ArmConfig.SHOULDER_GEAR_RATIO,
+    ArmConfig.SHOULDER_INVERTED,
+    ArmConfig.SHOULDER_REMAP_LIMIT,
+    ArmConfig.SHOULDER_ENCODER_OFFSET,
+    ArmConfig.SHOULDER_FORWARD_LIMIT,
+    ArmConfig.SHOULDER_REVERSE_LIMIT,
+    ArmConfig.SHOULDER_REF
+  );
+
+  private AngularTalonFX angularWrist = new AngularTalonFX(
+    ArmConfig.WRIST_DUTYENCODER,
+    ArmConfig.WRIST_TALONFX,
+    "Wrist",
+    tunableDoubleEnabled,
+    ArmConfig.WRIST_GEAR_RATIO,
+    ArmConfig.WRIST_INVERTED,
+    ArmConfig.WRIST_REMAP_LIMIT,
+    ArmConfig.WRIST_ENCODER_OFFSET,
+    ArmConfig.WRIST_FORWARD_LIMIT,
+    ArmConfig.WRIST_REVERSE_LIMIT,
+    ArmConfig.WRIST_REF
+  );
+
   private DutyCycleEncoder wristEncoder = new DutyCycleEncoder(ArmConfig.WRIST_DUTYENCODER);
   private DutyCycleEncoder shoulderEncoder = new DutyCycleEncoder(ArmConfig.SHOULDER_DUTYENCODER);
 
@@ -32,8 +63,6 @@ public class Arm extends SubsystemBase {
   private TalonFX shoulder = new TalonFX(ArmConfig.SHOULDER_TALONFX);
 
   ShuffleboardTab arm = Shuffleboard.getTab("arm");
-
-  private final boolean tunableDoubleEnabled = true;
 
   private final TunableDouble wristP = new TunableDouble("wristP", 0.1, tunableDoubleEnabled);
   private final TunableDouble wristI = new TunableDouble("wristI", 0, tunableDoubleEnabled);
@@ -401,46 +430,8 @@ public class Arm extends SubsystemBase {
     }
   }
 
-  @Override
-  public void periodic() {
-    // if (!RobotController.isSysActive()) {
-    // holdCurrentPosition();
-    // }
-    // double shoulderForwardLimit =
-    // anglesToShoulderSensorPosition(ArmConfig.SHOULDER_FORWARD_LIMIT);
-    // double shoulderReverseLimit =
-    // anglesToShoulderSensorPosition(ArmConfig.SHOULDER_REVERSE_LIMIT);
-    // double wristForwardLimit =
-    // anglesToWristSensorPosition(ArmConfig.WRIST_FORWARD_LIMIT);
-    // double wristReverseLimit =
-    // anglesToWristSensorPosition(ArmConfig.WRIST_REVERSE_LIMIT);
-    // if ((wrist.getSelectedSensorPosition() >= wristForwardLimit)
-    // || (wrist.getSelectedSensorPosition() <= wristReverseLimit)) {
-    // controller.runRumble(RumbleVariables.medium);
-    // } else if ((shoulder.getSelectedSensorPosition() >= shoulderForwardLimit)
-    // || (shoulder.getSelectedSensorPosition() <= shoulderReverseLimit)) {
-    // controller.runRumble(RumbleVariables.medium);
-    // } else {
-    // controller.runRumble(RumbleVariables.off);
-    // }
-
-    updatePID();
-  }
 
   public void holdCurrentPosition() {
-    double currentWristPosition = wrist.getSelectedSensorPosition();
-    double currentShoulderPosition = shoulder.getSelectedSensorPosition();
-
-    wrist.set(TalonFXControlMode.Position, currentWristPosition);
-    shoulder.set(TalonFXControlMode.Position, currentShoulderPosition);
-  }
-
-  public ArrayList<TalonFX> geTalonFXs() {
-
-    ArrayList<TalonFX> musicList = new ArrayList<>();
-    musicList.add(shoulder);
-    musicList.add(wrist);
-
-    return musicList;
+    
   }
 }
