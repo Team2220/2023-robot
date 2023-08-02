@@ -246,11 +246,11 @@ public class Arm extends SubsystemBase {
   }
 
   public double getMotorShoulderPosition() {
-    return ticksToShoulderAngle(shoulder.getSelectedSensorPosition());
+    return angularShoulder.getMotorTalonPosition();
   }
 
   public double getMotorWristPosition() {
-    return -ticksToWristAngle(wrist.getSelectedSensorPosition());
+    return angularWrist.getMotorTalonPosition();
   }
 
   public void setUpTestCommands() {
