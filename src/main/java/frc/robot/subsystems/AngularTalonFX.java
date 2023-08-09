@@ -20,6 +20,7 @@ import frc.robot.Constants;
 import frc.robot.Constants.ArmConfig;
 import frc.robot.commands.Arm.SetArmState;
 import frc.twilight.tunables.TunableDouble;
+import frc.twilight.tunables.TunableBoolean;
 import java.util.ArrayList;
 import java.util.Map;
 
@@ -33,6 +34,8 @@ class AngularTalonFX {
   private final TunableDouble talonD;
   private final TunableDouble cruiseVel;
   private final TunableDouble acel;
+
+  private final TunableBoolean brake;
 
   private double gearRatio;
   private double remapLimit;
@@ -65,6 +68,8 @@ class AngularTalonFX {
 
     talonEncoder = new DutyCycleEncoder(dutyEncoder);
     talonFX = new TalonFX(talonId);
+
+    brake = new TunableBoolean(name + "Brake", true, tunableDoubleEnabled);
 
     talonP = new TunableDouble(name + "P", 0.1, tunableDoubleEnabled);
     talonI = new TunableDouble(name + "I", 0, tunableDoubleEnabled);
@@ -109,6 +114,14 @@ class AngularTalonFX {
     talonFX.configStatorCurrentLimit(statorConfig);
 
     talonFX.setNeutralMode(NeutralMode.Brake);
+
+    brake.addChangeListener(value -> {
+      if (value == true) {
+        talonFX.setNeutralMode(NeutralMode.Brake);
+      } else {
+        talonFX.setNeutralMode(NeutralMode.Coast);
+      }
+    });
 
     talonFX.config_kP(0, talonP.getValue());
     talonFX.config_kI(0, talonI.getValue());
@@ -209,52 +222,78 @@ class AngularTalonFX {
   }
 
   public void setUpTestCommands() {
-
     // Test Positions
-    ShuffleboardLayout testPositionLayout = Shuffleboard.getTab("arm")
-        .getLayout("Test Positions", BuiltInLayouts.kList)
-        .withSize(2, 4)
-        .withProperties(Map.of("Label position", "HIDDEN"));
+    ShuffleboardLayout testPositionLayout = Shuffleboard
+      .getTab(name)
+      .getLayout("Test Positions", BuiltInLayouts.kList)
+      .withSize(2, 4)
+      .withProperties(Map.of("Label position", "HIDDEN"));
 
     testPositionLayout.add(
-        "Zero" + name,
-        new InstantCommand(() -> talonFX.setSelectedSensorPosition(0)).withName("Zero" + name));
+      "Zero" + name,
+      new InstantCommand(() -> talonFX.setSelectedSensorPosition(0))
+        .withName("Zero" + name)
+    );
 
     testPositionLayout.add(
-        "set" + name + "FromEncoder",
-        new InstantCommand(() -> setTalonFromAbsEncoder()).withName("set" + name + "FromEncoder"));
-
-   
-    testPositionLayout.add(
-        "Reference" + name,
-        new InstantCommand(() -> setTalonToReferenceAngle()).withName("Reference" + name));
+      "set" + name + "FromEncoder",
+      new InstantCommand(() -> setTalonFromAbsEncoder())
+        .withName("set" + name + "FromEncoder")
+    );
 
     testPositionLayout.add(
-        name + "=90", new InstantCommand(() -> setTalonAngle(90)).withName(name + "=90"));
+      "Reference" + name,
+      new InstantCommand(() -> setTalonToReferenceAngle())
+        .withName("Reference" + name)
+    );
 
     testPositionLayout.add(
-        name + "=0", new InstantCommand(() -> setTalonAngle(0)).withName(name + "=0"));
+      name + "=90",
+      new InstantCommand(() -> setTalonAngle(90)).withName(name + "=90")
+    );
+
     testPositionLayout.add(
-        name + "=-90", new InstantCommand(() -> setTalonAngle(-90)).withName(name + "=-90"));
+      name + "=0",
+      new InstantCommand(() -> setTalonAngle(0)).withName(name + "=0")
+    );
+    testPositionLayout.add(
+      name + "=-90",
+      new InstantCommand(() -> setTalonAngle(-90)).withName(name + "=-90")
+    );
 
     // Everything else
-    ShuffleboardLayout angLayout = Shuffleboard.getTab("arm")
-        .getLayout("Angles", BuiltInLayouts.kGrid)
-        .withSize(3, 4)
-        .withProperties(Map.of("Label position", "TOP"));
+    ShuffleboardLayout angLayout = Shuffleboard
+      .getTab(name)
+      .getLayout("Angles", BuiltInLayouts.kGrid)
+      .withSize(3, 4)
+      .withProperties(Map.of("Label position", "TOP"));
 
-    angLayout.addDouble(name + " raw abs encoder", talonEncoder::getAbsolutePosition);
+    angLayout.addDouble(
+      name + " raw abs encoder",
+      talonEncoder::getAbsolutePosition
+    );
 
     angLayout.addDouble(name + " abs encoder", this::getTalonPosition);
 
-    angLayout.addDouble(name + " abs angle", () -> this.getTalonPosition() * 360);
+    angLayout.addDouble(
+      name + " abs angle",
+      () -> this.getTalonPosition() * 360
+    );
 
-    angLayout.addDouble(name + " angle", () -> ticksToTalonAngle(talonFX.getSelectedSensorPosition()));
+    angLayout.addDouble(
+      name + " angle",
+      () -> ticksToTalonAngle(talonFX.getSelectedSensorPosition())
+    );
     // Angles using remap()
-    angLayout.addDouble(name + " remap", () -> remap(talonEncoder.getAbsolutePosition(), remapLimit));
+    angLayout.addDouble(
+      name + " remap",
+      () -> remap(talonEncoder.getAbsolutePosition(), remapLimit)
+    );
 
-    angLayout.addBoolean(name + " is connected", () -> talonEncoder.isConnected());
-
+    angLayout.addBoolean(
+      name + " is connected",
+      () -> talonEncoder.isConnected()
+    );
     // ShuffleboardLayout dynamicLimits = Shuffleboard.getTab("arm")
     // .getLayout("Dynamic Limits", BuiltInLayouts.kGrid)
     // .withSize(2, 3)
@@ -264,35 +303,34 @@ class AngularTalonFX {
 
   }
 
- // if (!RobotController.isSysActive()) {
-    // holdCurrentPosition();
-    // }
-    // double shoulderForwardLimit =
-    // anglesToShoulderSensorPosition(ArmConfig.SHOULDER_FORWARD_LIMIT);
-    // double shoulderReverseLimit =
-    // anglesToShoulderSensorPosition(ArmConfig.SHOULDER_REVERSE_LIMIT);
-    // double wristForwardLimit =
-    // anglesToWristSensorPosition(ArmConfig.WRIST_FORWARD_LIMIT);
-    // double wristReverseLimit =
-    // anglesToWristSensorPosition(ArmConfig.WRIST_REVERSE_LIMIT);
-    // if ((wrist.getSelectedSensorPosition() >= wristForwardLimit)
-    // || (wrist.getSelectedSensorPosition() <= wristReverseLimit)) {
-    // controller.runRumble(RumbleVariables.medium);
-    // } else if ((shoulder.getSelectedSensorPosition() >= shoulderForwardLimit)
-    // || (shoulder.getSelectedSensorPosition() <= shoulderReverseLimit)) {
-    // controller.runRumble(RumbleVariables.medium);
-    // } else {
-    // controller.runRumble(RumbleVariables.off);
-    // }
+  // if (!RobotController.isSysActive()) {
+  // holdCurrentPosition();
+  // }
+  // double shoulderForwardLimit =
+  // anglesToShoulderSensorPosition(ArmConfig.SHOULDER_FORWARD_LIMIT);
+  // double shoulderReverseLimit =
+  // anglesToShoulderSensorPosition(ArmConfig.SHOULDER_REVERSE_LIMIT);
+  // double wristForwardLimit =
+  // anglesToWristSensorPosition(ArmConfig.WRIST_FORWARD_LIMIT);
+  // double wristReverseLimit =
+  // anglesToWristSensorPosition(ArmConfig.WRIST_REVERSE_LIMIT);
+  // if ((wrist.getSelectedSensorPosition() >= wristForwardLimit)
+  // || (wrist.getSelectedSensorPosition() <= wristReverseLimit)) {
+  // controller.runRumble(RumbleVariables.medium);
+  // } else if ((shoulder.getSelectedSensorPosition() >= shoulderForwardLimit)
+  // || (shoulder.getSelectedSensorPosition() <= shoulderReverseLimit)) {
+  // controller.runRumble(RumbleVariables.medium);
+  // } else {
+  // controller.runRumble(RumbleVariables.off);
+  // }
 
-   public void holdCurrentPosition() {
+  public void holdCurrentPosition() {
     double currentTalonPosition = talonFX.getSelectedSensorPosition();
 
     talonFX.set(TalonFXControlMode.Position, currentTalonPosition);
   }
 
   public ArrayList<TalonFX> geTalonFXs() {
-
     ArrayList<TalonFX> musicList = new ArrayList<>();
     musicList.add(talonFX);
 

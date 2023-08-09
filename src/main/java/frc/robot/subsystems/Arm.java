@@ -54,16 +54,6 @@ public class Arm extends SubsystemBase {
     ArmConfig.WRIST_REF
   );
 
-  private DutyCycleEncoder wristEncoder = new DutyCycleEncoder(
-    ArmConfig.WRIST_DUTYENCODER
-  );
-  private DutyCycleEncoder shoulderEncoder = new DutyCycleEncoder(
-    ArmConfig.SHOULDER_DUTYENCODER
-  );
-
-  private TalonFX wrist = new TalonFX(ArmConfig.WRIST_TALONFX);
-  private TalonFX shoulder = new TalonFX(ArmConfig.SHOULDER_TALONFX);
-
   ShuffleboardTab arm = Shuffleboard.getTab("arm");
 
   private final TunableDouble wristP = new TunableDouble(

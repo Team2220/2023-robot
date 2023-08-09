@@ -4,6 +4,8 @@ import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.SimpleWidget;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import java.util.function.Consumer;
 
 public class TunableBoolean {
   private boolean defaultValue;
@@ -47,5 +49,23 @@ public class TunableBoolean {
   public boolean getValue() {
     if (shuffleboard != null) return shuffleboard.getBoolean(defaultValue);
     return defaultValue;
+  }
+
+  public void addChangeListener(Consumer<Boolean> onChange) {
+    CommandScheduler.getInstance().getDefaultButtonLoop().bind(
+        new Runnable() {
+          private boolean m_oldValue = getValue();
+
+          @Override
+          public void run() {
+            boolean newValue = getValue();
+
+            if (m_oldValue != newValue) {
+              onChange.accept(newValue);
+              m_oldValue = newValue;
+            }
+
+          }
+        });
   }
 }
