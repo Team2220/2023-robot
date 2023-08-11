@@ -34,6 +34,7 @@ class AngularTalonFX {
   private final TunableDouble talonD;
   private final TunableDouble cruiseVel;
   private final TunableDouble acel;
+  private final TunableBoolean inverted;
 
   private final TunableBoolean brake;
 
@@ -69,15 +70,15 @@ class AngularTalonFX {
     talonEncoder = new DutyCycleEncoder(dutyEncoder);
     talonFX = new TalonFX(talonId);
 
-    brake = new TunableBoolean(name + "Brake", true, tunableDoubleEnabled);
+    brake = new TunableBoolean(name + "Brake", true, tunableDoubleEnabled, name);
 
-    talonP = new TunableDouble(name + "P", 0.1, tunableDoubleEnabled);
-    talonI = new TunableDouble(name + "I", 0, tunableDoubleEnabled);
-    talonD = new TunableDouble(name + "D", 0.2, tunableDoubleEnabled);
+    talonP = new TunableDouble(name + "P", 0.1, tunableDoubleEnabled, name);
+    talonI = new TunableDouble(name + "I", 0, tunableDoubleEnabled, name);
+    talonD = new TunableDouble(name + "D", 0.2, tunableDoubleEnabled, name);
 
-    acel = new TunableDouble(name + "Acel", 200, tunableDoubleEnabled);
+    acel = new TunableDouble(name + "Acel", 200, tunableDoubleEnabled, name);
     cruiseVel =
-      new TunableDouble(name + "CruiseVel", 200, tunableDoubleEnabled);
+      new TunableDouble(name + "CruiseVel", 200, tunableDoubleEnabled, name);
 
     acel.addChangeListener(value -> {
       talonFX.configMotionAcceleration(degreesPerSecondToEncoderTicks(value));
@@ -108,6 +109,8 @@ class AngularTalonFX {
     supplyConfig.enable = true;
     talonFX.configSupplyCurrentLimit(supplyConfig);
 
+    this.inverted = new TunableBoolean(name + "inverted", inverted, tunableDoubleEnabled, name);
+
     StatorCurrentLimitConfiguration statorConfig = new StatorCurrentLimitConfiguration();
     statorConfig.currentLimit = 33;
     statorConfig.enable = true;
@@ -121,6 +124,10 @@ class AngularTalonFX {
       } else {
         talonFX.setNeutralMode(NeutralMode.Coast);
       }
+    });
+
+    this.inverted.addChangeListener(value -> {
+      talonFX.setInverted(value);
     });
 
     talonFX.config_kP(0, talonP.getValue());
@@ -142,11 +149,10 @@ class AngularTalonFX {
   }
 
   private double degreesPerSecondToEncoderTicks(double angle) {
-    double gfx =
-      ((angle / 360.0) * gearRatio) *
-      ArmConfig.TALONFX_ENCODER_TICKS *
-      1.0 /
-      10.0;
+    double gfx = ((angle / 360.0) * gearRatio) *
+        ArmConfig.TALONFX_ENCODER_TICKS *
+        1.0 /
+        10.0;
     return gfx;
   }
 
@@ -154,6 +160,7 @@ class AngularTalonFX {
     double talonOffset =
       getTalonPosition() * (gearRatio) * (ArmConfig.TALONFX_ENCODER_TICKS);
     talonFX.setSelectedSensorPosition(talonOffset);
+    System.out.println("!!! name = " + name + "\n" + "!!! Talon offset = " + talonOffset + "\n !!! get_talon_position = " + getTalonPosition() + "\n !!! talon_offset = " + ticksToTalonAngle(talonOffset));
   }
 
   public double getTalonPosition() {
@@ -188,17 +195,7 @@ class AngularTalonFX {
     return value;
   }
 
-  private double degreesPerSecondToEncoderTicks(
-    double angle,
-    double gearRatio
-  ) {
-    double gfx =
-      ((angle / 360.0) * gearRatio) *
-      ArmConfig.TALONFX_ENCODER_TICKS *
-      1.0 /
-      10.0;
-    return gfx;
-  }
+
 
   public void setTalonPosition(double talonAng) {
     setTalonAngle(talonAng);
