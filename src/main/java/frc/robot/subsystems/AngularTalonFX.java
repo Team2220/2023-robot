@@ -120,7 +120,7 @@ class AngularTalonFX {
     Shuffleboard.getTab(name).addDouble("Temperature", talonFX::getTemperature).withWidget(BuiltInWidgets.kGraph);
     
     EventLoops.oncePerSec.bind(this::checkTemp);
-    
+
     StatorCurrentLimitConfiguration statorConfig = new StatorCurrentLimitConfiguration();
     statorConfig.currentLimit = 33;
     statorConfig.enable = true;
@@ -181,28 +181,20 @@ class AngularTalonFX {
     return (remap(talonEncoder.getAbsolutePosition(), remapLimit) - encoderOffset);
   }
 
-  // public void getTemp() {
-  //   // PowerDistribution m_pdp = new PowerDistribution();
-  //     // PowerDistribution examplePD = new PowerDistribution(0, ModuleType.kCTRE);
-  //     // PowerDistribution examplePD = new PowerDistribution(1, ModuleType.kRev);
+  public double CtoF(double temp) {
+    return (temp * 9 / 5) + 32;
+  }
+
+  public double CtoK(double temp) {
+    return temp+273.15;
+  }
 
   public void checkTemp() {
     double tempCel = talonFX.getTemperature();
 
     if (tempCel > 90) {
-      DataLogManager.log("Temperature is concerning. Temp is: " + tempCel + " C");
+      DataLogManager.log("Temperature is concerning. Temperature is: " + tempCel + " °C or " + CtoF(tempCel) + " °F or " + CtoK(tempCel) + " K.");
     }
-  }
-  
-  
-
-  //   SmartDashboard.putNumber("Temperature", tempCel);
-  //   System.out.println("!!!!!!!!!!! TEMP TEMP TEMP" + tempCel);
-  // }
-
-  
-  public void logCurrentDraw() {
-    
   }
 
   public double remap(double value, double limit) {
