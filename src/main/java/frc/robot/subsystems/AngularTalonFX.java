@@ -6,14 +6,20 @@ import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
 import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.motorcontrol.can.TalonFXConfiguration;
+import com.ctre.phoenix.motorcontrol.can.BaseMotorController;
 import com.fasterxml.jackson.annotation.JacksonInject.Value;
 import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
+import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.RobotController;
+import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -111,12 +117,19 @@ class AngularTalonFX {
 
     this.inverted = new TunableBoolean(name + "inverted", inverted, tunableDoubleEnabled, name);
 
+    Shuffleboard.getTab(name).addDouble("Temperature", talonFX::getTemperature).withWidget(BuiltInWidgets.kGraph);
+    
+    EventLoops.oncePerSec.bind(this::checkTemp);
+    
     StatorCurrentLimitConfiguration statorConfig = new StatorCurrentLimitConfiguration();
     statorConfig.currentLimit = 33;
     statorConfig.enable = true;
     talonFX.configStatorCurrentLimit(statorConfig);
 
     talonFX.setNeutralMode(NeutralMode.Brake);
+
+
+
 
     brake.addChangeListener(value -> {
       if (value == true) {
@@ -126,6 +139,7 @@ class AngularTalonFX {
       }
     });
 
+    
     this.inverted.addChangeListener(value -> {
       talonFX.setInverted(value);
     });
@@ -164,9 +178,31 @@ class AngularTalonFX {
   }
 
   public double getTalonPosition() {
-    return (
-      remap(talonEncoder.getAbsolutePosition(), remapLimit) - encoderOffset
-    );
+    return (remap(talonEncoder.getAbsolutePosition(), remapLimit) - encoderOffset);
+  }
+
+  // public void getTemp() {
+  //   // PowerDistribution m_pdp = new PowerDistribution();
+  //     // PowerDistribution examplePD = new PowerDistribution(0, ModuleType.kCTRE);
+  //     // PowerDistribution examplePD = new PowerDistribution(1, ModuleType.kRev);
+
+  public void checkTemp() {
+    double tempCel = talonFX.getTemperature();
+
+    if (tempCel > 90) {
+      DataLogManager.log("Temperature is concerning. Temp is: " + tempCel + " C");
+    }
+  }
+  
+  
+
+  //   SmartDashboard.putNumber("Temperature", tempCel);
+  //   System.out.println("!!!!!!!!!!! TEMP TEMP TEMP" + tempCel);
+  // }
+
+  
+  public void logCurrentDraw() {
+    
   }
 
   public double remap(double value, double limit) {

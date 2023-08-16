@@ -9,6 +9,18 @@
   "NTProvider": {
     "types": {
       "/FMSInfo": "FMSInfo",
+      "/Shuffleboard/Shoulder/Test Positions/ReferenceShoulder": "Command",
+      "/Shuffleboard/Shoulder/Test Positions/Shoulder=-90": "Command",
+      "/Shuffleboard/Shoulder/Test Positions/Shoulder=0": "Command",
+      "/Shuffleboard/Shoulder/Test Positions/Shoulder=90": "Command",
+      "/Shuffleboard/Shoulder/Test Positions/ZeroShoulder": "Command",
+      "/Shuffleboard/Shoulder/Test Positions/setShoulderFromEncoder": "Command",
+      "/Shuffleboard/Wrist/Test Positions/ReferenceWrist": "Command",
+      "/Shuffleboard/Wrist/Test Positions/Wrist=-90": "Command",
+      "/Shuffleboard/Wrist/Test Positions/Wrist=0": "Command",
+      "/Shuffleboard/Wrist/Test Positions/Wrist=90": "Command",
+      "/Shuffleboard/Wrist/Test Positions/ZeroWrist": "Command",
+      "/Shuffleboard/Wrist/Test Positions/setWristFromEncoder": "Command",
       "/Shuffleboard/arm/States/CALIBRATE": "Command",
       "/Shuffleboard/arm/States/DOUBLE_LOADING_STATION": "Command",
       "/Shuffleboard/arm/States/HIGH_CONE_NODE": "Command",
@@ -36,7 +48,10 @@
       "/Shuffleboard/leds/States/OFF": "Command",
       "/Shuffleboard/leds/States/RAINBOW_ANIMATION": "Command",
       "/Shuffleboard/leds/States/STROBE_ANIMATION": "Command",
+      "/Shuffleboard/leds/States/WANT_CONE": "Command",
+      "/Shuffleboard/leds/States/WANT_CUBE": "Command",
       "/SmartDashboard/Field": "Field2d",
+      "/SmartDashboard/Scheduler": "Scheduler",
       "/SmartDashboard/SendableChooser[0]": "String Chooser"
     }
   }
