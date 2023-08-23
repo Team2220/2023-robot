@@ -31,7 +31,8 @@ public class Robot extends TimedRobot {
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
-    addPeriodic(EventLoops.oncePerSec::poll, 1);
+    addPeriodic(EventLoops.oncePerSec::poll, 1); // for temp logger
+    addPeriodic(EventLoops.oncePerMin::poll, 60); // for stall logger
     SmartDashboard.putData(CommandScheduler.getInstance());
   }
   

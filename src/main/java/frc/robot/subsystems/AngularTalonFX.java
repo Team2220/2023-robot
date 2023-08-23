@@ -8,6 +8,8 @@ import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.motorcontrol.can.TalonFXConfiguration;
 import com.ctre.phoenix.motorcontrol.can.BaseMotorController;
 import com.fasterxml.jackson.annotation.JacksonInject.Value;
+
+import edu.wpi.first.math.filter.Debouncer;
 import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.PowerDistribution;
@@ -118,8 +120,9 @@ class AngularTalonFX {
     this.inverted = new TunableBoolean(name + "inverted", inverted, tunableDoubleEnabled, name);
 
     Shuffleboard.getTab(name).addDouble("Temperature", talonFX::getTemperature).withWidget(BuiltInWidgets.kGraph);
-    
+
     EventLoops.oncePerSec.bind(this::checkTemp);
+    EventLoops.oncePerMin.bind(this::isStalledLogger);
 
     StatorCurrentLimitConfiguration statorConfig = new StatorCurrentLimitConfiguration();
     statorConfig.currentLimit = 33;
@@ -186,15 +189,38 @@ class AngularTalonFX {
   }
 
   public double CtoK(double temp) {
-    return temp+273.15;
+    return temp + 273.15;
   }
 
   public void checkTemp() {
     double tempCel = talonFX.getTemperature();
 
     if (tempCel > 90) {
-      DataLogManager.log("Temperature is concerning. Temperature is: " + tempCel + " °C or " + CtoF(tempCel) + " °F or " + CtoK(tempCel) + " K.");
+      DataLogManager.log("Temperature is concerning. Temperature is: " + tempCel + " °C or " + CtoF(tempCel) + " °F or "
+          + CtoK(tempCel) + " K.");
     }
+  }
+
+  private boolean isStalledInternal() {
+    if (talonFX.getStatorCurrent() >= 75) {
+      double velocity = talonFX.getSelectedSensorVelocity();
+      return velocity <= 5;
+    } else {
+      return false;
+    }
+  }
+  
+  TunableDouble deTime = new TunableDouble("debounceTime", 0.1, true);
+  Debouncer debouncer = new Debouncer(deTime.getValue(), Debouncer.DebounceType.kBoth);
+
+  public void isStalledLogger() {
+    if (debouncer.calculate(isStalledInternal()) == true) {
+      DataLogManager.log("Motor is stalled.");
+    }
+  }
+
+  public boolean isStalled() {
+    return debouncer.calculate(isStalledInternal());
   }
 
   public double remap(double value, double limit) {
