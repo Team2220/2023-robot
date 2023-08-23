@@ -56,6 +56,7 @@ public class TunableDouble {
   }
 
   public void addChangeListener(DoubleConsumer onChange) {
+    onChange.accept(getValue());
     CommandScheduler.getInstance().getDefaultButtonLoop().bind(
         new Runnable() {
           private double m_oldValue = getValue();

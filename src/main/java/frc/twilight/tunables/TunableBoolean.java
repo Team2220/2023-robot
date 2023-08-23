@@ -52,6 +52,7 @@ public class TunableBoolean {
   }
 
   public void addChangeListener(Consumer<Boolean> onChange) {
+    onChange.accept(getValue());
     CommandScheduler.getInstance().getDefaultButtonLoop().bind(
         new Runnable() {
           private boolean m_oldValue = getValue();

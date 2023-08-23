@@ -105,12 +105,8 @@ class AngularTalonFX {
       talonFX.config_kD(0, value);
     });
 
-    talonConfig.motionAcceleration = degreesPerSecondToEncoderTicks(200);
-    talonConfig.motionCruiseVelocity = degreesPerSecondToEncoderTicks(200);
-
     talonFX.configAllSettings(talonConfig);
     talonFX.configVoltageCompSaturation(10);
-    talonFX.setInverted(inverted);
 
     SupplyCurrentLimitConfiguration supplyConfig = new SupplyCurrentLimitConfiguration();
     supplyConfig.currentLimit = 20;
@@ -147,17 +143,12 @@ class AngularTalonFX {
       talonFX.setInverted(value);
     });
 
-    talonFX.config_kP(0, talonP.getValue());
-    talonFX.config_kI(0, talonI.getValue());
-    talonFX.config_kD(0, talonD.getValue());
-
     setTalonFromAbsEncoder();
 
-    talonFX.configForwardSoftLimitEnable(true);
     talonFX.configForwardSoftLimitThreshold(
       anglesToTalonSensorPosition(forwardLimit)
     );
-    talonFX.configReverseSoftLimitEnable(true);
+
     talonFX.configReverseSoftLimitThreshold(
       anglesToTalonSensorPosition(reverseLimit)
     );
