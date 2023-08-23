@@ -35,6 +35,17 @@ public class TunableBoolean {
     this(name, defaultValue, tunable, "Tunables");
   }
 
+  public TunableBoolean(String name, boolean d, boolean tunable, String tab, Consumer<Boolean> onChange) {
+    this(name, d, tunable, tab);
+    addChangeListener(onChange);
+
+  };
+
+  public TunableBoolean(String name, boolean defaultValue, boolean tunable, Consumer<Boolean> onChange) {
+    this(name, defaultValue, tunable);
+    addChangeListener(onChange);
+  }
+
   public TunableBoolean setSpot(int x, int y) {
     if (shuffleboard != null) {
       shuffleboardWidget.withPosition(x, y);
@@ -42,6 +53,7 @@ public class TunableBoolean {
 
     return this;
   }
+
 
   /**
    * @return Value as a double

@@ -160,11 +160,6 @@ class AngularTalonFX {
     statorConfig.enable = true;
     talonFX.configStatorCurrentLimit(statorConfig);
 
-    talonFX.setNeutralMode(NeutralMode.Brake);
-
-
-
-
     brake.addChangeListener(value -> {
       if (value == true) {
         talonFX.setNeutralMode(NeutralMode.Brake);
@@ -173,7 +168,6 @@ class AngularTalonFX {
       }
     });
 
-    
     this.inverted.addChangeListener(value -> {
       talonFX.setInverted(value);
     });
@@ -369,13 +363,6 @@ class AngularTalonFX {
       name + " is connected",
       () -> talonEncoder.isConnected()
     );
-    // ShuffleboardLayout dynamicLimits = Shuffleboard.getTab("arm")
-    // .getLayout("Dynamic Limits", BuiltInLayouts.kGrid)
-    // .withSize(2, 3)
-    // .withProperties(Map.of("Label position", "TOP"));
-
-    // dynamicLimits.addDouble(getName(), null);
-
   }
 
   public void holdCurrentPosition() {
