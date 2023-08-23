@@ -1,9 +1,6 @@
 package frc.twilight.tunables;
 
-import java.util.function.BooleanSupplier;
 import java.util.function.DoubleConsumer;
-
-import com.fasterxml.jackson.annotation.JacksonInject.Value;
 
 import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
