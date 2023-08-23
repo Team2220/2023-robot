@@ -66,9 +66,11 @@ class AngularTalonFX {
     new TunableDouble(name + "P", 0.1, tunableDoubleEnabled, name, value -> {
       talonFX.config_kP(0, value);
     });
+
     new TunableDouble(name + "I", 0, tunableDoubleEnabled, name, value -> {
       talonFX.config_kI(0, value);
     });
+    
     new TunableDouble(name + "D", 0.2, tunableDoubleEnabled, name, value -> {
       talonFX.config_kD(0, value);
     });
@@ -96,8 +98,13 @@ class AngularTalonFX {
     new TunableDouble(name + "Acel", 200, tunableDoubleEnabled, name, value -> {
       talonFX.configMotionAcceleration(degreesPerSecondToEncoderTicks(value));
     });
+
     new TunableDouble(name + "CruiseVel", 200, tunableDoubleEnabled, name, value -> {
       talonFX.configMotionCruiseVelocity(degreesPerSecondToEncoderTicks(value));
+    });
+
+    new TunableBoolean(name + "inverted", inverted, tunableDoubleEnabled, name, value -> {
+      talonFX.setInverted(value);
     });
 
     SupplyCurrentLimitConfiguration supplyConfig = new SupplyCurrentLimitConfiguration();
@@ -105,9 +112,7 @@ class AngularTalonFX {
     supplyConfig.enable = true;
     talonFX.configSupplyCurrentLimit(supplyConfig);
 
-    new TunableBoolean(name + "inverted", inverted, tunableDoubleEnabled, name, value -> {
-      talonFX.setInverted(value);
-    });
+
 
     Shuffleboard.getTab(name).addDouble("Temperature", talonFX::getTemperature).withWidget(BuiltInWidgets.kGraph);
 

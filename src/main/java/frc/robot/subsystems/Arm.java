@@ -9,7 +9,6 @@ import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ArmConfig;
 import frc.robot.commands.Arm.SetArmState;
-import frc.twilight.tunables.TunableDouble;
 import java.util.Map;
 
 public class Arm extends SubsystemBase {
@@ -44,69 +43,7 @@ public class Arm extends SubsystemBase {
     ArmConfig.WRIST_REF
   );
 
-  ShuffleboardTab arm = Shuffleboard.getTab("arm");
-
-  private final TunableDouble wristP = new TunableDouble(
-    "wristP",
-    0.1,
-    tunableDoubleEnabled
-  );
-  private final TunableDouble wristI = new TunableDouble(
-    "wristI",
-    0,
-    tunableDoubleEnabled
-  );
-  private final TunableDouble wristD = new TunableDouble(
-    "wristD",
-    0.2,
-    tunableDoubleEnabled
-  );
-
-  private double oldWristP = wristP.getValue();
-  private double oldWristI = wristI.getValue();
-  private double oldWristD = wristD.getValue();
-
-  private final TunableDouble shoulderP = new TunableDouble(
-    "shoulderP",
-    0.1,
-    tunableDoubleEnabled
-  );
-  private final TunableDouble shoulderI = new TunableDouble(
-    "shoulderI",
-    0,
-    tunableDoubleEnabled
-  );
-  private final TunableDouble shoulderD = new TunableDouble(
-    "shoulderD",
-    0.2,
-    tunableDoubleEnabled
-  );
-
-  private final TunableDouble shoulderCruiseVel = new TunableDouble(
-    "shoulderCruiseVel",
-    100,
-    tunableDoubleEnabled
-  );
-  private final TunableDouble shoulderAcel = new TunableDouble(
-    "shoulderAcel",
-    200,
-    tunableDoubleEnabled
-  );
-
-  private final TunableDouble wristCruiseVel = new TunableDouble(
-    "wristCruiseVel",
-    200,
-    tunableDoubleEnabled
-  );
-  private final TunableDouble wristAcel = new TunableDouble(
-    "wristAcel",
-    200,
-    tunableDoubleEnabled
-  );
-
-  private double oldShoulderP = shoulderP.getValue();
-  private double oldShoulderI = shoulderI.getValue();
-  private double oldShoulderD = shoulderD.getValue();
+  ShuffleboardTab arm = Shuffleboard.getTab("arm");;
 
   /** Config Objects for motor controllers */
   TalonFXConfiguration wristConfig = new TalonFXConfiguration();
