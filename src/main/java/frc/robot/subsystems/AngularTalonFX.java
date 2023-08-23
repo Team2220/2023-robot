@@ -37,21 +37,6 @@ class AngularTalonFX {
   private DutyCycleEncoder talonEncoder;
   private TalonFX talonFX;
 
-  private final TunableDouble talonP;
-  private final TunableDouble talonI;
-  private final TunableDouble talonD;
-  private final TunableDouble cruiseVel;
-  private final TunableDouble acel;
-  private final TunableBoolean inverted;
-  
-  private final TunableDouble voltageCompSaturation;
-  private final TunableBoolean configForwardSoftLimitEnable;
-  private final TunableBoolean configReverseSoftLimitEnable;
-  private final TunableDouble configForwardSoftLimitThreshold;
-  private final TunableDouble configReverseSoftLimitThreshold;
-
-  private final TunableBoolean brake;
-
   private double gearRatio;
   private double remapLimit;
   private double encoderOffset;
@@ -59,8 +44,6 @@ class AngularTalonFX {
   private double talonRef;
 
   private String name;
-
-  private TalonFXConfiguration talonConfig = new TalonFXConfiguration();
 
   public AngularTalonFX(
     int dutyEncoder,
@@ -84,71 +67,57 @@ class AngularTalonFX {
     talonEncoder = new DutyCycleEncoder(dutyEncoder);
     talonFX = new TalonFX(talonId);
 
-    brake = new TunableBoolean(name + "Brake", true, tunableDoubleEnabled, name);
-
-    talonP = new TunableDouble(name + "P", 0.1, tunableDoubleEnabled, name);
-    talonI = new TunableDouble(name + "I", 0, tunableDoubleEnabled, name);
-    talonD = new TunableDouble(name + "D", 0.2, tunableDoubleEnabled, name);
-    
-    voltageCompSaturation = new TunableDouble("VoltageCompSaturation", 10, tunableDoubleEnabled, name);
-    configForwardSoftLimitEnable = new TunableBoolean("configForwardSoftLimitEnable", false, tunableDoubleEnabled,
-        name);
-    configForwardSoftLimitThreshold = new TunableDouble("configForwardSoftLimitThreshold", 10, tunableDoubleEnabled, name);
-    configReverseSoftLimitThreshold = new TunableDouble("configReverseSoftLimitThreshold", 10, tunableDoubleEnabled,
-        name);
-    configReverseSoftLimitEnable = new TunableBoolean("configReverseSoftLimitEnable", false,  tunableDoubleEnabled,
-        name);
-
-
-    acel = new TunableDouble(name + "Acel", 200, tunableDoubleEnabled, name);
-    cruiseVel =
-      new TunableDouble(name + "CruiseVel", 200, tunableDoubleEnabled, name);
-
-    acel.addChangeListener(value -> {
-      talonFX.configMotionAcceleration(degreesPerSecondToEncoderTicks(value));
-    });
-    cruiseVel.addChangeListener(value -> {
-      talonFX.configMotionCruiseVelocity(degreesPerSecondToEncoderTicks(value));
+    talonFX.configAllSettings(new TalonFXConfiguration());
+     
+    new TunableBoolean(name + "Brake", true, tunableDoubleEnabled, name, value -> {
+      talonFX.setNeutralMode(value ? NeutralMode.Brake : NeutralMode.Coast);
     });
 
-    talonP.addChangeListener(value -> {
+    new TunableDouble(name + "P", 0.1, tunableDoubleEnabled, name, value -> {
       talonFX.config_kP(0, value);
     });
-    talonI.addChangeListener(value -> {
+    new TunableDouble(name + "I", 0, tunableDoubleEnabled, name, value -> {
       talonFX.config_kI(0, value);
     });
-    talonD.addChangeListener(value -> {
+    new TunableDouble(name + "D", 0.2, tunableDoubleEnabled, name, value -> {
       talonFX.config_kD(0, value);
     });
-
-    voltageCompSaturation.addChangeListener(value -> {
+    
+    new TunableDouble("VoltageCompSaturation", 10, tunableDoubleEnabled, name, value -> {
       talonFX.configVoltageCompSaturation(value);
     });
-    
-    configForwardSoftLimitThreshold.addChangeListener(value -> {
-      anglesToTalonSensorPosition(value);
-    });
 
-    configReverseSoftLimitThreshold.addChangeListener(value -> {
-      anglesToTalonSensorPosition(value);
-    });
-
-    configForwardSoftLimitEnable.addChangeListener(value -> {
+    new TunableBoolean("ForwardSoftLimitEnable", false, tunableDoubleEnabled, name, value -> {
       talonFX.configForwardSoftLimitEnable(value);
     });
 
-    configReverseSoftLimitEnable.addChangeListener(value -> {
+    new TunableDouble("ForwardSoftLimitThreshold", 10, tunableDoubleEnabled, name, value -> {
+      talonFX.configForwardSoftLimitThreshold(anglesToTalonSensorPosition(value));
+    });
+    
+    new TunableDouble("ReverseSoftLimitThreshold", 10, tunableDoubleEnabled, name, value -> {
+      talonFX.configForwardSoftLimitThreshold(anglesToTalonSensorPosition(value));
+    });
+
+    new TunableBoolean("ReverseSoftLimitEnable", false,  tunableDoubleEnabled, name, value -> {
       talonFX.configReverseSoftLimitEnable(value);
     });
 
-    talonFX.configAllSettings(talonConfig);
+    new TunableDouble(name + "Acel", 200, tunableDoubleEnabled, name, value -> {
+      talonFX.configMotionAcceleration(degreesPerSecondToEncoderTicks(value));
+    });
+    new TunableDouble(name + "CruiseVel", 200, tunableDoubleEnabled, name, value -> {
+      talonFX.configMotionCruiseVelocity(degreesPerSecondToEncoderTicks(value));
+    });
 
     SupplyCurrentLimitConfiguration supplyConfig = new SupplyCurrentLimitConfiguration();
     supplyConfig.currentLimit = 20;
     supplyConfig.enable = true;
     talonFX.configSupplyCurrentLimit(supplyConfig);
 
-    this.inverted = new TunableBoolean(name + "inverted", inverted, tunableDoubleEnabled, name);
+    new TunableBoolean(name + "inverted", inverted, tunableDoubleEnabled, name, value -> {
+      talonFX.setInverted(value);
+    });
 
     Shuffleboard.getTab(name).addDouble("Temperature", talonFX::getTemperature).withWidget(BuiltInWidgets.kGraph);
 
@@ -159,18 +128,6 @@ class AngularTalonFX {
     statorConfig.currentLimit = 33;
     statorConfig.enable = true;
     talonFX.configStatorCurrentLimit(statorConfig);
-
-    brake.addChangeListener(value -> {
-      if (value == true) {
-        talonFX.setNeutralMode(NeutralMode.Brake);
-      } else {
-        talonFX.setNeutralMode(NeutralMode.Coast);
-      }
-    });
-
-    this.inverted.addChangeListener(value -> {
-      talonFX.setInverted(value);
-    });
 
     setTalonFromAbsEncoder();
 
