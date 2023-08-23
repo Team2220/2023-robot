@@ -43,6 +43,12 @@ class AngularTalonFX {
   private final TunableDouble cruiseVel;
   private final TunableDouble acel;
   private final TunableBoolean inverted;
+  
+  private final TunableDouble voltageCompSaturation;
+  private final TunableBoolean configForwardSoftLimitEnable;
+  private final TunableBoolean configReverseSoftLimitEnable;
+  private final TunableDouble configForwardSoftLimitThreshold;
+  private final TunableDouble configReverseSoftLimitThreshold;
 
   private final TunableBoolean brake;
 
@@ -83,6 +89,16 @@ class AngularTalonFX {
     talonP = new TunableDouble(name + "P", 0.1, tunableDoubleEnabled, name);
     talonI = new TunableDouble(name + "I", 0, tunableDoubleEnabled, name);
     talonD = new TunableDouble(name + "D", 0.2, tunableDoubleEnabled, name);
+    
+    voltageCompSaturation = new TunableDouble("VoltageCompSaturation", 10, tunableDoubleEnabled, name);
+    configForwardSoftLimitEnable = new TunableBoolean("configForwardSoftLimitEnable", false, tunableDoubleEnabled,
+        name);
+    configForwardSoftLimitThreshold = new TunableDouble("configForwardSoftLimitThreshold", 10, tunableDoubleEnabled, name);
+    configReverseSoftLimitThreshold = new TunableDouble("configReverseSoftLimitThreshold", 10, tunableDoubleEnabled,
+        name);
+    configReverseSoftLimitEnable = new TunableBoolean("configReverseSoftLimitEnable", false,  tunableDoubleEnabled,
+        name);
+
 
     acel = new TunableDouble(name + "Acel", 200, tunableDoubleEnabled, name);
     cruiseVel =
@@ -105,8 +121,27 @@ class AngularTalonFX {
       talonFX.config_kD(0, value);
     });
 
+    voltageCompSaturation.addChangeListener(value -> {
+      talonFX.configVoltageCompSaturation(value);
+    });
+    
+    configForwardSoftLimitThreshold.addChangeListener(value -> {
+      anglesToTalonSensorPosition(value);
+    });
+
+    configReverseSoftLimitThreshold.addChangeListener(value -> {
+      anglesToTalonSensorPosition(value);
+    });
+
+    configForwardSoftLimitEnable.addChangeListener(value -> {
+      talonFX.configForwardSoftLimitEnable(value);
+    });
+
+    configReverseSoftLimitEnable.addChangeListener(value -> {
+      talonFX.configReverseSoftLimitEnable(value);
+    });
+
     talonFX.configAllSettings(talonConfig);
-    talonFX.configVoltageCompSaturation(10);
 
     SupplyCurrentLimitConfiguration supplyConfig = new SupplyCurrentLimitConfiguration();
     supplyConfig.currentLimit = 20;
@@ -144,14 +179,6 @@ class AngularTalonFX {
     });
 
     setTalonFromAbsEncoder();
-
-    talonFX.configForwardSoftLimitThreshold(
-      anglesToTalonSensorPosition(forwardLimit)
-    );
-
-    talonFX.configReverseSoftLimitThreshold(
-      anglesToTalonSensorPosition(reverseLimit)
-    );
 
     setUpTestCommands();
   }

@@ -19,14 +19,14 @@ public class TunableDouble {
    * Creates a TunableDouble. It can be enabled and disabled (Use defaultValue)
    *
    * @param name
-   * @param defaultValue
+   * @param d
    * @param tunable
    */
-  public TunableDouble(String name, double defaultValue, boolean tunable, String tab) {
-    this.defaultValue = defaultValue;
+  public TunableDouble(String name, double d, boolean tunable, String tab) {
+    this.defaultValue = d;
 
     if (tunable) {
-      shuffleboardWidget = Shuffleboard.getTab(tab).add(name, defaultValue);
+      shuffleboardWidget = Shuffleboard.getTab(tab).add(name, d);
 
       shuffleboard = shuffleboardWidget.getEntry();
     } else {
