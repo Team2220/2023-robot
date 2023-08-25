@@ -107,25 +107,35 @@ class AngularTalonFX {
       talonFX.setInverted(value);
     });
 
-    SupplyCurrentLimitConfiguration supplyConfig = new SupplyCurrentLimitConfiguration();
-    supplyConfig.currentLimit = 20;
-    supplyConfig.enable = true;
-    talonFX.configSupplyCurrentLimit(supplyConfig);
+    var statorCurrentLimitEnabled = new TunableBoolean(name + "statorCurrentLimitEnabled", true, tunableDoubleEnabled,
+        name);
+    var statorCurrentLimit = new TunableDouble(name + "statorCurrentLimit", 33, tunableDoubleEnabled, name);
 
+    statorCurrentLimitEnabled.addChangeListener( value -> {
+      setStator(statorCurrentLimit.getValue(), value);
+    });
 
+    statorCurrentLimit.addChangeListener( value -> {
+      setStator(value, statorCurrentLimitEnabled.getValue());
+    });
 
-    Shuffleboard.getTab(name).addDouble("Temperature", talonFX::getTemperature).withWidget(BuiltInWidgets.kGraph);
+    var supplyCurrentLimitEnabled = new TunableBoolean( name + "supplyCurrentLimitEnabled", true, tunableDoubleEnabled, name);
+    var supplyCurrentLimit = new TunableDouble(name + "supplyCurrentLimit", 20, tunableDoubleEnabled, name);
+
+    supplyCurrentLimitEnabled.addChangeListener(value -> {
+      setSupply(statorCurrentLimit.getValue(), value);
+    });
+
+    supplyCurrentLimit.addChangeListener(value -> {
+      setSupply(value, supplyCurrentLimitEnabled.getValue());
+    });
+
+    Shuffleboard.getTab(name).addDouble("Temperature (in Celcius)", talonFX::getTemperature).withWidget(BuiltInWidgets.kGraph);
 
     EventLoops.oncePerSec.bind(this::checkTemp);
     EventLoops.oncePerMin.bind(this::isStalledLogger);
 
-    StatorCurrentLimitConfiguration statorConfig = new StatorCurrentLimitConfiguration();
-    statorConfig.currentLimit = 33;
-    statorConfig.enable = true;
-    talonFX.configStatorCurrentLimit(statorConfig);
-
     setTalonFromAbsEncoder();
-
     setUpTestCommands();
 
     CommandScheduler.getInstance().getDefaultButtonLoop().bind(() -> {
@@ -133,6 +143,20 @@ class AngularTalonFX {
         holdCurrentPosition();
       }
     });
+  }
+
+  private void setSupply(double supplyCurrentLimit, boolean supplyEnable) {
+    SupplyCurrentLimitConfiguration supplyConfig = new SupplyCurrentLimitConfiguration(); // needs fixing
+    supplyConfig.currentLimit = 20;
+    supplyConfig.enable = true;
+    talonFX.configSupplyCurrentLimit(supplyConfig);
+  }
+
+  private void setStator(double currentLimit, boolean enable) {
+    StatorCurrentLimitConfiguration statorConfig = new StatorCurrentLimitConfiguration(); // needs fixing
+    statorConfig.currentLimit = currentLimit;
+    statorConfig.enable = enable;
+    talonFX.configStatorCurrentLimit(statorConfig);
   }
 
   private double degreesPerSecondToEncoderTicks(double angle) {
@@ -180,7 +204,7 @@ class AngularTalonFX {
     }
   }
   
-  TunableDouble deTime = new TunableDouble("debounceTime", 0.1, true);
+  TunableDouble deTime = new TunableDouble("debounceTime", 0.1, true, name);
   Debouncer debouncer = new Debouncer(deTime.getValue(), Debouncer.DebounceType.kBoth);
 
   public void isStalledLogger() {
@@ -218,8 +242,6 @@ class AngularTalonFX {
     value *= 360;
     return value;
   }
-
-
 
   public void setTalonPosition(double talonAng) {
     setTalonAngle(talonAng);
