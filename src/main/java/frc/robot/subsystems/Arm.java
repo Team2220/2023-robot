@@ -13,63 +13,11 @@ import java.util.Map;
 
 public class Arm extends SubsystemBase {
 
-  private final boolean tunableDoubleEnabled = true;
+  private AngularTalonFX angularShoulder;
 
-  private AngularTalonFX angularShoulder = new AngularTalonFX(
-    ArmConfig.SHOULDER_DUTYENCODER,
-    ArmConfig.SHOULDER_TALONFX,
-    "Shoulder",
-    tunableDoubleEnabled,
-    ArmConfig.SHOULDER_GEAR_RATIO,
-    ArmConfig.SHOULDER_INVERTED,
-    ArmConfig.SHOULDER_REMAP_LIMIT,
-    ArmConfig.SHOULDER_ENCODER_OFFSET,
-    ArmConfig.SHOULDER_REF,
-    true,
-    .1,
-    0,
-    .2,
-    10,
-    false,
-    ArmConfig.SHOULDER_FORWARD_LIMIT,
-    ArmConfig.SHOULDER_REVERSE_LIMIT,
-    false,
-    200,
-    200,
-    true,
-    33,
-    true,
-    20
-  );
+  private AngularTalonFX angularWrist;
 
-  private AngularTalonFX angularWrist = new AngularTalonFX(
-    ArmConfig.WRIST_DUTYENCODER,
-    ArmConfig.WRIST_TALONFX,
-    "Wrist",
-    tunableDoubleEnabled,
-    ArmConfig.WRIST_GEAR_RATIO,
-    ArmConfig.WRIST_INVERTED,
-    ArmConfig.WRIST_REMAP_LIMIT,
-    ArmConfig.WRIST_ENCODER_OFFSET,
-    ArmConfig.WRIST_REF,
-    true,
-    .1,
-    0,
-    .2,
-    10,
-    false,
-    ArmConfig.WRIST_FORWARD_LIMIT,
-    ArmConfig.WRIST_REVERSE_LIMIT,
-    false,
-    200,
-    200,
-    true,
-    33,
-    true,
-    20
-  );
-
-  ShuffleboardTab arm = Shuffleboard.getTab("arm");;
+  ShuffleboardTab arm = Shuffleboard.getTab("arm");
 
   /** Config Objects for motor controllers */
   TalonFXConfiguration wristConfig = new TalonFXConfiguration();
@@ -77,7 +25,62 @@ public class Arm extends SubsystemBase {
   TalonFXConfiguration shoulderConfig = new TalonFXConfiguration();
 
   public Arm() {
+    var wristConfig = new AngularTalonFX.Config(
+      ArmConfig.SHOULDER_DUTYENCODER,
+      ArmConfig.SHOULDER_TALONFX,
+      "Shoulder",
+      ArmConfig.SHOULDER_GEAR_RATIO,
+      ArmConfig.SHOULDER_INVERTED,
+      ArmConfig.SHOULDER_REMAP_LIMIT,
+      ArmConfig.SHOULDER_ENCODER_OFFSET);
+      
+      wristConfig.talonRef = ArmConfig.SHOULDER_REF;
+      wristConfig.P = .1;
+      wristConfig.D = .2;
+      wristConfig.voltageCompSaturation = 10;
+      wristConfig.tunableDoubleEnabled = false;
+      wristConfig.forwardSoftLimitEnable = true;
+      wristConfig.forwardSoftLimitThreshold = ArmConfig.SHOULDER_REVERSE_LIMIT;
+      wristConfig.reverseSoftLimitEnable = true;
+      wristConfig.reverseSoftLimitThreshold = ArmConfig.SHOULDER_FORWARD_LIMIT;
+      wristConfig.acel = 200;
+      wristConfig.cruiseVel = 200;
+      wristConfig.statorCurrentLimitEnabledDefaultVal = true;
+      wristConfig.statorCurrentLimitDefaultVal = 33;
+      wristConfig.supplyCurrentLimitEnabledDefaultVal = true;
+      wristConfig.supplyCurrentLimitDefaultVal = 20;
+
+      
+    var shoulderConfig = new AngularTalonFX.Config(
+      ArmConfig.SHOULDER_DUTYENCODER,
+      ArmConfig.SHOULDER_TALONFX,
+      "Shoulder",
+      ArmConfig.SHOULDER_GEAR_RATIO,
+      ArmConfig.SHOULDER_INVERTED,
+      ArmConfig.SHOULDER_REMAP_LIMIT,
+      ArmConfig.SHOULDER_ENCODER_OFFSET);
+      
+      shoulderConfig.talonRef = ArmConfig.SHOULDER_REF;
+      shoulderConfig.P = .1;
+      shoulderConfig.D = .2;
+      shoulderConfig.voltageCompSaturation = 10;
+      shoulderConfig.tunableDoubleEnabled = false;
+      shoulderConfig.forwardSoftLimitEnable = true;
+      shoulderConfig.forwardSoftLimitThreshold = ArmConfig.SHOULDER_REVERSE_LIMIT;
+      shoulderConfig.reverseSoftLimitEnable = true;
+      shoulderConfig.reverseSoftLimitThreshold = ArmConfig.SHOULDER_FORWARD_LIMIT;
+      shoulderConfig.acel = 200;
+      shoulderConfig.cruiseVel = 200;
+      shoulderConfig.statorCurrentLimitEnabledDefaultVal = true;
+      shoulderConfig.statorCurrentLimitDefaultVal = 33;
+      shoulderConfig.supplyCurrentLimitEnabledDefaultVal = true;
+      shoulderConfig.supplyCurrentLimitDefaultVal = 20;
+
+      angularShoulder = new AngularTalonFX(shoulderConfig);
+      angularWrist = new AngularTalonFX(wristConfig);
+
     setUpTestCommands();
+    
   }
 
   public void setShoulderFromAbsEncoder() {

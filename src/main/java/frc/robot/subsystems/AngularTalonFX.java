@@ -35,99 +35,117 @@ class AngularTalonFX {
 
   private String name;
 
-  public class Config {
+  public static class Config {
+    int dutyEncoder;
+    int talonId;
+    String name;
+    double gearRatio;
+    boolean inverted;
+    double remapLimit;
+    double encoderOffset;
+    double talonRef = 0;
+    boolean brakeMode = true;
+    double P = 0;
+    double I = 0;
+    double D = 0;
+    int voltageCompSaturation = 10;
+    boolean tunableDoubleEnabled = true;
+    boolean forwardSoftLimitEnable = false;
+    double forwardSoftLimitThreshold = 0;
+    double reverseSoftLimitThreshold = 0;
+    boolean reverseSoftLimitEnable = false;
+    int acel = 200;
+    int cruiseVel = 200;
+    boolean statorCurrentLimitEnabledDefaultVal = true;
+    int statorCurrentLimitDefaultVal = 33;
+    boolean supplyCurrentLimitEnabledDefaultVal = true;
+    int supplyCurrentLimitDefaultVal = 20;
+
+    public Config(
+      int dutyEncoder,
+      int talonId,
+      String name,
+      double gearRatio,
+      boolean inverted,
+      double remapLimit,
+      double encoderOffset
+    ) {
+      this.dutyEncoder = dutyEncoder;
+      this.talonId = talonId;
+      this.name = name;
+      this.gearRatio = gearRatio;
+      this.inverted = inverted;
+      this.remapLimit = remapLimit;
+      this.encoderOffset = encoderOffset;
+    }
     
   }
 
   public AngularTalonFX(
-    int dutyEncoder,
-    int talonId,
-    String name,
-    boolean tunableDoubleEnabled,
-    double gearRatio,
-    boolean inverted,
-    double remapLimit,
-    double encoderOffset,
-    double talonRef,
-    // default values
-    boolean brakeMode, // true
-    double P, //.1
-    double I, //0
-    double D, //.2
-    int voltageCompSaturation, //10
-    boolean forwardSoftLimitEnable, //false
-    double forwardSoftLimitThreshold, //10
-    double reverseSoftLimitThreshold, //10
-    boolean reverseSoftLimitEnable, //false
-    int acel, //200
-    int cruiseVel, //200
-    boolean statorCurrentLimitEnabledDefaultVal, //true
-    int statorCurrentLimitDefaultVal, //33
-    boolean supplyCurrentLimitEnabledDefaultVal, //true
-    int supplyCurrentLimitDefaultVal //20
+    Config config
   ) {
-    this.gearRatio = gearRatio;
-    this.remapLimit = remapLimit;
-    this.encoderOffset = encoderOffset;
-    this.name = name;
-    this.talonRef = talonRef;
+    this.gearRatio = config.gearRatio;
+    this.remapLimit = config.remapLimit;
+    this.encoderOffset = config.encoderOffset;
+    this.name = config.name;
+    this.talonRef = config.talonRef;
 
-    talonEncoder = new DutyCycleEncoder(dutyEncoder);
-    talonFX = new TalonFX(talonId);
+    talonEncoder = new DutyCycleEncoder(config.dutyEncoder);
+    talonFX = new TalonFX(config.talonId);
 
     talonFX.configAllSettings(new TalonFXConfiguration());
      
-    new TunableBoolean(name + "Brake", brakeMode, tunableDoubleEnabled, name, value -> {
+    new TunableBoolean(name + "Brake", config.brakeMode, config.tunableDoubleEnabled, name, value -> {
       talonFX.setNeutralMode(value ? NeutralMode.Brake : NeutralMode.Coast);
     });
 
-    new TunableDouble(name + "P", P, tunableDoubleEnabled, name, value -> {
+    new TunableDouble(name + "P", config.P, config.tunableDoubleEnabled, name, value -> {
       talonFX.config_kP(0, value);
     });
 
-    new TunableDouble(name + "I", I, tunableDoubleEnabled, name, value -> {
+    new TunableDouble(name + "I", config.I, config.tunableDoubleEnabled, name, value -> {
       talonFX.config_kI(0, value);
     });
     
-    new TunableDouble(name + "D", D, tunableDoubleEnabled, name, value -> {
+    new TunableDouble(name + "D", config.D, config.tunableDoubleEnabled, name, value -> {
       talonFX.config_kD(0, value);
     });
     
-    new TunableDouble("VoltageCompSaturation", voltageCompSaturation, tunableDoubleEnabled, name, value -> {
+    new TunableDouble("VoltageCompSaturation", config.voltageCompSaturation, config.tunableDoubleEnabled, name, value -> {
       talonFX.configVoltageCompSaturation(value);
     });
 
-    new TunableBoolean("ForwardSoftLimitEnable", forwardSoftLimitEnable, tunableDoubleEnabled, name, value -> {
+    new TunableBoolean("ForwardSoftLimitEnable", config.forwardSoftLimitEnable, config.tunableDoubleEnabled, name, value -> {
       talonFX.configForwardSoftLimitEnable(value);
     });
 
-    new TunableDouble("ForwardSoftLimitThreshold", forwardSoftLimitThreshold, tunableDoubleEnabled, name, value -> {
+    new TunableDouble("ForwardSoftLimitThreshold", config.forwardSoftLimitThreshold, config.tunableDoubleEnabled, name, value -> {
       talonFX.configForwardSoftLimitThreshold(anglesToTalonSensorPosition(value));
     });
     
-    new TunableDouble("ReverseSoftLimitThreshold", reverseSoftLimitThreshold, tunableDoubleEnabled, name, value -> {
+    new TunableDouble("ReverseSoftLimitThreshold", config.reverseSoftLimitThreshold, config.tunableDoubleEnabled, name, value -> {
       talonFX.configForwardSoftLimitThreshold(anglesToTalonSensorPosition(value));
     });
 
-    new TunableBoolean("ReverseSoftLimitEnable", reverseSoftLimitEnable,  tunableDoubleEnabled, name, value -> {
+    new TunableBoolean("ReverseSoftLimitEnable", config.reverseSoftLimitEnable,  config.tunableDoubleEnabled, name, value -> {
       talonFX.configReverseSoftLimitEnable(value);
     });
 
-    new TunableDouble(name + "Acel", acel, tunableDoubleEnabled, name, value -> {
+    new TunableDouble(name + "Acel", config.acel, config.tunableDoubleEnabled, name, value -> {
       talonFX.configMotionAcceleration(degreesPerSecondToEncoderTicks(value));
     });
 
-    new TunableDouble(name + "CruiseVel", cruiseVel, tunableDoubleEnabled, name, value -> {
+    new TunableDouble(name + "CruiseVel", config.cruiseVel, config.tunableDoubleEnabled, name, value -> {
       talonFX.configMotionCruiseVelocity(degreesPerSecondToEncoderTicks(value));
     });
 
-    new TunableBoolean(name + "inverted", inverted, tunableDoubleEnabled, name, value -> {
+    new TunableBoolean(name + "inverted", config.inverted, config.tunableDoubleEnabled, name, value -> {
       talonFX.setInverted(value);
     });
 
-    var statorCurrentLimitEnabled = new TunableBoolean(name + "statorCurrentLimitEnabled", statorCurrentLimitEnabledDefaultVal, tunableDoubleEnabled,
+    var statorCurrentLimitEnabled = new TunableBoolean(name + "statorCurrentLimitEnabled", config.statorCurrentLimitEnabledDefaultVal, config.tunableDoubleEnabled,
         name);
-    var statorCurrentLimit = new TunableDouble(name + "statorCurrentLimit", statorCurrentLimitDefaultVal, tunableDoubleEnabled, name);
+    var statorCurrentLimit = new TunableDouble(name + "statorCurrentLimit", config.statorCurrentLimitDefaultVal, config.tunableDoubleEnabled, name);
 
     statorCurrentLimitEnabled.addChangeListener( value -> {
       setStator(statorCurrentLimit.getValue(), value);
@@ -137,8 +155,8 @@ class AngularTalonFX {
       setStator(value, statorCurrentLimitEnabled.getValue());
     });
 
-    var supplyCurrentLimitEnabled = new TunableBoolean( name + "supplyCurrentLimitEnabled", supplyCurrentLimitEnabledDefaultVal, tunableDoubleEnabled, name);
-    var supplyCurrentLimit = new TunableDouble(name + "supplyCurrentLimit", supplyCurrentLimitDefaultVal, tunableDoubleEnabled, name);
+    var supplyCurrentLimitEnabled = new TunableBoolean( name + "supplyCurrentLimitEnabled", config.supplyCurrentLimitEnabledDefaultVal, config.tunableDoubleEnabled, name);
+    var supplyCurrentLimit = new TunableDouble(name + "supplyCurrentLimit", config.supplyCurrentLimitDefaultVal, config.tunableDoubleEnabled, name);
 
     supplyCurrentLimitEnabled.addChangeListener(value -> {
       setSupply(statorCurrentLimit.getValue(), value);
@@ -148,7 +166,7 @@ class AngularTalonFX {
       setSupply(value, supplyCurrentLimitEnabled.getValue());
     });
 
-    Shuffleboard.getTab(name).addDouble("Temperature (in Celcius)", talonFX::getTemperature).withWidget(BuiltInWidgets.kGraph);
+    Shuffleboard.getTab(name).addDouble("Temperature (in Celsius)", talonFX::getTemperature).withWidget(BuiltInWidgets.kGraph);
 
     EventLoops.oncePerSec.bind(this::checkTemp);
     EventLoops.oncePerMin.bind(this::isStalledLogger);
