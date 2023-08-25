@@ -146,14 +146,14 @@ class AngularTalonFX {
   }
 
   private void setSupply(double supplyCurrentLimit, boolean supplyEnable) {
-    SupplyCurrentLimitConfiguration supplyConfig = new SupplyCurrentLimitConfiguration(); // needs fixing
+    SupplyCurrentLimitConfiguration supplyConfig = new SupplyCurrentLimitConfiguration(); 
     supplyConfig.currentLimit = 20;
     supplyConfig.enable = true;
     talonFX.configSupplyCurrentLimit(supplyConfig);
   }
 
   private void setStator(double currentLimit, boolean enable) {
-    StatorCurrentLimitConfiguration statorConfig = new StatorCurrentLimitConfiguration(); // needs fixing
+    StatorCurrentLimitConfiguration statorConfig = new StatorCurrentLimitConfiguration();
     statorConfig.currentLimit = currentLimit;
     statorConfig.enable = enable;
     talonFX.configStatorCurrentLimit(statorConfig);
