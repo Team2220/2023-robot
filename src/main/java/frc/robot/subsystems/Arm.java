@@ -24,9 +24,22 @@ public class Arm extends SubsystemBase {
     ArmConfig.SHOULDER_INVERTED,
     ArmConfig.SHOULDER_REMAP_LIMIT,
     ArmConfig.SHOULDER_ENCODER_OFFSET,
+    ArmConfig.SHOULDER_REF,
+    true,
+    .1,
+    0,
+    .2,
+    10,
+    false,
     ArmConfig.SHOULDER_FORWARD_LIMIT,
     ArmConfig.SHOULDER_REVERSE_LIMIT,
-    ArmConfig.SHOULDER_REF
+    false,
+    200,
+    200,
+    true,
+    33,
+    true,
+    20
   );
 
   private AngularTalonFX angularWrist = new AngularTalonFX(
@@ -38,9 +51,22 @@ public class Arm extends SubsystemBase {
     ArmConfig.WRIST_INVERTED,
     ArmConfig.WRIST_REMAP_LIMIT,
     ArmConfig.WRIST_ENCODER_OFFSET,
+    ArmConfig.WRIST_REF,
+    true,
+    .1,
+    0,
+    .2,
+    10,
+    false,
     ArmConfig.WRIST_FORWARD_LIMIT,
     ArmConfig.WRIST_REVERSE_LIMIT,
-    ArmConfig.WRIST_REF
+    false,
+    200,
+    200,
+    true,
+    33,
+    true,
+    20
   );
 
   ShuffleboardTab arm = Shuffleboard.getTab("arm");;
