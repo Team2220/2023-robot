@@ -19,12 +19,19 @@ public class TunableBoolean {
    * @param defaultValue
    * @param tunable
    */
+  public TunableBoolean(String name, boolean defaultValue, String tab, Consumer<Boolean> onChange) {
+    this(name, defaultValue, true, tab);
+  }
+
+  public TunableBoolean(String name, boolean defaultValue, String tab) {
+    this(name, defaultValue, true, tab);
+  }
+  
   public TunableBoolean(String name, boolean defaultValue, boolean tunable, String tab) {
     this.defaultValue = defaultValue;
-
+    
     if (tunable) {
       shuffleboardWidget = Shuffleboard.getTab(tab).add(name, defaultValue).withWidget(BuiltInWidgets.kToggleSwitch);
-
       shuffleboard = shuffleboardWidget.getEntry();
     } else {
       shuffleboard = null;
@@ -35,11 +42,10 @@ public class TunableBoolean {
     this(name, defaultValue, tunable, "Tunables");
   }
 
-  public TunableBoolean(String name, boolean d, boolean tunable, String tab, Consumer<Boolean> onChange) {
-    this(name, d, tunable, tab);
+  public TunableBoolean(String name, boolean defaultValue, boolean tunable, String tab, Consumer<Boolean> onChange) {
+    this(name, defaultValue, tunable, tab);
     addChangeListener(onChange);
-
-  };
+  }
 
   public TunableBoolean(String name, boolean defaultValue, boolean tunable, Consumer<Boolean> onChange) {
     this(name, defaultValue, tunable);
@@ -53,7 +59,6 @@ public class TunableBoolean {
 
     return this;
   }
-
 
   /**
    * @return Value as a double

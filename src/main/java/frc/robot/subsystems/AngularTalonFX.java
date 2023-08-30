@@ -23,16 +23,12 @@ import java.util.ArrayList;
 import java.util.Map;
 
 class AngularTalonFX {
-
   private DutyCycleEncoder talonEncoder;
   private TalonFX talonFX;
-
   private double gearRatio;
   private double remapLimit;
   private double encoderOffset;
-
   private double talonRef;
-
   private String name;
 
   public static class Config {
@@ -43,13 +39,14 @@ class AngularTalonFX {
     boolean inverted;
     double remapLimit;
     double encoderOffset;
+
     double talonRef = 0;
     boolean brakeMode = true;
     double P = 0;
     double I = 0;
     double D = 0;
     int voltageCompSaturation = 10;
-    boolean tunableDoubleEnabled = true;
+    boolean tunableDoubleEnabled;
     boolean forwardSoftLimitEnable = false;
     double forwardSoftLimitThreshold = 0;
     double reverseSoftLimitThreshold = 0;
@@ -78,12 +75,9 @@ class AngularTalonFX {
       this.remapLimit = remapLimit;
       this.encoderOffset = encoderOffset;
     }
-    
   }
 
-  public AngularTalonFX(
-    Config config
-  ) {
+  public AngularTalonFX(Config config) {
     this.gearRatio = config.gearRatio;
     this.remapLimit = config.remapLimit;
     this.encoderOffset = config.encoderOffset;
@@ -95,57 +89,56 @@ class AngularTalonFX {
 
     talonFX.configAllSettings(new TalonFXConfiguration());
      
-    new TunableBoolean(name + "Brake", config.brakeMode, config.tunableDoubleEnabled, name, value -> {
+    new TunableBoolean(name + "Brake", config.brakeMode, name, value -> {
       talonFX.setNeutralMode(value ? NeutralMode.Brake : NeutralMode.Coast);
     });
 
-    new TunableDouble(name + "P", config.P, config.tunableDoubleEnabled, name, value -> {
+    new TunableDouble(name + "P", config.P, name, value -> {
       talonFX.config_kP(0, value);
     });
 
-    new TunableDouble(name + "I", config.I, config.tunableDoubleEnabled, name, value -> {
+    new TunableDouble(name + "I", config.I, name, value -> {
       talonFX.config_kI(0, value);
     });
     
-    new TunableDouble(name + "D", config.D, config.tunableDoubleEnabled, name, value -> {
+    new TunableDouble(name + "D", config.D, name, value -> {
       talonFX.config_kD(0, value);
     });
     
-    new TunableDouble("VoltageCompSaturation", config.voltageCompSaturation, config.tunableDoubleEnabled, name, value -> {
+    new TunableDouble("VoltageCompSaturation", config.voltageCompSaturation, name, value -> {
       talonFX.configVoltageCompSaturation(value);
     });
 
-    new TunableBoolean("ForwardSoftLimitEnable", config.forwardSoftLimitEnable, config.tunableDoubleEnabled, name, value -> {
+    new TunableBoolean("ForwardSoftLimitEnable", config.forwardSoftLimitEnable, name, value -> {
       talonFX.configForwardSoftLimitEnable(value);
     });
 
-    new TunableDouble("ForwardSoftLimitThreshold", config.forwardSoftLimitThreshold, config.tunableDoubleEnabled, name, value -> {
+    new TunableDouble("ForwardSoftLimitThreshold", config.forwardSoftLimitThreshold, name, value -> {
       talonFX.configForwardSoftLimitThreshold(anglesToTalonSensorPosition(value));
     });
     
-    new TunableDouble("ReverseSoftLimitThreshold", config.reverseSoftLimitThreshold, config.tunableDoubleEnabled, name, value -> {
+    new TunableDouble("ReverseSoftLimitThreshold", config.reverseSoftLimitThreshold, name, value -> {
       talonFX.configForwardSoftLimitThreshold(anglesToTalonSensorPosition(value));
     });
 
-    new TunableBoolean("ReverseSoftLimitEnable", config.reverseSoftLimitEnable,  config.tunableDoubleEnabled, name, value -> {
+    new TunableBoolean("ReverseSoftLimitEnable", config.reverseSoftLimitEnable, name, value -> {
       talonFX.configReverseSoftLimitEnable(value);
     });
 
-    new TunableDouble(name + "Acel", config.acel, config.tunableDoubleEnabled, name, value -> {
+    new TunableDouble(name + "Acel", config.acel, name, value -> {
       talonFX.configMotionAcceleration(degreesPerSecondToEncoderTicks(value));
     });
 
-    new TunableDouble(name + "CruiseVel", config.cruiseVel, config.tunableDoubleEnabled, name, value -> {
+    new TunableDouble(name + "CruiseVel", config.cruiseVel, name, value -> {
       talonFX.configMotionCruiseVelocity(degreesPerSecondToEncoderTicks(value));
     });
 
-    new TunableBoolean(name + "inverted", config.inverted, config.tunableDoubleEnabled, name, value -> {
+    new TunableBoolean(name + "inverted", config.inverted, name, value -> {
       talonFX.setInverted(value);
     });
 
-    var statorCurrentLimitEnabled = new TunableBoolean(name + "statorCurrentLimitEnabled", config.statorCurrentLimitEnabledDefaultVal, config.tunableDoubleEnabled,
-        name);
-    var statorCurrentLimit = new TunableDouble(name + "statorCurrentLimit", config.statorCurrentLimitDefaultVal, config.tunableDoubleEnabled, name);
+    var statorCurrentLimitEnabled = new TunableBoolean(name + "statorCurrentLimitEnabled", config.statorCurrentLimitEnabledDefaultVal, name);
+    var statorCurrentLimit = new TunableDouble(name + "statorCurrentLimit", config.statorCurrentLimitDefaultVal, name);
 
     statorCurrentLimitEnabled.addChangeListener( value -> {
       setStator(statorCurrentLimit.getValue(), value);
@@ -155,8 +148,8 @@ class AngularTalonFX {
       setStator(value, statorCurrentLimitEnabled.getValue());
     });
 
-    var supplyCurrentLimitEnabled = new TunableBoolean( name + "supplyCurrentLimitEnabled", config.supplyCurrentLimitEnabledDefaultVal, config.tunableDoubleEnabled, name);
-    var supplyCurrentLimit = new TunableDouble(name + "supplyCurrentLimit", config.supplyCurrentLimitDefaultVal, config.tunableDoubleEnabled, name);
+    var supplyCurrentLimitEnabled = new TunableBoolean( name + "supplyCurrentLimitEnabled", config.supplyCurrentLimitEnabledDefaultVal, name);
+    var supplyCurrentLimit = new TunableDouble(name + "supplyCurrentLimit", config.supplyCurrentLimitDefaultVal, name);
 
     supplyCurrentLimitEnabled.addChangeListener(value -> {
       setSupply(statorCurrentLimit.getValue(), value);
@@ -226,8 +219,7 @@ class AngularTalonFX {
     double tempCel = talonFX.getTemperature();
 
     if (tempCel > 90) {
-      DataLogManager.log("Temperature is concerning. Temperature is: " + tempCel + " °C or " + CtoF(tempCel) + " °F or "
-          + CtoK(tempCel) + " K.");
+      DataLogManager.log("Temperature is concerning. Temperature is: " + tempCel + " °C or " + CtoF(tempCel) + " °F or " + CtoK(tempCel) + " K.");
     }
   }
 

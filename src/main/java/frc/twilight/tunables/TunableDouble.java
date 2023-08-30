@@ -19,23 +19,31 @@ public class TunableDouble {
    * @param d
    * @param tunable
    */
-  public TunableDouble(String name, double d, boolean tunable, String tab) {
-    this.defaultValue = d;
+
+  public TunableDouble(String name, double defaultValue, String tab) {
+    this(name, defaultValue, true, tab);
+  }
+
+  public TunableDouble(String name, double defaultValue, String tab, DoubleConsumer onChange) {
+    this(name, defaultValue, tab);
+    addChangeListener(onChange);
+  }
+
+  public TunableDouble(String name, double defaultValue, boolean tunable, String tab) {
+    this.defaultValue = defaultValue;
 
     if (tunable) {
-      shuffleboardWidget = Shuffleboard.getTab(tab).add(name, d);
-
+      shuffleboardWidget = Shuffleboard.getTab(tab).add(name, defaultValue);
       shuffleboard = shuffleboardWidget.getEntry();
     } else {
       shuffleboard = null;
     }
   }
 
-  public TunableDouble(String name, double d, boolean tunable, String tab, DoubleConsumer onChange) {
-    this(name, d, tunable, tab);
+  public TunableDouble(String name, double defaultValue, boolean tunable, String tab, DoubleConsumer onChange) {
+    this(name, defaultValue, tunable, tab);
     addChangeListener(onChange);
-
-  };
+  }
 
   public TunableDouble(String name, double defaultValue, boolean tunable, DoubleConsumer onChange) {
     this(name, defaultValue, tunable);
