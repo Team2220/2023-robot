@@ -43,8 +43,8 @@ public class Arm extends SubsystemBase {
       wristConfig.forwardSoftLimitThreshold = ArmConfig.SHOULDER_REVERSE_LIMIT;
       wristConfig.reverseSoftLimitEnable = true;
       wristConfig.reverseSoftLimitThreshold = ArmConfig.SHOULDER_FORWARD_LIMIT;
-      wristConfig.acel = 200;
-      wristConfig.cruiseVel = 200;
+      wristConfig.acceleration = 200;
+      wristConfig.cruiseVelocity = 200;
       wristConfig.statorCurrentLimitEnabledDefaultVal = true;
       wristConfig.statorCurrentLimitDefaultVal = 33;
       wristConfig.supplyCurrentLimitEnabledDefaultVal = true;
@@ -69,8 +69,8 @@ public class Arm extends SubsystemBase {
       shoulderConfig.forwardSoftLimitThreshold = ArmConfig.SHOULDER_REVERSE_LIMIT;
       shoulderConfig.reverseSoftLimitEnable = true;
       shoulderConfig.reverseSoftLimitThreshold = ArmConfig.SHOULDER_FORWARD_LIMIT;
-      shoulderConfig.acel = 200;
-      shoulderConfig.cruiseVel = 200;
+      shoulderConfig.acceleration = 200;
+      shoulderConfig.cruiseVelocity = 200;
       shoulderConfig.statorCurrentLimitEnabledDefaultVal = true;
       shoulderConfig.statorCurrentLimitDefaultVal = 33;
       shoulderConfig.supplyCurrentLimitEnabledDefaultVal = true;

@@ -51,8 +51,8 @@ class AngularTalonFX {
     double forwardSoftLimitThreshold = 0;
     double reverseSoftLimitThreshold = 0;
     boolean reverseSoftLimitEnable = false;
-    int acel = 200;
-    int cruiseVel = 200;
+    int acceleration = 200;
+    int cruiseVelocity = 200;
     boolean statorCurrentLimitEnabledDefaultVal = true;
     int statorCurrentLimitDefaultVal = 33;
     boolean supplyCurrentLimitEnabledDefaultVal = true;
@@ -125,11 +125,11 @@ class AngularTalonFX {
       talonFX.configReverseSoftLimitEnable(value);
     });
 
-    new TunableDouble(name + "Acel", config.acel, name, value -> {
+    new TunableDouble(name + "Acceleration", config.acceleration, name, value -> {
       talonFX.configMotionAcceleration(degreesPerSecondToEncoderTicks(value));
     });
 
-    new TunableDouble(name + "CruiseVel", config.cruiseVel, name, value -> {
+    new TunableDouble(name + "CruiseVelocity", config.cruiseVelocity, name, value -> {
       talonFX.configMotionCruiseVelocity(degreesPerSecondToEncoderTicks(value));
     });
 
@@ -244,6 +244,15 @@ class AngularTalonFX {
   public boolean isStalled() {
     return debouncer.calculate(isStalledInternal());
   }
+
+  // public boolean isAtGoalOrSoftLimit(double tolerance) {
+  //   double ticks = anglesToTalonSensorPosition(tolerance);
+  //   if (talonFX.getClosedLoopError() <= ticks || talonFX.getFaults(null)) {
+  //     return true;
+  //   } else {
+
+  //   }
+  // }
 
   public double remap(double value, double limit) {
     if (value >= 0 && value < limit) {
