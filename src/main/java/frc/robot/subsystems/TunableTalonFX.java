@@ -89,19 +89,19 @@ class TunableTalonFX {
 
     talonFX.configAllSettings(new TalonFXConfiguration());
 
-    new TunableBoolean(name + "Brake", config.brakeMode, name, value -> {
+    new TunableBoolean("Brake", config.brakeMode, name, value -> {
       talonFX.setNeutralMode(value ? NeutralMode.Brake : NeutralMode.Coast);
     });
 
-    new TunableDouble(name + "P", config.P, name, value -> {
+    new TunableDouble("P", config.P, name, value -> {
       talonFX.config_kP(0, value);
     });
 
-    new TunableDouble(name + "I", config.I, name, value -> {
+    new TunableDouble("I", config.I, name, value -> {
       talonFX.config_kI(0, value);
     });
 
-    new TunableDouble(name + "D", config.D, name, value -> {
+    new TunableDouble("D", config.D, name, value -> {
       talonFX.config_kD(0, value);
     });
 
@@ -125,21 +125,21 @@ class TunableTalonFX {
       talonFX.configReverseSoftLimitEnable(value);
     });
 
-    new TunableDouble(name + "Acceleration", config.acceleration, name, value -> {
+    new TunableDouble("Acceleration", config.acceleration, name, value -> {
       talonFX.configMotionAcceleration(degreesPerSecondToEncoderTicks(value));
     });
 
-    new TunableDouble(name + "CruiseVelocity", config.cruiseVelocity, name, value -> {
+    new TunableDouble("CruiseVelocity", config.cruiseVelocity, name, value -> {
       talonFX.configMotionCruiseVelocity(degreesPerSecondToEncoderTicks(value));
     });
 
-    new TunableBoolean(name + "inverted", config.inverted, name, value -> {
+    new TunableBoolean("inverted", config.inverted, name, value -> {
       talonFX.setInverted(value);
     });
 
-    var statorCurrentLimitEnabled = new TunableBoolean(name + "statorCurrentLimitEnabled",
+    var statorCurrentLimitEnabled = new TunableBoolean("statorCurrentLimitEnabled",
         config.statorCurrentLimitEnabledDefaultVal, name);
-    var statorCurrentLimit = new TunableDouble(name + "statorCurrentLimit", config.statorCurrentLimitDefaultVal, name);
+    var statorCurrentLimit = new TunableDouble("statorCurrentLimit", config.statorCurrentLimitDefaultVal, name);
 
     statorCurrentLimitEnabled.addChangeListener(value -> {
       setStator(statorCurrentLimit.getValue(), value);
@@ -149,9 +149,9 @@ class TunableTalonFX {
       setStator(value, statorCurrentLimitEnabled.getValue());
     });
 
-    var supplyCurrentLimitEnabled = new TunableBoolean(name + "supplyCurrentLimitEnabled",
+    var supplyCurrentLimitEnabled = new TunableBoolean("supplyCurrentLimitEnabled",
         config.supplyCurrentLimitEnabledDefaultVal, name);
-    var supplyCurrentLimit = new TunableDouble(name + "supplyCurrentLimit", config.supplyCurrentLimitDefaultVal, name);
+    var supplyCurrentLimit = new TunableDouble("supplyCurrentLimit", config.supplyCurrentLimitDefaultVal, name);
 
     supplyCurrentLimitEnabled.addChangeListener(value -> {
       setSupply(statorCurrentLimit.getValue(), value);
@@ -176,6 +176,7 @@ class TunableTalonFX {
       }
     });
   }
+  
   public static class HelperMethods {
     public static double CtoF(double temp) {
       return (temp * 9 / 5) + 32;
