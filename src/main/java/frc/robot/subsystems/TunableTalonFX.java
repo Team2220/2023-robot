@@ -88,7 +88,7 @@ class TunableTalonFX {
     talonFX = new TalonFX(config.talonId);
 
     talonFX.configAllSettings(new TalonFXConfiguration());
-     
+
     new TunableBoolean(name + "Brake", config.brakeMode, name, value -> {
       talonFX.setNeutralMode(value ? NeutralMode.Brake : NeutralMode.Coast);
     });
@@ -100,11 +100,11 @@ class TunableTalonFX {
     new TunableDouble(name + "I", config.I, name, value -> {
       talonFX.config_kI(0, value);
     });
-    
+
     new TunableDouble(name + "D", config.D, name, value -> {
       talonFX.config_kD(0, value);
     });
-    
+
     new TunableDouble("VoltageCompSaturation", config.voltageCompSaturation, name, value -> {
       talonFX.configVoltageCompSaturation(value);
     });
@@ -116,7 +116,7 @@ class TunableTalonFX {
     new TunableDouble("ForwardSoftLimitThreshold", config.forwardSoftLimitThreshold, name, value -> {
       talonFX.configForwardSoftLimitThreshold(anglesToTalonSensorPosition(value));
     });
-    
+
     new TunableDouble("ReverseSoftLimitThreshold", config.reverseSoftLimitThreshold, name, value -> {
       talonFX.configForwardSoftLimitThreshold(anglesToTalonSensorPosition(value));
     });
@@ -137,18 +137,20 @@ class TunableTalonFX {
       talonFX.setInverted(value);
     });
 
-    var statorCurrentLimitEnabled = new TunableBoolean(name + "statorCurrentLimitEnabled", config.statorCurrentLimitEnabledDefaultVal, name);
+    var statorCurrentLimitEnabled = new TunableBoolean(name + "statorCurrentLimitEnabled",
+        config.statorCurrentLimitEnabledDefaultVal, name);
     var statorCurrentLimit = new TunableDouble(name + "statorCurrentLimit", config.statorCurrentLimitDefaultVal, name);
 
-    statorCurrentLimitEnabled.addChangeListener( value -> {
+    statorCurrentLimitEnabled.addChangeListener(value -> {
       setStator(statorCurrentLimit.getValue(), value);
     });
 
-    statorCurrentLimit.addChangeListener( value -> {
+    statorCurrentLimit.addChangeListener(value -> {
       setStator(value, statorCurrentLimitEnabled.getValue());
     });
 
-    var supplyCurrentLimitEnabled = new TunableBoolean( name + "supplyCurrentLimitEnabled", config.supplyCurrentLimitEnabledDefaultVal, name);
+    var supplyCurrentLimitEnabled = new TunableBoolean(name + "supplyCurrentLimitEnabled",
+        config.supplyCurrentLimitEnabledDefaultVal, name);
     var supplyCurrentLimit = new TunableDouble(name + "supplyCurrentLimit", config.supplyCurrentLimitDefaultVal, name);
 
     supplyCurrentLimitEnabled.addChangeListener(value -> {
@@ -159,7 +161,8 @@ class TunableTalonFX {
       setSupply(value, supplyCurrentLimitEnabled.getValue());
     });
 
-    Shuffleboard.getTab(name).addDouble("Temperature (in Celsius)", talonFX::getTemperature).withWidget(BuiltInWidgets.kGraph);
+    Shuffleboard.getTab(name).addDouble("Temperature (in Celsius)", talonFX::getTemperature)
+        .withWidget(BuiltInWidgets.kGraph);
 
     EventLoops.oncePerSec.bind(this::checkTemp);
     EventLoops.oncePerMin.bind(this::isStalledLogger);
@@ -172,6 +175,15 @@ class TunableTalonFX {
         holdCurrentPosition();
       }
     });
+  }
+  public static class HelperMethods {
+    public static double CtoF(double temp) {
+      return (temp * 9 / 5) + 32;
+    }
+
+    public static double CtoK(double temp) {
+      return temp + 273.15;
+    }
   }
 
   private void setSupply(double supplyCurrentLimit, boolean supplyEnable) {
@@ -207,19 +219,11 @@ class TunableTalonFX {
     return (remap(talonEncoder.getAbsolutePosition(), remapLimit) - encoderOffset);
   }
 
-  public double CtoF(double temp) {
-    return (temp * 9 / 5) + 32;
-  }
-
-  public double CtoK(double temp) {
-    return temp + 273.15;
-  }
-
   public void checkTemp() {
     double tempCel = talonFX.getTemperature();
 
     if (tempCel > 90) {
-      DataLogManager.log("Temperature is concerning. Temperature is: " + tempCel + " °C or " + CtoF(tempCel) + " °F or " + CtoK(tempCel) + " K.");
+      DataLogManager.log("Temperature is concerning. Temperature is: " + tempCel + " °C or " + HelperMethods.CtoF(tempCel) + " °F or " + HelperMethods.CtoK(tempCel) + " K.");
     }
   }
 
@@ -245,7 +249,7 @@ class TunableTalonFX {
     return debouncer.calculate(isStalledInternal());
   }
 
-  // public boolean isAtGoalOrSoftLimit(double tolerance) {
+  // public boolean isAtGoalOrSoftLimit(double tolerance) { // soft limit fix
   //   double ticks = anglesToTalonSensorPosition(tolerance);
   //   if (talonFX.getClosedLoopError() <= ticks || talonFX.getFaults(null)) {
   //     return true;
