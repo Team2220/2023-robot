@@ -25,7 +25,7 @@ import java.util.Map;
 class TunableTalonFX {
   private DutyCycleEncoder talonEncoder;
   private TalonFX talonFX;
-  private double gearRatio;
+  private TunableDouble gearRatio;
   private double remapLimit;
   private double encoderOffset;
   private TunableDouble talonRef;
@@ -78,7 +78,7 @@ class TunableTalonFX {
   }
 
   public TunableTalonFX(Config config) {
-    this.gearRatio = config.gearRatio;
+    this.gearRatio = new TunableDouble("gearRatio", config.talonRef, name);
     this.remapLimit = config.remapLimit;
     this.encoderOffset = config.encoderOffset;
     this.name = config.name;
@@ -202,7 +202,7 @@ class TunableTalonFX {
   }
 
   private double degreesPerSecondToEncoderTicks(double angle) {
-    double gfx = ((angle / 360.0) * gearRatio) *
+    double gfx = ((angle / 360.0) * gearRatio.getValue()) *
         ArmConfig.TALONFX_ENCODER_TICKS *
         1.0 /
         10.0;
@@ -211,7 +211,7 @@ class TunableTalonFX {
 
   public void setTalonFromAbsEncoder() {
     double talonOffset =
-      getTalonPosition() * (gearRatio) * (ArmConfig.TALONFX_ENCODER_TICKS);
+      getTalonPosition() * (gearRatio.getValue()) * (ArmConfig.TALONFX_ENCODER_TICKS);
     talonFX.setSelectedSensorPosition(talonOffset);
     System.out.println("!!! name = " + name + "\n" + "!!! Talon offset = " + talonOffset + "\n !!! get_talon_position = " + getTalonPosition() + "\n !!! talon_offset = " + ticksToTalonAngle(talonOffset));
   }
@@ -274,13 +274,13 @@ class TunableTalonFX {
 
   public double anglesToTalonSensorPosition(double angle) {
     double posValue =
-      ((angle / 360.0) * gearRatio) * ArmConfig.TALONFX_ENCODER_TICKS;
+      ((angle / 360.0) * gearRatio.getValue()) * ArmConfig.TALONFX_ENCODER_TICKS;
 
     return posValue;
   }
 
   public double ticksToTalonAngle(double ticks) {
-    double value = ticks / ArmConfig.TALONFX_ENCODER_TICKS / gearRatio;
+    double value = ticks / ArmConfig.TALONFX_ENCODER_TICKS / gearRatio.getValue();
     value *= 360;
     return value;
   }
