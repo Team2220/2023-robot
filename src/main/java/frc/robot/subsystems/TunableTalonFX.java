@@ -28,7 +28,7 @@ class TunableTalonFX {
   private double gearRatio;
   private double remapLimit;
   private double encoderOffset;
-  private double talonRef;
+  private TunableDouble talonRef;
   private String name;
 
   public static class Config {
@@ -82,7 +82,7 @@ class TunableTalonFX {
     this.remapLimit = config.remapLimit;
     this.encoderOffset = config.encoderOffset;
     this.name = config.name;
-    this.talonRef = config.talonRef;
+    this.talonRef = new TunableDouble("talonRef", config.talonRef, name);
 
     talonEncoder = new DutyCycleEncoder(config.dutyEncoder);
     talonFX = new TalonFX(config.talonId);
@@ -290,7 +290,7 @@ class TunableTalonFX {
   }
 
   public void setTalonToReferenceAngle() {
-    talonFX.setSelectedSensorPosition(anglesToTalonSensorPosition(talonRef));
+    talonFX.setSelectedSensorPosition(anglesToTalonSensorPosition(talonRef.getValue()));
   }
 
   public void setTalonPercentOutput(double value) {
