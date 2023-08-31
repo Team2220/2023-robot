@@ -13,9 +13,9 @@ import java.util.Map;
 
 public class Arm extends SubsystemBase {
 
-  private AngularTalonFX angularShoulder;
+  private TunableTalonFX angularShoulder;
 
-  private AngularTalonFX angularWrist;
+  private TunableTalonFX angularWrist;
 
   ShuffleboardTab arm = Shuffleboard.getTab("arm");
 
@@ -25,7 +25,7 @@ public class Arm extends SubsystemBase {
   TalonFXConfiguration shoulderConfig = new TalonFXConfiguration();
 
   public Arm() {
-    var wristConfig = new AngularTalonFX.Config(
+    var wristConfig = new TunableTalonFX.Config(
       ArmConfig.SHOULDER_DUTYENCODER,
       ArmConfig.SHOULDER_TALONFX,
       "Shoulder",
@@ -51,7 +51,7 @@ public class Arm extends SubsystemBase {
       wristConfig.supplyCurrentLimitDefaultVal = 20;
 
       
-    var shoulderConfig = new AngularTalonFX.Config(
+    var shoulderConfig = new TunableTalonFX.Config(
       ArmConfig.SHOULDER_DUTYENCODER,
       ArmConfig.SHOULDER_TALONFX,
       "Shoulder",
@@ -76,8 +76,8 @@ public class Arm extends SubsystemBase {
       shoulderConfig.supplyCurrentLimitEnabledDefaultVal = true;
       shoulderConfig.supplyCurrentLimitDefaultVal = 20;
 
-      angularShoulder = new AngularTalonFX(shoulderConfig);
-      angularWrist = new AngularTalonFX(wristConfig);
+      angularShoulder = new TunableTalonFX(shoulderConfig);
+      angularWrist = new TunableTalonFX(wristConfig);
 
     setUpTestCommands();
     

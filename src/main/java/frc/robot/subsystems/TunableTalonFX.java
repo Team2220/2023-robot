@@ -22,7 +22,7 @@ import frc.twilight.tunables.TunableBoolean;
 import java.util.ArrayList;
 import java.util.Map;
 
-class AngularTalonFX {
+class TunableTalonFX {
   private DutyCycleEncoder talonEncoder;
   private TalonFX talonFX;
   private double gearRatio;
@@ -77,7 +77,7 @@ class AngularTalonFX {
     }
   }
 
-  public AngularTalonFX(Config config) {
+  public TunableTalonFX(Config config) {
     this.gearRatio = config.gearRatio;
     this.remapLimit = config.remapLimit;
     this.encoderOffset = config.encoderOffset;
