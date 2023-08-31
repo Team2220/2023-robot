@@ -74,7 +74,7 @@ public class TunableEnum<V extends Enum<V>> {
    */
   public V getValue() {
     if (autoChooser!= null) {
-        autoChooser.getSelected();
+        return autoChooser.getSelected();
     }
     return defaultValue;
   }
