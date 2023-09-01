@@ -78,7 +78,7 @@ class TunableTalonFX {
   }
 
   public TunableTalonFX(Config config) {
-    this.gearRatio = new TunableDouble("gearRatio", config.talonRef, name);
+    this.gearRatio = new TunableDouble("gearRatio", config.gearRatio, name);
     this.remapLimit = config.remapLimit;
     this.encoderOffset = config.encoderOffset;
     this.name = config.name;
