@@ -25,7 +25,7 @@ class TunableTalonFX {
   private static final double TALONFX_ENCODER_TICKS = 2048;
   private DutyCycleEncoder talonEncoder;
   private TalonFX talonFX;
-  private TunableDouble gearRatio;
+  private static TunableDouble gearRatio;
   private double remapLimit;
   private double encoderOffset;
   private TunableDouble talonRef;
@@ -78,7 +78,7 @@ class TunableTalonFX {
   }
 
   public TunableTalonFX(Config config) {
-    this.gearRatio = new TunableDouble("gearRatio", config.gearRatio, name);
+    TunableTalonFX.gearRatio = new TunableDouble("gearRatio", config.gearRatio, name);
     this.remapLimit = config.remapLimit;
     this.encoderOffset = config.encoderOffset;
     this.name = config.name;
@@ -126,11 +126,11 @@ class TunableTalonFX {
     });
 
     new TunableDouble("Acceleration", config.acceleration, name, value -> {
-      talonFX.configMotionAcceleration(degreesPerSecondToEncoderTicks(value));
+      talonFX.configMotionAcceleration(HelperMethods.degreesPerSecondToEncoderTicks(value));
     });
 
     new TunableDouble("CruiseVelocity", config.cruiseVelocity, name, value -> {
-      talonFX.configMotionCruiseVelocity(degreesPerSecondToEncoderTicks(value));
+      talonFX.configMotionCruiseVelocity(HelperMethods.degreesPerSecondToEncoderTicks(value));
     });
 
     new TunableBoolean("inverted", config.inverted, name, value -> {
@@ -185,6 +185,12 @@ class TunableTalonFX {
     public static double CtoK(double temp) {
       return temp + 273.15;
     }
+
+    private static double degreesPerSecondToEncoderTicks(double angle) {
+      double gfx = ((angle / 360.0) * gearRatio.getValue()) *
+          TALONFX_ENCODER_TICKS * 1.0 / 10.0;
+      return gfx;
+    }
   }
 
   private void setSupply(double supplyCurrentLimit, boolean supplyEnable) {
@@ -201,13 +207,7 @@ class TunableTalonFX {
     talonFX.configStatorCurrentLimit(statorConfig);
   }
 
-  private double degreesPerSecondToEncoderTicks(double angle) {
-    double gfx = ((angle / 360.0) * gearRatio.getValue()) *
-        TALONFX_ENCODER_TICKS *
-        1.0 /
-        10.0;
-    return gfx;
-  }
+  
 
   public void setTalonFromAbsEncoder() {
     double talonOffset =
