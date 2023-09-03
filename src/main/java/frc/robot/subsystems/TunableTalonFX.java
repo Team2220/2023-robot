@@ -196,6 +196,12 @@ class TunableTalonFX {
       double posValue = ((angle / 360.0) * gearRatio.getValue()) * TALONFX_ENCODER_TICKS;
       return posValue;
     }
+
+    public static double ticksToTalonAngle(double ticks) {
+      double value = ticks / TALONFX_ENCODER_TICKS / gearRatio.getValue();
+      value *= 360;
+      return value;
+    }
   }
 
   private void setSupply(double supplyCurrentLimit, boolean supplyEnable) {
@@ -216,7 +222,7 @@ class TunableTalonFX {
     double talonOffset =
       getTalonPosition() * (gearRatio.getValue()) * (TALONFX_ENCODER_TICKS);
     talonFX.setSelectedSensorPosition(talonOffset);
-    System.out.println("!!! name = " + name + "\n" + "!!! Talon offset = " + talonOffset + "\n !!! get_talon_position = " + getTalonPosition() + "\n !!! talon_offset = " + ticksToTalonAngle(talonOffset));
+    System.out.println("!!! name = " + name + "\n" + "!!! Talon offset = " + talonOffset + "\n !!! get_talon_position = " + getTalonPosition() + "\n !!! talon_offset = " + HelperMethods.ticksToTalonAngle(talonOffset));
   }
 
   public double getTalonPosition() {
@@ -275,12 +281,6 @@ class TunableTalonFX {
     talonFX.overrideSoftLimitsEnable(enabled);
   }
 
-  public double ticksToTalonAngle(double ticks) {
-    double value = ticks / TALONFX_ENCODER_TICKS / gearRatio.getValue();
-    value *= 360;
-    return value;
-  }
-
   public void setTalonPosition(double talonAng) {
     setTalonAngle(talonAng);
   }
@@ -299,7 +299,7 @@ class TunableTalonFX {
   }
 
   public double getMotorTalonPosition() {
-    return ticksToTalonAngle(talonFX.getSelectedSensorPosition());
+    return HelperMethods.ticksToTalonAngle(talonFX.getSelectedSensorPosition());
   }
 
   public void setUpTestCommands() {
@@ -363,7 +363,7 @@ class TunableTalonFX {
 
     angLayout.addDouble(
       name + " angle",
-      () -> ticksToTalonAngle(talonFX.getSelectedSensorPosition())
+      () -> HelperMethods.ticksToTalonAngle(talonFX.getSelectedSensorPosition())
     );
     // Angles using remap()
     angLayout.addDouble(
