@@ -6,6 +6,7 @@ import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
 import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.motorcontrol.can.TalonFXConfiguration;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import edu.wpi.first.math.filter.Debouncer;
 import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
@@ -24,7 +25,7 @@ import java.util.Map;
 class TunableTalonFX {
   private static final double TALONFX_ENCODER_TICKS = 2048;
   private DutyCycleEncoder talonEncoder;
-  private TalonFX talonFX;
+  private WPI_TalonFX talonFX;
   private static TunableDouble gearRatio;
   private double remapLimit;
   private double encoderOffset;
@@ -85,7 +86,7 @@ class TunableTalonFX {
     this.talonRef = new TunableDouble("talonRef", config.talonRef, name);
 
     talonEncoder = new DutyCycleEncoder(config.dutyEncoder);
-    talonFX = new TalonFX(config.talonId);
+    talonFX = new WPI_TalonFX(config.talonId);
 
     talonFX.configAllSettings(new TalonFXConfiguration());
 
