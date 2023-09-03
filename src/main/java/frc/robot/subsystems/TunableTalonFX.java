@@ -114,11 +114,11 @@ class TunableTalonFX {
     });
 
     new TunableDouble("ForwardSoftLimitThreshold", config.forwardSoftLimitThreshold, name, value -> {
-      talonFX.configForwardSoftLimitThreshold(anglesToTalonSensorPosition(value));
+      talonFX.configForwardSoftLimitThreshold(HelperMethods.anglesToTalonSensorPosition(value));
     });
 
     new TunableDouble("ReverseSoftLimitThreshold", config.reverseSoftLimitThreshold, name, value -> {
-      talonFX.configForwardSoftLimitThreshold(anglesToTalonSensorPosition(value));
+      talonFX.configForwardSoftLimitThreshold(HelperMethods.anglesToTalonSensorPosition(value));
     });
 
     new TunableBoolean("ReverseSoftLimitEnable", config.reverseSoftLimitEnable, name, value -> {
@@ -191,6 +191,11 @@ class TunableTalonFX {
           TALONFX_ENCODER_TICKS * 1.0 / 10.0;
       return gfx;
     }
+
+    public static double anglesToTalonSensorPosition(double angle) {
+      double posValue = ((angle / 360.0) * gearRatio.getValue()) * TALONFX_ENCODER_TICKS;
+      return posValue;
+    }
   }
 
   private void setSupply(double supplyCurrentLimit, boolean supplyEnable) {
@@ -206,8 +211,6 @@ class TunableTalonFX {
     statorConfig.enable = enable;
     talonFX.configStatorCurrentLimit(statorConfig);
   }
-
-  
 
   public void setTalonFromAbsEncoder() {
     double talonOffset =
@@ -272,13 +275,6 @@ class TunableTalonFX {
     talonFX.overrideSoftLimitsEnable(enabled);
   }
 
-  public double anglesToTalonSensorPosition(double angle) {
-    double posValue =
-      ((angle / 360.0) * gearRatio.getValue()) * TALONFX_ENCODER_TICKS;
-
-    return posValue;
-  }
-
   public double ticksToTalonAngle(double ticks) {
     double value = ticks / TALONFX_ENCODER_TICKS / gearRatio.getValue();
     value *= 360;
@@ -290,7 +286,7 @@ class TunableTalonFX {
   }
 
   public void setTalonToReferenceAngle() {
-    talonFX.setSelectedSensorPosition(anglesToTalonSensorPosition(talonRef.getValue()));
+    talonFX.setSelectedSensorPosition(HelperMethods.anglesToTalonSensorPosition(talonRef.getValue()));
   }
 
   public void setTalonPercentOutput(double value) {
@@ -298,7 +294,7 @@ class TunableTalonFX {
   }
 
   public void setTalonAngle(double angle) {
-    double posValue = anglesToTalonSensorPosition(-angle);
+    double posValue = HelperMethods.anglesToTalonSensorPosition(-angle);
     talonFX.set(TalonFXControlMode.MotionMagic, posValue);
   }
 
