@@ -16,13 +16,13 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import frc.robot.Constants.ArmConfig;
 import frc.twilight.tunables.TunableDouble;
 import frc.twilight.tunables.TunableBoolean;
 import java.util.ArrayList;
 import java.util.Map;
 
 class TunableTalonFX {
+  private static final double TALONFX_ENCODER_TICKS = 2048;
   private DutyCycleEncoder talonEncoder;
   private TalonFX talonFX;
   private TunableDouble gearRatio;
@@ -203,7 +203,7 @@ class TunableTalonFX {
 
   private double degreesPerSecondToEncoderTicks(double angle) {
     double gfx = ((angle / 360.0) * gearRatio.getValue()) *
-        ArmConfig.TALONFX_ENCODER_TICKS *
+        TALONFX_ENCODER_TICKS *
         1.0 /
         10.0;
     return gfx;
@@ -211,7 +211,7 @@ class TunableTalonFX {
 
   public void setTalonFromAbsEncoder() {
     double talonOffset =
-      getTalonPosition() * (gearRatio.getValue()) * (ArmConfig.TALONFX_ENCODER_TICKS);
+      getTalonPosition() * (gearRatio.getValue()) * (TALONFX_ENCODER_TICKS);
     talonFX.setSelectedSensorPosition(talonOffset);
     System.out.println("!!! name = " + name + "\n" + "!!! Talon offset = " + talonOffset + "\n !!! get_talon_position = " + getTalonPosition() + "\n !!! talon_offset = " + ticksToTalonAngle(talonOffset));
   }
@@ -274,13 +274,13 @@ class TunableTalonFX {
 
   public double anglesToTalonSensorPosition(double angle) {
     double posValue =
-      ((angle / 360.0) * gearRatio.getValue()) * ArmConfig.TALONFX_ENCODER_TICKS;
+      ((angle / 360.0) * gearRatio.getValue()) * TALONFX_ENCODER_TICKS;
 
     return posValue;
   }
 
   public double ticksToTalonAngle(double ticks) {
-    double value = ticks / ArmConfig.TALONFX_ENCODER_TICKS / gearRatio.getValue();
+    double value = ticks / TALONFX_ENCODER_TICKS / gearRatio.getValue();
     value *= 360;
     return value;
   }
