@@ -33,6 +33,7 @@ import frc.robot.commands.CommandChooser;
 import frc.robot.commands.Arm.ArmPercentOutput;
 import frc.robot.commands.Intake.IntakePercentOutput;
 import frc.robot.commands.Leds.SetLedsStates;
+import frc.robot.subsystems.Alert;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.LEDs;
@@ -115,6 +116,8 @@ public class RobotContainer {
      * The container for the robot. Contains subsystems, OI devices, and commands.
      */
     public RobotContainer() {
+        new Alert("Startup alert!", Alert.AlertType.ERROR).set(true);
+        
         m_leds = new LEDs(() -> m_intake.isStalled());
         // Stop logging for missing joysticks
         DriverStation.silenceJoystickConnectionWarning(true);
