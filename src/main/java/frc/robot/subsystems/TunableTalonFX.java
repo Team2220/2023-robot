@@ -24,6 +24,8 @@ import java.util.Map;
 
 class TunableTalonFX {
   private static final double TALONFX_ENCODER_TICKS = 2048;
+  private TunableDouble deTime;
+  private Debouncer debouncer;
   private DutyCycleEncoder talonEncoder;
   private WPI_TalonFX talonFX;
   private TunableDouble gearRatio;
@@ -79,10 +81,12 @@ class TunableTalonFX {
   }
 
   public TunableTalonFX(Config config) {
+    this.name = config.name;
     gearRatio = new TunableDouble("gearRatio", config.gearRatio, name);
+    deTime = new TunableDouble("debounceTime", 0.1, true, name);
+    debouncer = new Debouncer(deTime.getValue(), Debouncer.DebounceType.kBoth);
     this.remapLimit = config.remapLimit;
     this.encoderOffset = config.encoderOffset;
-    this.name = config.name;
     this.talonRef = new TunableDouble("talonRef", config.talonRef, name);
 
     talonEncoder = new DutyCycleEncoder(config.dutyEncoder);
@@ -246,9 +250,6 @@ class TunableTalonFX {
       return false;
     }
   }
-  
-  TunableDouble deTime = new TunableDouble("debounceTime", 0.1, true, name);
-  Debouncer debouncer = new Debouncer(deTime.getValue(), Debouncer.DebounceType.kBoth);
 
   public void isStalledLogger() {
     if (debouncer.calculate(isStalledInternal()) == true) {
