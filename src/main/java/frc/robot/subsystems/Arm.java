@@ -26,23 +26,23 @@ public class Arm extends SubsystemBase {
 
   public Arm() {
     var wristConfig = new TunableTalonFX.Config(
-      ArmConfig.SHOULDER_DUTYENCODER,
-      ArmConfig.SHOULDER_TALONFX,
-      "Shoulder",
-      ArmConfig.SHOULDER_GEAR_RATIO,
-      ArmConfig.SHOULDER_INVERTED,
-      ArmConfig.SHOULDER_REMAP_LIMIT,
-      ArmConfig.SHOULDER_ENCODER_OFFSET);
+      ArmConfig.WRIST_DUTYENCODER,
+      ArmConfig.WRIST_TALONFX,
+      "Wrist",
+      ArmConfig.WRIST_GEAR_RATIO,
+      ArmConfig.WRIST_INVERTED,
+      ArmConfig.WRIST_REMAP_LIMIT,
+      ArmConfig.WRIST_ENCODER_OFFSET);
       
-      wristConfig.talonRef = ArmConfig.SHOULDER_REF;
+      wristConfig.talonRef = ArmConfig.WRIST_REF;
       wristConfig.P = .1;
       wristConfig.D = .2;
       wristConfig.voltageCompSaturation = 10;
       wristConfig.tunableDoubleEnabled = false;
       wristConfig.forwardSoftLimitEnable = true;
-      wristConfig.forwardSoftLimitThreshold = ArmConfig.SHOULDER_REVERSE_LIMIT;
+      wristConfig.forwardSoftLimitThreshold = ArmConfig.WRIST_REVERSE_LIMIT;
       wristConfig.reverseSoftLimitEnable = true;
-      wristConfig.reverseSoftLimitThreshold = ArmConfig.SHOULDER_FORWARD_LIMIT;
+      wristConfig.reverseSoftLimitThreshold = ArmConfig.WRIST_FORWARD_LIMIT;
       wristConfig.acceleration = 200;
       wristConfig.cruiseVelocity = 200;
       wristConfig.statorCurrentLimitEnabledDefaultVal = true;
