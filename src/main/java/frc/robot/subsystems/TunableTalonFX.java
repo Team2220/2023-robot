@@ -184,7 +184,7 @@ class TunableTalonFX {
   
   public static class HelperMethods {
     public static double CtoF(double temp) {
-      return (temp * 9 / 5) + 32;
+      return (temp * 9.0 / 5.0) + 32;
     }
 
     public static double CtoK(double temp) {
