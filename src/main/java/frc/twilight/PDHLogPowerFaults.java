@@ -12,6 +12,10 @@ public class PDHLogPowerFaults {
     private static PowerDistribution pdh = new PowerDistribution();
     private static ArrayList<Integer> unusedBreakers = new ArrayList<Integer>();
 
+    public static void setPdh(PowerDistribution pdh) {
+        PDHLogPowerFaults.pdh = pdh;
+    }
+
     public static void checkPDH() {
         try {
             if (firstCheckPdh) {
