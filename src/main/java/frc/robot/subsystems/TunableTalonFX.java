@@ -21,6 +21,7 @@ import frc.twilight.tunables.TunableDouble;
 import frc.twilight.tunables.TunableBoolean;
 import java.util.ArrayList;
 import java.util.Map;
+import java.util.function.BooleanSupplier;
 
 class TunableTalonFX {
   private static final double TALONFX_ENCODER_TICKS = 2048;
@@ -373,10 +374,8 @@ class TunableTalonFX {
       () -> remap(talonEncoder.getAbsolutePosition(), remapLimit)
     );
 
-    angLayout.addBoolean(
-      name + " is connected",
-      () -> talonEncoder.isConnected()
-    );
+    Fault.autoUpdating(name + "encoder is connected", () -> 
+      !talonEncoder.isConnected());
   }
 
   public void holdCurrentPosition() {
