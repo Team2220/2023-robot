@@ -36,7 +36,7 @@ public final class FieldConstants {
   public static final class Community {
     // Region dimensions
     public static final double innerX = 0.0;
-    public static final double midX =
+    public static final double midX =                                                                                                                                               
         Units.inchesToMeters(132.375); // Tape to the left of charging station
     public static final double outerX =
         Units.inchesToMeters(193.25); // Tape to the right of charging station
