@@ -9,7 +9,7 @@ import edu.wpi.first.wpilibj.PowerDistribution;
 
 public class PDHLogPowerFaults {
     private static boolean firstCheckPdh = true;
-    private static PowerDistribution pdh = new PowerDistribution();
+    private static PowerDistribution pdh = null;
     private static ArrayList<Integer> unusedBreakers = new ArrayList<Integer>();
 
     public static void setPdh(PowerDistribution pdh) {
