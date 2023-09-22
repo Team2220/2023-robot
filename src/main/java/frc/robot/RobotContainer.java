@@ -35,6 +35,7 @@ import frc.robot.commands.Intake.IntakePercentOutput;
 import frc.robot.commands.Leds.SetLedsStates;
 import frc.robot.subsystems.Alert;
 import frc.robot.subsystems.Arm;
+import frc.robot.subsystems.Fault;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.LEDs;
 import frc.robot.subsystems.Arm.ArmStates;
@@ -110,7 +111,10 @@ public class RobotContainer {
             m_swerve,
             () -> m_controller.getLeftX(),
             () -> m_controller.getLeftY(),
-            () -> m_controller.getRightX());
+                    () -> m_controller.getRightX());
+                
+        Fault fault=new Fault("based");
+        
 
     /**
      * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -190,7 +194,10 @@ public class RobotContainer {
         ControllerLayout.mapDriverController(m_controller);
         new Trigger(() -> m_controller.getButton(Controller.Button.LB))
                 .onTrue(new SetLedsStates(DesiredState.WANT_CONE, m_leds))
-                .onFalse(new SetLedsStates(DesiredState.OFF, m_leds));
+                        .onFalse(new SetLedsStates(DesiredState.OFF, m_leds));
+        new Trigger(() -> m_controller.getButton(Controller.Button.X))
+                        .onTrue(new InstantCommand(() -> fault.setIsActive(true)))
+                        .onFalse(new InstantCommand(() -> fault.setIsActive(false)));
 
         new Trigger(() -> m_controller.getButton(Controller.Button.RB))
                 .onTrue(new SetLedsStates(DesiredState.WANT_CUBE, m_leds))
