@@ -44,7 +44,7 @@ public class Robot extends TimedRobot {
     addPeriodic(EventLoops.oncePerMin::poll, 60); // for stall logger
     SmartDashboard.putData(CommandScheduler.getInstance());
     Shuffleboard.getTab("infrastructure").addNumber("Voltage", () -> RobotController.getBatteryVoltage());
-    Shuffleboard.getTab("infrastructure").addNumber("Value", () -> RobotController.getBatteryVoltage());`
+    Shuffleboard.getTab("infrastructure").addNumber("Value", () -> RobotController.getBatteryVoltage());
     Shuffleboard.getTab("infrastructure").addNumber("CanUsage",
         () -> RobotController.getCANStatus().percentBusUtilization);
     PowerDistribution pdh = new PowerDistribution();
