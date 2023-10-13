@@ -12,7 +12,7 @@ public class ArmPosition extends CommandBase {
   private final double shoulderAngle;
 
   private final TrapezoidProfile.Constraints constraints = new Constraints(50, 100);
-  
+
   private final TrapezoidProfile.State endWrist;
   private final TrapezoidProfile.State endShoulder;
 
