@@ -17,16 +17,6 @@ public class Arm extends SubsystemBase {
 
   private TunableTalonFX angularWrist;
 
-  private DutyCycleEncoder wristEncoder = new DutyCycleEncoder(
-    ArmConfig.WRIST_DUTYENCODER
-  );
-  private DutyCycleEncoder shoulderEncoder = new DutyCycleEncoder(
-    ArmConfig.SHOULDER_DUTYENCODER
-  );
-
-  private TalonFX wrist = new TalonFX(ArmConfig.WRIST_TALONFX);
-  private TalonFX shoulder = new TalonFX(ArmConfig.SHOULDER_TALONFX);
-
   ShuffleboardTab arm = Shuffleboard.getTab("arm");
 
   /** Config Objects for motor controllers */
