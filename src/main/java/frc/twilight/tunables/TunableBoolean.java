@@ -1,9 +1,12 @@
 package frc.twilight.tunables;
 
+import java.util.function.Consumer;
+
 import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.SimpleWidget;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
 public class TunableBoolean {
   private boolean defaultValue;
@@ -24,10 +27,10 @@ public class TunableBoolean {
   public TunableBoolean(String name, boolean defaultValue, String tab) {
     this(name, defaultValue, true, tab);
   }
-  
+
   public TunableBoolean(String name, boolean defaultValue, boolean tunable, String tab) {
     this.defaultValue = defaultValue;
-    
+
     if (tunable) {
       shuffleboardWidget = Shuffleboard.getTab(tab).add(name, defaultValue).withWidget(BuiltInWidgets.kToggleSwitch);
       shuffleboard = shuffleboardWidget.getEntry();
@@ -62,10 +65,10 @@ public class TunableBoolean {
    * @return Value as a double
    */
   public boolean getValue() {
-    if (shuffleboard != null) return shuffleboard.getBoolean(defaultValue);
+    if (shuffleboard != null)
+      return shuffleboard.getBoolean(defaultValue);
     return defaultValue;
   }
-<<<<<<< HEAD
 
   public void addChangeListener(Consumer<Boolean> onChange) {
     onChange.accept(getValue());
@@ -85,6 +88,4 @@ public class TunableBoolean {
           }
         });
   }
-=======
->>>>>>> parent of a3e068f (A)
 }

@@ -45,18 +45,17 @@ class AngularTalonFX {
   private TalonFXConfiguration talonConfig = new TalonFXConfiguration();
 
   public AngularTalonFX(
-    int dutyEncoder,
-    int talonId,
-    String name,
-    boolean tunableDoubleEnabled,
-    double gearRatio,
-    boolean inverted,
-    double remapLimit,
-    double encoderOffset,
-    double forwardLimit,
-    double reverseLimit,
-    double talonRef
-  ) {
+      int dutyEncoder,
+      int talonId,
+      String name,
+      boolean tunableDoubleEnabled,
+      double gearRatio,
+      boolean inverted,
+      double remapLimit,
+      double encoderOffset,
+      double forwardLimit,
+      double reverseLimit,
+      double talonRef) {
     this.gearRatio = gearRatio;
     this.remapLimit = remapLimit;
     this.encoderOffset = encoderOffset;
@@ -71,8 +70,7 @@ class AngularTalonFX {
     talonD = new TunableDouble(name + "D", 0.2, tunableDoubleEnabled);
 
     acel = new TunableDouble(name + "Acel", 200, tunableDoubleEnabled);
-    cruiseVel =
-      new TunableDouble(name + "CruiseVel", 200, tunableDoubleEnabled);
+    cruiseVel = new TunableDouble(name + "CruiseVel", 200, tunableDoubleEnabled);
 
     acel.addChangeListener(value -> {
       talonFX.configMotionAcceleration(degreesPerSecondToEncoderTicks(value));
@@ -118,35 +116,29 @@ class AngularTalonFX {
 
     talonFX.configForwardSoftLimitEnable(true);
     talonFX.configForwardSoftLimitThreshold(
-      anglesToTalonSensorPosition(forwardLimit)
-    );
+        anglesToTalonSensorPosition(forwardLimit));
     talonFX.configReverseSoftLimitEnable(true);
     talonFX.configReverseSoftLimitThreshold(
-      anglesToTalonSensorPosition(reverseLimit)
-    );
+        anglesToTalonSensorPosition(reverseLimit));
 
     setUpTestCommands();
   }
 
   private double degreesPerSecondToEncoderTicks(double angle) {
-    double gfx =
-      ((angle / 360.0) * gearRatio) *
-      ArmConfig.TALONFX_ENCODER_TICKS *
-      1.0 /
-      10.0;
+    double gfx = ((angle / 360.0) * gearRatio) *
+        ArmConfig.TALONFX_ENCODER_TICKS *
+        1.0 /
+        10.0;
     return gfx;
   }
 
   public void setTalonFromAbsEncoder() {
-    double talonOffset =
-      getTalonPosition() * (gearRatio) * (ArmConfig.TALONFX_ENCODER_TICKS);
+    double talonOffset = getTalonPosition() * (gearRatio) * (ArmConfig.TALONFX_ENCODER_TICKS);
     talonFX.setSelectedSensorPosition(talonOffset);
   }
 
   public double getTalonPosition() {
-    return (
-      remap(talonEncoder.getAbsolutePosition(), remapLimit) - encoderOffset
-    );
+    return (remap(talonEncoder.getAbsolutePosition(), remapLimit) - encoderOffset);
   }
 
   public double remap(double value, double limit) {
@@ -163,8 +155,7 @@ class AngularTalonFX {
   }
 
   public double anglesToTalonSensorPosition(double angle) {
-    double posValue =
-      ((angle / 360.0) * gearRatio) * ArmConfig.TALONFX_ENCODER_TICKS;
+    double posValue = ((angle / 360.0) * gearRatio) * ArmConfig.TALONFX_ENCODER_TICKS;
 
     return posValue;
   }
@@ -176,14 +167,12 @@ class AngularTalonFX {
   }
 
   private double degreesPerSecondToEncoderTicks(
-    double angle,
-    double gearRatio
-  ) {
-    double gfx =
-      ((angle / 360.0) * gearRatio) *
-      ArmConfig.TALONFX_ENCODER_TICKS *
-      1.0 /
-      10.0;
+      double angle,
+      double gearRatio) {
+    double gfx = ((angle / 360.0) * gearRatio) *
+        ArmConfig.TALONFX_ENCODER_TICKS *
+        1.0 /
+        10.0;
     return gfx;
   }
 
@@ -224,7 +213,6 @@ class AngularTalonFX {
         "set" + name + "FromEncoder",
         new InstantCommand(() -> setTalonFromAbsEncoder()).withName("set" + name + "FromEncoder"));
 
-   
     testPositionLayout.add(
         "Reference" + name,
         new InstantCommand(() -> setTalonToReferenceAngle()).withName("Reference" + name));
@@ -264,28 +252,28 @@ class AngularTalonFX {
 
   }
 
- // if (!RobotController.isSysActive()) {
-    // holdCurrentPosition();
-    // }
-    // double shoulderForwardLimit =
-    // anglesToShoulderSensorPosition(ArmConfig.SHOULDER_FORWARD_LIMIT);
-    // double shoulderReverseLimit =
-    // anglesToShoulderSensorPosition(ArmConfig.SHOULDER_REVERSE_LIMIT);
-    // double wristForwardLimit =
-    // anglesToWristSensorPosition(ArmConfig.WRIST_FORWARD_LIMIT);
-    // double wristReverseLimit =
-    // anglesToWristSensorPosition(ArmConfig.WRIST_REVERSE_LIMIT);
-    // if ((wrist.getSelectedSensorPosition() >= wristForwardLimit)
-    // || (wrist.getSelectedSensorPosition() <= wristReverseLimit)) {
-    // controller.runRumble(RumbleVariables.medium);
-    // } else if ((shoulder.getSelectedSensorPosition() >= shoulderForwardLimit)
-    // || (shoulder.getSelectedSensorPosition() <= shoulderReverseLimit)) {
-    // controller.runRumble(RumbleVariables.medium);
-    // } else {
-    // controller.runRumble(RumbleVariables.off);
-    // }
+  // if (!RobotController.isSysActive()) {
+  // holdCurrentPosition();
+  // }
+  // double shoulderForwardLimit =
+  // anglesToShoulderSensorPosition(ArmConfig.SHOULDER_FORWARD_LIMIT);
+  // double shoulderReverseLimit =
+  // anglesToShoulderSensorPosition(ArmConfig.SHOULDER_REVERSE_LIMIT);
+  // double wristForwardLimit =
+  // anglesToWristSensorPosition(ArmConfig.WRIST_FORWARD_LIMIT);
+  // double wristReverseLimit =
+  // anglesToWristSensorPosition(ArmConfig.WRIST_REVERSE_LIMIT);
+  // if ((wrist.getSelectedSensorPosition() >= wristForwardLimit)
+  // || (wrist.getSelectedSensorPosition() <= wristReverseLimit)) {
+  // controller.runRumble(RumbleVariables.medium);
+  // } else if ((shoulder.getSelectedSensorPosition() >= shoulderForwardLimit)
+  // || (shoulder.getSelectedSensorPosition() <= shoulderReverseLimit)) {
+  // controller.runRumble(RumbleVariables.medium);
+  // } else {
+  // controller.runRumble(RumbleVariables.off);
+  // }
 
-   public void holdCurrentPosition() {
+  public void holdCurrentPosition() {
     double currentTalonPosition = talonFX.getSelectedSensorPosition();
 
     talonFX.set(TalonFXControlMode.Position, currentTalonPosition);

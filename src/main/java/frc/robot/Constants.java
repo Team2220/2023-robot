@@ -57,5 +57,6 @@ public final class Constants {
 
     public static final double WRIST_REMAP_LIMIT = 0;
     public static final double SHOULDER_REMAP_LIMIT = 0.5;
+    public static final double TALONFX_ENCODER_TICKS = 0;
   }
 }
