@@ -1,0 +1,115 @@
+{
+  "version": 1.0,
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 1.6262554636378883,
+        "y": 1.0291912167276542
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 3.946959281265642,
+        "y": 0.7312339152981514
+      },
+      "isLocked": false
+    },
+    {
+      "anchor": {
+        "x": 7.086168756132983,
+        "y": 0.905634441679669
+      },
+      "prevControl": {
+        "x": 5.424774267972197,
+        "y": 0.5935492892074782
+      },
+      "nextControl": {
+        "x": 8.278339013438018,
+        "y": 1.1295780259248132
+      },
+      "isLocked": false
+    },
+    {
+      "anchor": {
+        "x": 6.379387675534195,
+        "y": 0.8046657158798435
+      },
+      "prevControl": {
+        "x": 7.6001913602048194,
+        "y": 0.5568333889166334
+      },
+      "nextControl": {
+        "x": 5.382105568191551,
+        "y": 1.00712148203211
+      },
+      "isLocked": false
+    },
+    {
+      "anchor": {
+        "x": 1.6262554636378883,
+        "y": 1.0291912167276542
+      },
+      "prevControl": {
+        "x": 5.594946851837187,
+        "y": 0.5311650451055194
+      },
+      "nextControl": {
+        "x": 1.2942354852520122,
+        "y": 1.070855992988478
+      },
+      "isLocked": false
+    },
+    {
+      "anchor": {
+        "x": 6.379387675534195,
+        "y": 0.905634441679669
+      },
+      "prevControl": {
+        "x": 5.608353769426428,
+        "y": 0.45586466311680496
+      },
+      "nextControl": {
+        "x": 6.940128951254523,
+        "y": 1.2327335191831934
+      },
+      "isLocked": false
+    },
+    {
+      "anchor": {
+        "x": 4.0662859572108925,
+        "y": 2.750608431294686
+      },
+      "prevControl": {
+        "x": 5.2962686169542375,
+        "y": 3.227915135075685
+      },
+      "nextControl": null,
+      "isLocked": false
+    }
+  ],
+  "rotationTargets": [],
+  "constraintZones": [],
+  "eventMarkers": [
+    {
+      "name": "Game Peice Pickup",
+      "waypointRelativePos": 1.0,
+      "command": {
+        "type": "parallel",
+        "data": {
+          "commands": []
+        }
+      }
+    }
+  ],
+  "globalConstraints": {
+    "maxVelocity": 10.0,
+    "maxAcceleration": 5.0,
+    "maxAngularVelocity": 540,
+    "maxAngularAcceleration": 720
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": 180.0
+  },
+  "reversed": false,
+  "folder": "Auto Paths"
+}
