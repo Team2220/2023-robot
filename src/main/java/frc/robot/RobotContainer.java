@@ -31,6 +31,7 @@ import frc.robot.auto.Finished.V2MidScoreL;
 import frc.robot.auto.Finished.V2MidScoreR;
 import frc.robot.commands.Arm.SetArmState;
 import frc.robot.commands.CommandChooser;
+import frc.robot.commands.ObjectTracker;
 import frc.robot.commands.Arm.ArmPercentOutput;
 import frc.robot.commands.Intake.IntakePercentOutput;
 import frc.robot.commands.Leds.SetLedsStates;
@@ -207,6 +208,9 @@ public class RobotContainer {
                 new Trigger(() -> m_controller.getButton(Controller.Button.X))
                                 .onTrue(new InstantCommand(() -> fault.setIsActive(true)))
                                 .onFalse(new InstantCommand(() -> fault.setIsActive(false)));
+
+                new Trigger(() -> m_controller.getButton(Controller.Button.X))
+                                .whileTrue(new ObjectTracker(m_swerve));
 
                 new Trigger(() -> m_controller.getButton(Controller.Button.RB))
                                 .onTrue(new SetLedsStates(DesiredState.WANT_CUBE, m_leds))
