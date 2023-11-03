@@ -209,7 +209,7 @@ public class RobotContainer {
                                 .onTrue(new InstantCommand(() -> fault.setIsActive(true)))
                                 .onFalse(new InstantCommand(() -> fault.setIsActive(false)));
 
-                new Trigger(() -> m_controller.getButton(Controller.Button.X))
+                new Trigger(() -> m_controller.getButton(Controller.Button.Y))
                                 .whileTrue(new ObjectTracker(m_swerve));
 
                 new Trigger(() -> m_controller.getButton(Controller.Button.RB))
