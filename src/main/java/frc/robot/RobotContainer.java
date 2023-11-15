@@ -182,7 +182,7 @@ public class RobotContainer {
                 EventLoops.oncePerSec.bind(() -> {
                         var results = LimelightHelpers.getLatestResults("limelight-right");
 
-                        System.out.println(results.targetingResults.targets_Detector);
+                        System.out.println("targets: " + results.targetingResults.targets_Detector.length);
                         for (LimelightTarget_Detector target : results.targetingResults.targets_Detector) {
                                 System.out.println(target.className + target.confidence);
                         }
@@ -210,7 +210,7 @@ public class RobotContainer {
                                 .onFalse(new InstantCommand(() -> fault.setIsActive(false)));
 
                 new Trigger(() -> m_controller.getButton(Controller.Button.Y))
-                                .whileTrue(new ObjectTracker(m_swerve));
+                                .whileTrue(new ObjectTracker(m_swerve, m_controller::getLeftY, m_controller::getLeftX));
 
                 new Trigger(() -> m_controller.getButton(Controller.Button.RB))
                                 .onTrue(new SetLedsStates(DesiredState.WANT_CUBE, m_leds))
