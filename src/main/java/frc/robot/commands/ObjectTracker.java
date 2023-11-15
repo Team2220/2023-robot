@@ -38,7 +38,7 @@ public class ObjectTracker extends CommandBase {
     double out = 0;
     boolean foundCone = false;
 
-    var results = LimelightHelpers.getLatestResults("limelight-left");
+    var results = LimelightHelpers.getLatestResults("limelight-right");
     for (LimelightTarget_Detector target : results.targetingResults.targets_Detector) {
       if (target.className.equals("cone")) {
         out = target.tx;

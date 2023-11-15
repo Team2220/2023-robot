@@ -180,7 +180,7 @@ public class RobotContainer {
 
                 SmartDashboard.putData(autoChooser.getSendableChooser());
                 EventLoops.oncePerSec.bind(() -> {
-                        var results = LimelightHelpers.getLatestResults("limelight-left");
+                        var results = LimelightHelpers.getLatestResults("limelight-right");
 
                         System.out.println(results.targetingResults.targets_Detector);
                         for (LimelightTarget_Detector target : results.targetingResults.targets_Detector) {
