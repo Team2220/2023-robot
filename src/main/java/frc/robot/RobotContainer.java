@@ -31,6 +31,7 @@ import frc.robot.auto.Finished.V2MidScoreL;
 import frc.robot.auto.Finished.V2MidScoreR;
 import frc.robot.commands.Arm.SetArmState;
 import frc.robot.commands.CommandChooser;
+import frc.robot.commands.ObjectMover;
 import frc.robot.commands.ObjectTracker;
 import frc.robot.commands.Arm.ArmPercentOutput;
 import frc.robot.commands.Intake.IntakePercentOutput;
