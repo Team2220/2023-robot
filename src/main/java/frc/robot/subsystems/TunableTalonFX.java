@@ -30,8 +30,8 @@ class TunableTalonFX {
   private DutyCycleEncoder talonEncoder;
   private WPI_TalonFX talonFX;
   private TunableDouble gearRatio;
-  private double remapLimit;
-  private double encoderOffset;
+  private double remapLimitDegrees;
+  private double encoderOffsetDegrees;
   private TunableDouble talonRef;
   private String name;
 
@@ -41,8 +41,8 @@ class TunableTalonFX {
     String name;
     double gearRatio;
     boolean inverted;
-    double remapLimit;
-    double encoderOffset;
+    double remapLimitDegrees;
+    double encoderOffsetDegrees;
 
     double talonRef = 0;
     boolean brakeMode = true;
@@ -76,8 +76,8 @@ class TunableTalonFX {
       this.name = name;
       this.gearRatio = gearRatio;
       this.inverted = inverted;
-      this.remapLimit = remapLimit;
-      this.encoderOffset = encoderOffset;
+      this.remapLimitDegrees = remapLimit;
+      this.encoderOffsetDegrees = encoderOffset;
     }
   }
 
@@ -86,8 +86,8 @@ class TunableTalonFX {
     gearRatio = new TunableDouble("gearRatio", config.gearRatio, name);
     deTime = new TunableDouble("debounceTime", 0.1, true, name);
     debouncer = new Debouncer(deTime.getValue(), Debouncer.DebounceType.kBoth);
-    this.remapLimit = config.remapLimit;
-    this.encoderOffset = config.encoderOffset;
+    this.remapLimitDegrees = config.remapLimitDegrees;
+    this.encoderOffsetDegrees = config.encoderOffsetDegrees;
     this.talonRef = new TunableDouble("talonRef", config.talonRef, name);
 
     talonEncoder = new DutyCycleEncoder(config.dutyEncoder);
@@ -232,7 +232,7 @@ class TunableTalonFX {
   }
 
   public double getTalonPosition() {
-    return (remap(talonEncoder.getAbsolutePosition(), remapLimit) - encoderOffset);
+    return (remap(talonEncoder.getAbsolutePosition(), remapLimitDegrees) - (encoderOffsetDegrees/360.0));
   }
 
   public void checkTemp() {
@@ -272,7 +272,7 @@ class TunableTalonFX {
   // }
 
   public double remap(double value, double limit) {
-    if (value >= 0 && value < limit) {
+    if (value >= 0 && value < (limit/360.0)) {
       return value + 1;
     } else {
       return value;
@@ -371,7 +371,7 @@ class TunableTalonFX {
     // Angles using remap()
     angLayout.addDouble(
       name + " remap",
-      () -> remap(talonEncoder.getAbsolutePosition(), remapLimit)
+      () -> remap(talonEncoder.getAbsolutePosition(), remapLimitDegrees)
     );
 
     Fault.autoUpdating(name + "encoder is connected", () -> 

@@ -18,10 +18,10 @@ public class Arm extends SubsystemBase {
 
   private TunableTalonFX angularWrist;
 
-  //private DutyCycleEncoder wristEncoder = new DutyCycleEncoder(
-      //ArmConfig.WRIST_DUTYENCODER);
-  //private DutyCycleEncoder shoulderEncoder = new DutyCycleEncoder(
-      //ArmConfig.SHOULDER_DUTYENCODER);
+  // private DutyCycleEncoder wristEncoder = new DutyCycleEncoder(
+  // ArmConfig.WRIST_DUTYENCODER);
+  // private DutyCycleEncoder shoulderEncoder = new DutyCycleEncoder(
+  // ArmConfig.SHOULDER_DUTYENCODER);
 
   private TalonFX wrist = new TalonFX(ArmConfig.WRIST_TALONFX);
   private TalonFX shoulder = new TalonFX(ArmConfig.SHOULDER_TALONFX);
@@ -40,8 +40,8 @@ public class Arm extends SubsystemBase {
         "Wrist",
         ArmConfig.WRIST_GEAR_RATIO,
         ArmConfig.WRIST_INVERTED,
-        ArmConfig.WRIST_REMAP_LIMIT,
-        ArmConfig.WRIST_ENCODER_OFFSET);
+        ArmConfig.WRIST_REMAP_LIMIT_DEGREES,
+        ArmConfig.WRIST_ENCODER_OFFSET_DEGREES);
 
     wristConfig.talonRef = ArmConfig.WRIST_REF;
     wristConfig.P = .1;
@@ -65,8 +65,8 @@ public class Arm extends SubsystemBase {
         "Shoulder",
         ArmConfig.SHOULDER_GEAR_RATIO,
         ArmConfig.SHOULDER_INVERTED,
-        ArmConfig.SHOULDER_REMAP_LIMIT,
-        ArmConfig.SHOULDER_ENCODER_OFFSET);
+        ArmConfig.SHOULDER_REMAP_LIMIT_DEGREES,
+        ArmConfig.SHOULDER_ENCODER_OFFSET_DEGREES);
 
     shoulderConfig.talonRef = ArmConfig.SHOULDER_REF;
     shoulderConfig.P = .1;

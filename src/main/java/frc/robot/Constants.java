@@ -7,11 +7,15 @@ package frc.robot;
 import edu.wpi.first.math.util.Units;
 
 /**
- * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
- * constants. This class should not be used for any other purpose. All constants should be declared
+ * The Constants class provides a convenient place for teams to hold robot-wide
+ * numerical or boolean
+ * constants. This class should not be used for any other purpose. All constants
+ * should be declared
  * globally (i.e. public static). Do not put anything functional in this class.
  *
- * <p>It is advised to statically import this class (or one of its inner classes) wherever the
+ * <p>
+ * It is advised to statically import this class (or one of its inner classes)
+ * wherever the
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
@@ -42,10 +46,9 @@ public final class Constants {
     public static final boolean WRIST_INVERTED = false;
     public static final int WRIST_DUTYENCODER = 0;
     public static final int SHOULDER_DUTYENCODER = 1;
-    public static final double WRIST_ENCODER_OFFSET = 0.432833635820841;
-    public static final double SHOULDER_ENCODER_OFFSET = 0.9632;
-    public static final double SHOULDER_GEAR_RATIO =
-        (5.0 / 1.0) * (5.0 / 1.0) * (4.0 / 1.0) * (58.0 / 15.0);
+    public static final double WRIST_ENCODER_OFFSET_DEGREES = 0.432833635820841 * 360.0;
+    public static final double SHOULDER_ENCODER_OFFSET_DEGREES = 0.9632 * 360.0;
+    public static final double SHOULDER_GEAR_RATIO = (5.0 / 1.0) * (5.0 / 1.0) * (4.0 / 1.0) * (58.0 / 15.0);
     public static final double WRIST_GEAR_RATIO = (5.0 / 1.0) * (5.0 / 1.0) * (5.0 / 1.0);
     public static final double WRIST_FORWARD_LIMIT = 135.0;
     public static final double WRIST_REVERSE_LIMIT = -160.0;
@@ -55,8 +58,8 @@ public final class Constants {
     public static final double SHOULDER_REF = 171;
     public static final double WRIST_REF = 150;
 
-    public static final double WRIST_REMAP_LIMIT = 0;
-    public static final double SHOULDER_REMAP_LIMIT = 0.5;
+    public static final double WRIST_REMAP_LIMIT_DEGREES = 0;
+    public static final double SHOULDER_REMAP_LIMIT_DEGREES = 180;
     public static final double TALONFX_ENCODER_TICKS = 0;
   }
 }
