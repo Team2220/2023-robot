@@ -29,8 +29,6 @@ public class LedSignal {
         this(name, isActive, animation, debounce, new LedSegment[] {});
     }
 
-    public LedSignal(String name2, BooleanSupplier isActive2, StrobeAnimation strobeAnimation, int debounce2, boolean b) {
-}
 public void update(LedSegment[] allSegments) {
         if (isActive.getAsBoolean() == true) {
             if (segments.length == 0) {
