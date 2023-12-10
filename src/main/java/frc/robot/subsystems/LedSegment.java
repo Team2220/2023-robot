@@ -3,14 +3,18 @@ package frc.robot.subsystems;
 import java.util.function.Consumer;
 
 import com.ctre.phoenix.led.Animation;
+import com.ctre.phoenix.led.CANdle;
 
 public class LedSegment {
     Consumer<Animation> setAnimation;
-    boolean hasBeenSet;
+    boolean hasBeenSet = false;
 
-    public LedSegment(Consumer<Animation> setAnimation, boolean hasBeenSet) {
+    public LedSegment(Consumer<Animation> setAnimation) {
         this.setAnimation = setAnimation;
-        this.hasBeenSet = hasBeenSet;
+    }
+
+    public LedSegment(CANdle candle) {
+        this(candle::animate);
     }
 
     public boolean reset() {

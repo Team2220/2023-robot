@@ -56,11 +56,11 @@ public void update(LedSegment[] allSegments) {
         return new LedSignal("isBrownedOut", RobotController::isBrownedOut, strobeAnimation, 0);
     }
 
-    public static void hasActiveFault() {
-        // blink orange
-        StrobeAnimation strobeAnimation = new StrobeAnimation(246, 147, 0, 0, 0.1, 164);
-        // return new LedSignal("hasActiveFault", RobotController::isBrownedOut, strobeAnimation, 0);
-    }
+    // public static LedSignal hasActiveFault() {
+    //     // blink orange
+    //     StrobeAnimation strobeAnimation = new StrobeAnimation(246, 147, 0, 0, 0.1, 164);
+    //     return new LedSignal("hasActiveFault", RobotController::isBrownedOut, strobeAnimation, 0);
+    // }
 
     public static LedSignal isEndGame() {
         // blink yellow
@@ -70,11 +70,11 @@ public void update(LedSegment[] allSegments) {
         }, strobeAnimation, 0);
     }
 
-    public static void hasTarget() {
-        // private final CANdle left = new CANdle(Constants.LEDS.LEFT);
-        // private final CANdle right = new CANdle(Constants.LEDS.RIGHT);
-        // solid reen as long as target present
-        // left.setLEDs(0, 0, 225, 0, 0, 164);
-        // right.setLEDs(0, 0, 225, 0, 0, 164);
-    }
+    // public static LedSignal hasTarget() {
+    //     // private final CANdle left = new CANdle(Constants.LEDS.LEFT);
+    //     // private final CANdle right = new CANdle(Constants.LEDS.RIGHT);
+    //     // solid reen as long as target present
+    //     // left.setLEDs(0, 0, 225, 0, 0, 164);
+    //     // right.setLEDs(0, 0, 225, 0, 0, 164);
+    // }
 }

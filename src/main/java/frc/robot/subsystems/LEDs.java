@@ -1,19 +1,25 @@
 package frc.robot.subsystems;
 
-import com.ctre.phoenix.led.CANdle;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants;
 
 public class LEDs extends SubsystemBase {
-  private CANdle left = new CANdle(Constants.LEDS.LEFT);
-  private CANdle right = new CANdle(Constants.LEDS.RIGHT);
+  LedSegment[] segments;
+  LedSignal[] signals;
 
-  
-  public LEDs(LedSegment[] ledSeg, LedSignal[] sigs) {
-  
+  public LEDs(LedSegment[] segments, LedSignal[] signals) {
+    this.segments = segments;
+    this.signals = signals;
   }
   @Override
   public void periodic() {
-    
+    for (LedSegment segment : segments) {
+      segment.reset();
+    }
+    for (LedSignal signal : signals) {
+      signal.update(segments);
+    }
+    for (LedSegment segment : segments) {
+      segment.setAnimationIfAble(null);
+    }
   }
 }

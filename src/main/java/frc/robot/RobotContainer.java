@@ -42,8 +42,9 @@ import frc.robot.subsystems.EventLoops;
 import frc.robot.subsystems.Fault;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.LEDs;
+import frc.robot.subsystems.LedSegment;
+import frc.robot.subsystems.LedSignal;
 import frc.robot.subsystems.Arm.ArmStates;
-import frc.robot.subsystems.LEDs.DesiredState;
 import frc.twilight.swerve.subsystems.Swerve;
 import frc.twilight.Controller;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -52,6 +53,9 @@ import frc.twilight.swerve.commands.ControllerDrive;
 import frc.twilight.swerve.config.GeneralConfig;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import static frc.twilight.Controller.Button;
+
+import com.ctre.phoenix.led.CANdle;
+import com.ctre.phoenix.led.StrobeAnimation;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -117,14 +121,34 @@ public class RobotContainer {
                         () -> m_controller.getRightX());
 
         Fault fault = new Fault("based");
-
+        private CANdle left = new CANdle(Constants.LEDS.LEFT);
+        private CANdle right = new CANdle(Constants.LEDS.RIGHT);
         /**
          * The container for the robot. Contains subsystems, OI devices, and commands.
          */
         public RobotContainer() {
                 new Alert("Startup alert!", Alert.AlertType.ERROR).set(true);
 
-                m_leds = new LEDs(() -> m_intake.isStalled());
+                // m_leds = new LEDs(() -> m_intake.isStalled());
+                m_leds = new LEDs(
+                        new LedSegment[] {new LedSegment(left), new LedSegment(right)}, 
+                        new LedSignal[] {
+                                LedSignal.isBrownedOut(),
+                                LedSignal.isDSConnected(),
+                                // LedSignal.hasTarget(),
+                                LedSignal.isEndGame(),
+                                // LedSignal.hasActiveFault(),
+                                                new LedSignal("hasGamePiece", m_intake::isStalled,
+                                                                new StrobeAnimation(0, 255, 0, 0, 0.5, 164, 0), 0),
+                                                new LedSignal("wantingCube", () -> {
+                                                        return m_controller.getButton(Controller.Button.LB);
+                                                }, new StrobeAnimation(249, 149, 2, 0, .5, 164, 0), 0),
+                                                new LedSignal("wantingCone", () -> {
+                                                        return m_controller.getButton(Controller.Button.LB);
+                                                }, new StrobeAnimation(249, 149, 2, 0, .5, 164, 0), 0)
+                        });
+
+                        
                 // Stop logging for missing joysticks
                 DriverStation.silenceJoystickConnectionWarning(true);
 
@@ -203,9 +227,7 @@ public class RobotContainer {
         private void configureButtonBindings() {
                 // Map Driver Controller Buttons
                 ControllerLayout.mapDriverController(m_controller);
-                new Trigger(() -> m_controller.getButton(Controller.Button.LB))
-                                .onTrue(new SetLedsStates(DesiredState.WANT_CONE, m_leds))
-                                .onFalse(new SetLedsStates(DesiredState.OFF, m_leds));
+              
                 new Trigger(() -> m_controller.getButton(Controller.Button.X))
                                 .onTrue(new InstantCommand(() -> fault.setIsActive(true)))
                                 .onFalse(new InstantCommand(() -> fault.setIsActive(false)));
@@ -213,10 +235,7 @@ public class RobotContainer {
                 new Trigger(() -> m_controller.getButton(Controller.Button.Y))
                                 .whileTrue(new ObjectTracker(m_swerve, m_controller::getLeftY, m_controller::getLeftX));
 
-                new Trigger(() -> m_controller.getButton(Controller.Button.RB))
-                                .onTrue(new SetLedsStates(DesiredState.WANT_CUBE, m_leds))
-                                .onFalse(new SetLedsStates(DesiredState.OFF, m_leds));
-
+            
                 new Trigger(() -> Math.abs(m_controller.getRightX()) > 0.1)
                                 .onTrue(new InstantCommand(() -> m_ControllerDrive.stopSnap()));
 
@@ -229,13 +248,13 @@ public class RobotContainer {
                 // Map Manipulator Controller Buttons
                 ControllerLayout.mapManipulatorController(m_secondaryController);
 
-                new Trigger(() -> m_secondaryController.getButton(Controller.Button.LEFT))
-                                .onTrue(new SetLedsStates(DesiredState.WANT_CONE, m_leds))
-                                .onFalse(new SetLedsStates(DesiredState.OFF, m_leds));
+                // new Trigger(() -> m_secondaryController.getButton(Controller.Button.LEFT))
+                //                 .onTrue(new SetLedsStates(DesiredState.WANT_CONE, m_leds))
+                //                 .onFalse(new SetLedsStates(DesiredState.OFF, m_leds));
 
-                new Trigger(() -> m_secondaryController.getButton(Controller.Button.RIGHT))
-                                .onTrue(new SetLedsStates(DesiredState.WANT_CUBE, m_leds))
-                                .onFalse(new SetLedsStates(DesiredState.OFF, m_leds));
+                // new Trigger(() -> m_secondaryController.getButton(Controller.Button.RIGHT))
+                //                 .onTrue(new SetLedsStates(DesiredState.WANT_CUBE, m_leds))
+                //                 .onFalse(new SetLedsStates(DesiredState.OFF, m_leds));
 
                 // Manipulator controller
                 new Trigger(() -> m_secondaryController.getButton(Controller.Button.BACK))
