@@ -135,7 +135,7 @@ public class RobotContainer {
                                 LedSignal.isDSConnected(),
                                 // LedSignal.hasTarget(),
                                 LedSignal.isEndGame(),
-                                // LedSignal.hasActiveFault(),
+                                LedSignal.hasActiveFault(),
                                                 new LedSignal("hasGamePiece", m_intake::isStalled,
                                                                 new StrobeAnimation(0, 255, 0, 0, 0.5, 164, 0), 0),
                                                 new LedSignal("wantingCube", () -> {

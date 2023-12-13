@@ -17,6 +17,7 @@ public final class Fault {
         this.errorAlert = new Alert("[Active] " + description, Alert.AlertType.ERROR);
         this.warningAlert = new Alert("[Recent] " + description, Alert.AlertType.WARNING);
         this.booleanLog = new BooleanLogEntry(DataLogManager.getLog(), description);
+        FaultRegistry.register(this);
     }
 
     public void setIsActive(boolean isActive) {

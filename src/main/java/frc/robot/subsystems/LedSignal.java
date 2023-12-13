@@ -59,13 +59,13 @@ public class LedSignal {
         return new LedSignal("isBrownedOut", RobotController::isBrownedOut, strobeAnimation, 0);
     }
 
-    // public static LedSignal hasActiveFault() {
-    // // blink orange
-    // StrobeAnimation strobeAnimation = new StrobeAnimation(246, 147, 0, 0, 0.1,
-    // 164);
-    // return new LedSignal("hasActiveFault", RobotController::isBrownedOut,
-    // strobeAnimation, 0);
-    // }
+    public static LedSignal hasActiveFault() {
+        // blink orange
+        StrobeAnimation strobeAnimation = new StrobeAnimation(246, 147, 0, 0, 0.1,
+        164);
+        return new LedSignal("hasActiveFault", FaultRegistry::hasAnyActive,
+        strobeAnimation, 0);
+    }
 
     public static LedSignal isEndGame() {
         // blink yellow
