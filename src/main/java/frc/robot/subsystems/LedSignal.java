@@ -29,7 +29,7 @@ public class LedSignal {
         this(name, isActive, animation, debounce, new LedSegment[] {});
     }
 
-public void update(LedSegment[] allSegments) {
+    public void update(LedSegment[] allSegments) {
         if (isActive.getAsBoolean() == true) {
             if (segments.length == 0) {
                 for (LedSegment segment : allSegments) {
@@ -47,7 +47,10 @@ public void update(LedSegment[] allSegments) {
     public static LedSignal isDSConnected() {
         // fade blue
         SingleFadeAnimation singleFadeAnimation = new SingleFadeAnimation(0, 0, 100, 0, .5, 164);
-        return new LedSignal("isDSConnected", DriverStation::isDSAttached, singleFadeAnimation, 0);
+
+        return new LedSignal("isDSConnected", () -> {
+            return !DriverStation.isDSAttached();
+        }, singleFadeAnimation, 0);
     }
 
     public static LedSignal isBrownedOut() {
@@ -57,24 +60,35 @@ public void update(LedSegment[] allSegments) {
     }
 
     // public static LedSignal hasActiveFault() {
-    //     // blink orange
-    //     StrobeAnimation strobeAnimation = new StrobeAnimation(246, 147, 0, 0, 0.1, 164);
-    //     return new LedSignal("hasActiveFault", RobotController::isBrownedOut, strobeAnimation, 0);
+    // // blink orange
+    // StrobeAnimation strobeAnimation = new StrobeAnimation(246, 147, 0, 0, 0.1,
+    // 164);
+    // return new LedSignal("hasActiveFault", RobotController::isBrownedOut,
+    // strobeAnimation, 0);
     // }
 
     public static LedSignal isEndGame() {
         // blink yellow
         StrobeAnimation strobeAnimation = new StrobeAnimation(246, 247, 0, 0, 0.1, 164);
         return new LedSignal("isEndGame", () -> {
-            return DriverStation.getMatchTime() <= 15;
+            // System.out.println(DriverStation.getMatchTime());
+            if (DriverStation.isTeleop()) {
+                if (DriverStation.getMatchTime() < 0) {
+                    return false;
+                } else {
+                    return DriverStation.getMatchTime() <= 15;
+                }
+            } else {
+                return false;
+            }
         }, strobeAnimation, 0);
     }
 
     // public static LedSignal hasTarget() {
-    //     // private final CANdle left = new CANdle(Constants.LEDS.LEFT);
-    //     // private final CANdle right = new CANdle(Constants.LEDS.RIGHT);
-    //     // solid reen as long as target present
-    //     // left.setLEDs(0, 0, 225, 0, 0, 164);
-    //     // right.setLEDs(0, 0, 225, 0, 0, 164);
+    // // private final CANdle left = new CANdle(Constants.LEDS.LEFT);
+    // // private final CANdle right = new CANdle(Constants.LEDS.RIGHT);
+    // // solid reen as long as target present
+    // // left.setLEDs(0, 0, 225, 0, 0, 164);
+    // // right.setLEDs(0, 0, 225, 0, 0, 164);
     // }
 }
