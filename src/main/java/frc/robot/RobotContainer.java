@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.LimelightHelpers.LimelightTarget_Detector;
 import frc.robot.auto.TestPath;
@@ -136,6 +137,7 @@ public class RobotContainer {
                                 // LedSignal.hasTarget(),
                                 LedSignal.isEndGame(),
                                 LedSignal.hasActiveFault(),
+                                LedSignal.getLowBatteryLedSignal(),
                                                 new LedSignal("hasGamePiece", m_intake::isStalled,
                                                                 new StrobeAnimation(0, 255, 0, 0, 0.5, 164, 0), 0),
                                                 new LedSignal("wantingCube", () -> {
@@ -143,7 +145,7 @@ public class RobotContainer {
                                                 }, new StrobeAnimation(249, 149, 2, 0, .5, 164, 0), 0),
                                                 new LedSignal("wantingCone", () -> {
                                                         return m_controller.getButton(Controller.Button.LB);
-                                                }, new StrobeAnimation(249, 149, 2, 0, .5, 164, 0), 0)
+                                                }, new StrobeAnimation(249, 149, 2, 0, .5, 164, 0), 0)            
                         });
 
                         

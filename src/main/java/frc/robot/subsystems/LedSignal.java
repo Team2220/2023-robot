@@ -7,7 +7,9 @@ import com.ctre.phoenix.led.SingleFadeAnimation;
 import com.ctre.phoenix.led.StrobeAnimation;
 
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.RobotController;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 
 public class LedSignal {
     String name;
@@ -62,9 +64,9 @@ public class LedSignal {
     public static LedSignal hasActiveFault() {
         // blink orange
         StrobeAnimation strobeAnimation = new StrobeAnimation(246, 147, 0, 0, 0.1,
-        164);
+                164);
         return new LedSignal("hasActiveFault", FaultRegistry::hasAnyActive,
-        strobeAnimation, 0);
+                strobeAnimation, 0);
     }
 
     public static LedSignal isEndGame() {
@@ -82,6 +84,18 @@ public class LedSignal {
                 return false;
             }
         }, strobeAnimation, 0);
+    }
+
+    public static LedSignal getLowBatteryLedSignal() {
+        // blink red
+        SingleFadeAnimation singleFadeAnimation = new SingleFadeAnimation(100, 0, 0, 0, .5, 164);
+        return new LedSignal("lowBattery", () -> {
+            if (RobotController.getBatteryVoltage() < 12.3) {
+                return DriverStation.isDisabled();
+            } else {
+                return false;
+            }
+        }, singleFadeAnimation, 0);
     }
 
     // public static LedSignal hasTarget() {

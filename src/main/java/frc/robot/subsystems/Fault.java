@@ -12,7 +12,7 @@ public final class Fault {
     private Alert errorAlert;
     private Alert warningAlert;
     private BooleanLogEntry booleanLog;
-    
+
     public Fault(String description) {
         this.errorAlert = new Alert("[Active] " + description, Alert.AlertType.ERROR);
         this.warningAlert = new Alert("[Recent] " + description, Alert.AlertType.WARNING);
@@ -34,7 +34,7 @@ public final class Fault {
             }
         }
     }
-    
+
     public boolean isActive() {
         return isActive;
     }
@@ -50,4 +50,3 @@ public final class Fault {
         autoUpdating(description, EventLoops.oncePerSec, booleanSupplier);
     }
 }
-
