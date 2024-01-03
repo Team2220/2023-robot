@@ -6,6 +6,13 @@
   "configurations": [
     {
       "type": "java",
+      "name": "Launch Main",
+      "request": "launch",
+      "mainClass": "frc.robot.commands.Leds.Shuffleboardintro.src.main.java.frc.robot.Main",
+      "projectName": "2023-robot"
+    },
+    {
+      "type": "java",
       "name": "Launch LogPowerFaults",
       "request": "launch",
       "mainClass": "frc.twilight.LogPowerFaults",
