@@ -4,6 +4,7 @@ import java.util.function.BooleanSupplier;
 
 import edu.wpi.first.util.datalog.BooleanLogEntry;
 import edu.wpi.first.wpilibj.DataLogManager;
+import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.event.EventLoop;
 
 public final class Fault {
@@ -52,5 +53,11 @@ public final class Fault {
 
     public static void autoUpdating(String description, BooleanSupplier booleanSupplier) {
         autoUpdating(description, EventLoops.oncePerSec, booleanSupplier);
+    }
+
+    public static void setupDefaultFaults() {
+        autoUpdating("canBusUtilization", () -> {
+            return RobotController.getCANStatus().percentBusUtilization > 0.8;
+        });
     }
 }
