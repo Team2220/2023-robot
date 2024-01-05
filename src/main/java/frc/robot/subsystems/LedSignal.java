@@ -58,7 +58,7 @@ public class LedSignal {
 
     public static LedSignal previouslyHadFault() {
         // fade orange
-        SingleFadeAnimation singleFadeAnimation = new SingleFadeAnimation(246, 147, 0, 0, .5, 164);
+        SingleFadeAnimation singleFadeAnimation = new SingleFadeAnimation(255, 165, 0, 0, .5, 164);
         return new LedSignal("previouslyHadFault", () -> {
             if (DriverStation.isDisabled()) {
                 return FaultRegistry.hasAnyPreviouslyActive();
@@ -76,7 +76,7 @@ public class LedSignal {
 
     public static LedSignal hasActiveFault() {
         // blink orange
-        StrobeAnimation strobeAnimation = new StrobeAnimation(246, 147, 0, 0, 0.1,
+        StrobeAnimation strobeAnimation = new StrobeAnimation(255, 165, 0, 0, 0.1,
                 164);
         return new LedSignal("hasActiveFault", FaultRegistry::hasAnyActive,
                 strobeAnimation, 0);
@@ -89,7 +89,7 @@ public class LedSignal {
         // blink yellow
         StrobeAnimation strobeAnimation = new StrobeAnimation(246, 247, 0, 0, 0.1, 164);
         return new LedSignal("isEndGame", () -> {
-            //System.out.println(DriverStation.getMatchTime());
+            // System.out.println(DriverStation.getMatchTime());
             if (DriverStation.isTeleop()) {
                 if (DriverStation.getMatchTime() < 0) {
                     return false;
