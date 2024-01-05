@@ -39,6 +39,10 @@ public final class Fault {
         return isActive;
     }
 
+    public boolean wasActive() {
+        return wasActive;
+    }
+
     public static void autoUpdating(String description, EventLoop eventLoop, BooleanSupplier booleanSupplier) {
         Fault fault = new Fault(description);
         eventLoop.bind(() -> {

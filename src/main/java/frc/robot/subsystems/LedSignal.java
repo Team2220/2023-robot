@@ -56,6 +56,18 @@ public class LedSignal {
         }, singleFadeAnimation, 0);
     }
 
+    public static LedSignal previouslyHadFault() {
+        // fade orange
+        SingleFadeAnimation singleFadeAnimation = new SingleFadeAnimation(246, 147, 0, 0, .5, 164);
+        return new LedSignal("previouslyHadFault", () -> {
+            if (DriverStation.isDisabled()) {
+                return FaultRegistry.hasAnyPreviouslyActive();
+            } else {
+                return false;
+            }
+        }, singleFadeAnimation, 0);
+    }
+
     public static LedSignal isBrownedOut() {
         // blink red
         StrobeAnimation strobeAnimation = new StrobeAnimation(64, 0, 0, 0, 0.1, 164);

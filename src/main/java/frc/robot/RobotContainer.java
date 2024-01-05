@@ -138,6 +138,7 @@ public class RobotContainer {
                                 LedSignal.isEndGame(),
                                 LedSignal.hasActiveFault(),
                                 LedSignal.getLowBatteryLedSignal(),
+                                LedSignal.previouslyHadFault(),
                                                 new LedSignal("hasGamePiece", m_intake::isStalled,
                                                                 new StrobeAnimation(0, 255, 0, 0, 0.5, 164, 0), 0),
                                                 new LedSignal("wantingCube", () -> {
