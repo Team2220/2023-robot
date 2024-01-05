@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import frc.twilight.tunables.TunableDouble;
 
 public class LedSignal {
     String name;
@@ -69,17 +70,22 @@ public class LedSignal {
                 strobeAnimation, 0);
     }
 
+    private static TunableDouble endgameTimeStart = new TunableDouble("EndgameTimeStart", 15, true, "LEDs");
+    private static TunableDouble endgameTimeEnd = new TunableDouble("EndgameTimeEnd", 15, true, "LEDs");
+
     public static LedSignal isEndGame() {
         // blink yellow
         StrobeAnimation strobeAnimation = new StrobeAnimation(246, 247, 0, 0, 0.1, 164);
         return new LedSignal("isEndGame", () -> {
-            // System.out.println(DriverStation.getMatchTime());
+            //System.out.println(DriverStation.getMatchTime());
             if (DriverStation.isTeleop()) {
                 if (DriverStation.getMatchTime() < 0) {
                     return false;
                 } else {
-                    return DriverStation.getMatchTime() <= 15;
+                    return DriverStation.getMatchTime() <= endgameTimeStart.getValue()
+                            && DriverStation.getMatchTime() >= endgameTimeEnd.getValue();
                 }
+
             } else {
                 return false;
             }
